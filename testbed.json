@@ -1,4 +1,5 @@
 {
  "stewards": ["steward"],
- "judges": ["judge", "steward"]
+ "judges": ["judge", "steward"],
+ "detailers": ["detailer"]
 }

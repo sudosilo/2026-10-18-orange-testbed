@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   if (!same(b.joinCode, process.env.JOIN_CODE)) return send(res, 403, {error: 'Wrong join code.'});
   if (!ID_RE.test(b.id || '')) return send(res, 400, {error: 'id must be 1 to 32 lowercase letters, digits or dashes.'});
   const cf = loadConfig(process.cwd());
-  if (cf.stewards.includes(b.id) || cf.judges.includes(b.id)) return send(res, 403, {error: 'That id is reserved for the steward or a judge.'});
+  if (cf.stewards.includes(b.id) || cf.judges.includes(b.id) || cf.detailers.includes(b.id)) return send(res, 403, {error: 'That id is reserved for a steward, judge or detailer.'});
   const info = {
     name: String(b.name || b.id).slice(0, 40),
     model: String(b.model || '').slice(0, 60),

@@ -24,7 +24,7 @@ export const REF = {
   sidewalk_width:[1524,4572,'Sidewalk width'],
   lane_width:[3048,3658,'Travel lane width']
 };
-export const SYMBOL_TYPES = ['tree','shrub','grass','car','truck','light','outlet','switch','knob','pole','hydrant','sign','mark','person','dog','bench','table','bike','cart','umbrella'];
+export const SYMBOL_TYPES = ['tree','shrub','grass','car','truck','light','outlet','switch','knob','pole','hydrant','sign','mark','person','dog','bench','table','bike','cyclist','cart','umbrella'];
 
 const OPP = {n:'s',s:'n',e:'w',w:'e'};
 const NBR = {n:[0,1],s:[0,-1],e:[1,0],w:[-1,0]};
@@ -38,7 +38,7 @@ const ok = (o)=>Object.assign({ok:true},o||{});
 const err = (m)=>({ok:false,err:m});
 
 // config comes from testbed.json: {"stewards": [...], "judges": [...]}
-export function createWorld(config){const cf=config||{};return {chunks:new Map(),idIndex:new Map(),nextId:1,stats:{},log:[],ctx:null,stewards:new Set(cf.stewards||[]),judges:new Set(cf.judges||[]),renames:{street:new Map(),building:new Map()},judged:new Set()};}
+export function createWorld(config){const cf=config||{};return {chunks:new Map(),idIndex:new Map(),nextId:1,stats:{},log:[],ctx:null,stewards:new Set(cf.stewards||[]),judges:new Set(cf.judges||[]),detailers:new Set(cf.detailers||[]),renames:{street:new Map(),building:new Map()},judged:new Set()};}
 export const JUDGE_CATEGORIES=['cohesion','realism','organic','activity','interest','consistency'];
 function st(W,a){return W.stats[a]||(W.stats[a]={calls:0,records:0,rejected:0,passed:0,violations:0,mismatches:0,clashes:0,chunks:0,names:0,unnamed:0,dupNames:0,organic:0,detail:0,activity:0,anim:0,texture:0,fixes:0,judge:0});}
 function container(W,cx,cy){
@@ -48,7 +48,7 @@ function container(W,cx,cy){
 }
 function log(W,agent,msg,flag){W.log.push({agent,msg,flag:!!flag,date:W.ctx?W.ctx.date:''});}
 function canWrite(c,agent,disc,W){
-  if(W&&W.stewards.has(agent))return true;
+  if(W&&(W.stewards.has(agent)||W.detailers.has(agent)))return true;
   if(OPEN.has(disc))return true;
   if(c.owner===agent)return true;
   const g=c.grants[agent];return !!(g&&(g.includes('*')||g.includes(disc)));
@@ -179,14 +179,14 @@ export const TOOLS = {
   // Steward tools. Only ids listed as stewards in testbed.json may use them.
   // Steward fixes change what the city looks like but never change another agent's score.
   steward_hide(W,agent,a){
-    if(!W.stewards.has(agent))return err('only stewards can hide records');
+    if(!W.stewards.has(agent)&&!W.detailers.has(agent))return err('only stewards and detailers can hide records');
     const k=W.idIndex.get(a.id);if(!k)return err('no record with that id');
     const r=W.chunks.get(k).records.find(x=>x.id===a.id);
     if(typeof a.reason!=='string'||a.reason.trim().length<3)return err('a steward must give a reason');
     r.hidden={by:agent,reason:a.reason.slice(0,200)};st(W,agent).fixes++;log(W,agent,'hid record '+a.id+' of '+r.agent+': '+a.reason.slice(0,120));return ok();
   },
   steward_unhide(W,agent,a){
-    if(!W.stewards.has(agent))return err('only stewards can unhide records');
+    if(!W.stewards.has(agent)&&!W.detailers.has(agent))return err('only stewards and detailers can unhide records');
     const k=W.idIndex.get(a.id);if(!k)return err('no record with that id');
     const r=W.chunks.get(k).records.find(x=>x.id===a.id);delete r.hidden;return ok();
   },
@@ -279,6 +279,7 @@ export const SYMBOLS = {
   bench:(x,y,z,r)=>rot([...boxSegs(-900,-200,900,200,430,460),[-800,0,0],[-800,0,430],[800,0,0],[800,0,430],[-900,200,460],[-900,250,850],[900,200,460],[900,250,850],[-900,250,850],[900,250,850]],x,y,z,r),
   table:(x,y,z)=>[...circle(x,y,z+740,450,8),[x,y,z],[x,y,z+740],[x-300,y,z],[x+300,y,z]],
   bike:(x,y,z,r)=>{const v=(cy,cz,rr)=>{const o=[];for(let k=0;k<8;k++){const a0=k/8*Math.PI*2,a1=(k+1)/8*Math.PI*2;o.push([0,cy+Math.cos(a0)*rr,cz+Math.sin(a0)*rr],[0,cy+Math.cos(a1)*rr,cz+Math.sin(a1)*rr]);}return o;};return rot([...v(-550,330,330),...v(550,330,330),[0,-550,330],[0,0,600],[0,0,600],[0,550,330],[0,0,600],[0,-150,850],[0,550,330],[0,450,950]],x,y,z,r);},
+  cyclist:(x,y,z,r)=>{const b=SYMBOLS.bike(0,0,0,0);return rot([...b,...circle(0,-50,1700,110,6),[0,-50,1590],[0,-150,950],[0,-150,950],[120,250,500],[0,-150,950],[-120,350,350],[0,-80,1450],[200,420,1000],[0,-80,1450],[-200,420,1000]],x,y,z,r);},
   cart:(x,y,z,r)=>rot([...boxSegs(-250,-400,250,400,300,800),[-250,-400,800],[-250,-650,1000],[250,-400,800],[250,-650,1000]],x,y,z,r),
   umbrella:(x,y,z)=>[[x,y,z],[x,y,z+2300],...circle(x,y,z+2100,1100,8),[x,y,z+2300],[x+1100,y,z+2100],[x,y,z+2300],[x-1100,y,z+2100]]
 };
@@ -443,6 +444,6 @@ export function summary(W,detailChunk,all){
     out.detail=c?{chunk:detailChunk,owner:c.owner,ports:c.ports,penetrations:c.pens,records:c.records.map(r=>{const o={id:r.id,agent:r.agent,discipline:r.discipline,color:r.color,kind:r.kind};if(r.kind==='line'||r.kind==='hatch'){o.pts=r.pts;if(r.kind==='line')o.closed=r.closed;else{o.pattern=r.pattern;o.spacing=r.spacing;o.angle=r.angle;}if(r.color2!==undefined)o.color2=r.color2;}else{o.type=r.type;o.at=r.at;o.rot=r.rot;}if(r.meta)o.meta=r.meta;if(r.hidden)o.hidden=r.hidden;return o;})}:null;
   }
   if(all){out.allRecords=[];for(const c of W.chunks.values())for(const r of c.records){const o={id:r.id,chunk:[c.cx,c.cy],agent:r.agent,discipline:r.discipline,kind:r.kind,date:r.date};if(r.kind==='symbol'){o.type=r.type;o.at=r.at;}else o.pts=r.pts;if(r.meta)o.meta=r.meta;if(r.hidden)o.hidden=r.hidden;out.allRecords.push(o);}}
-  out.stewards=[...W.stewards];out.judges=[...W.judges];out.renames={street:Object.fromEntries(W.renames.street),building:Object.fromEntries(W.renames.building)};
+  out.stewards=[...W.stewards];out.judges=[...W.judges];out.detailers=[...W.detailers];out.renames={street:Object.fromEntries(W.renames.street),building:Object.fromEntries(W.renames.building)};
   return out;
 }
