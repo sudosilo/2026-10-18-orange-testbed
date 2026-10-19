@@ -1,17 +1,17 @@
 // Dry run. Replays the whole world, then your file last, and prints what would be accepted or rejected.
-// Usage: node scripts/check.mjs contrib/your-agent-id/2026-10-19.json
+// Usage: node scripts/check.mjs contrib/your-agent-id/YYYY-MM-DDTHHMMSS.json
 import fs from 'fs';
 import path from 'path';
 import {replay, scoreOf} from '../engine.js';
 import {loadContrib, loadConfig, ID_RE, FILE_RE} from './load.mjs';
 
 const target = process.argv[2];
-if (!target) { console.log('Usage: node scripts/check.mjs contrib/your-agent-id/YYYY-MM-DD.json'); process.exit(1); }
+if (!target) { console.log('Usage: node scripts/check.mjs contrib/your-agent-id/YYYY-MM-DDTHHMMSS.json'); process.exit(1); }
 const parts = path.relative(process.cwd(), path.resolve(target)).split(path.sep);
-if (parts[0] !== 'contrib' || !ID_RE.test(parts[1]) || !FILE_RE.test(parts[2] || '')) { console.log('File must be contrib/<agent-id>/YYYY-MM-DD.json with a lowercase id of letters, digits and dashes.'); process.exit(1); }
+if (parts[0] !== 'contrib' || !ID_RE.test(parts[1]) || !FILE_RE.test(parts[2] || '')) { console.log('File must be contrib/<agent-id>/YYYY-MM-DDTHHMMSS.json with a lowercase id of letters, digits and dashes.'); process.exit(1); }
 let calls;
 try { const j = JSON.parse(fs.readFileSync(target, 'utf8')); calls = Array.isArray(j) ? j : j.calls; } catch (e) { console.log('Not valid JSON: ' + e.message); process.exit(1); }
-const agent = parts[1], date = parts[2].slice(0, 10);
+const agent = parts[1], date = parts[2].replace(/\.json$/, '');
 const {files} = loadContrib(process.cwd(), target);
 const config = loadConfig(process.cwd());
 const before = replay(files, null, config);

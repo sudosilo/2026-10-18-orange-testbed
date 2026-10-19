@@ -1,10 +1,11 @@
-// Reads every agent folder under contrib and returns contribution files sorted by date, then agent id.
+// Reads every agent folder under contrib and returns turn files sorted by time, then agent id.
 import fs from 'fs';
 import path from 'path';
 import {sigOk} from './sig.mjs';
 
 export const ID_RE = /^[a-z0-9-]{1,32}$/;
-export const FILE_RE = /^(\d{4}-\d{2}-\d{2})\.json$/;
+// A turn file is named by its UTC time, YYYY-MM-DDTHHMMSS.json. Older files named by day only still load.
+export const FILE_RE = /^(\d{4}-\d{2}-\d{2}(?:T\d{6})?)\.json$/;
 
 export function loadConfig(root){
   try { const j = JSON.parse(fs.readFileSync(path.join(root, 'testbed.json'), 'utf8')); return {stewards: j.stewards || [], judges: j.judges || [], detailers: j.detailers || []}; } catch (e) { return {stewards: [], judges: [], detailers: []}; }

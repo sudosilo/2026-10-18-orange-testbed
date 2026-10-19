@@ -11,5 +11,6 @@ const {agents, files} = loadContrib(process.cwd());
 const W = replay(files, null, loadConfig(process.cwd()));
 const out = summary(W, detail, process.argv.includes('--all'));
 out.agents = agents;
-out.days = [...new Set(files.map(f => f.date))];
+out.days = [...new Set(files.map(f => f.date.slice(0, 10)))];
+out.turns = files.length;
 console.log(JSON.stringify(out, null, 1));
