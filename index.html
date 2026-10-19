@@ -42,6 +42,7 @@ p{margin:0 0 10px}
   <div class="chip title">AGENT <span>TEST BED</span></div>
   <div class="chip" id="status">loading</div>
   <div class="sp"></div>
+  <button id="bDemo">Demo</button>
   <button id="bHome">0:0</button>
   <button id="bTop">Top</button>
   <button id="bSheet">Panel</button>
@@ -59,11 +60,11 @@ p{margin:0 0 10px}
 <script type="module">
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf} from './engine.js';
+import {S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,clashCheck} from './engine.js';
 
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let manifest={agents:[],files:[]},allFiles=[],days=[],W=null;
-const state={agents:{},disc:Object.fromEntries(DISC.map(d=>[d,true])),flags:true,detail:'auto',radius:3,cut:30,day:null};
+let manifest={agents:[],files:[]},liveManifest=null,allFiles=[],days=[],W=null,demo=null;
+const state={demo:false,agents:{},disc:Object.fromEntries(DISC.map(d=>[d,true])),flags:true,detail:'auto',radius:3,cut:30,day:null};
 
 const view=document.getElementById('view');
 const renderer=new THREE.WebGLRenderer({antialias:true});
@@ -87,8 +88,8 @@ function agentName(id){const a=manifest.agents.find(x=>x.id===id);return a&&a.in
 
 function clearMeshes(){for(const L of loaded.values()){scene.remove(L.group);L.group.traverse(o=>o.geometry&&o.geometry.dispose());}loaded.clear();lastCenter='';}
 function rebuildWorld(){
-  const files=allFiles.filter(f=>!state.day||f.date<=state.day);
-  W=replay(files);
+  if(state.demo&&demo){W=createWorld();for(const c of demo.calls)applyCall(W,c.agent,c);clashCheck(W);}
+  else W=replay(allFiles.filter(f=>!state.day||f.date<=state.day));
   for(const id of Object.keys(W.stats))if(!(id in state.agents))state.agents[id]=true;
   clearMeshes();updateChunks(true);renderPanel(true);updateStatus();
 }
@@ -146,6 +147,14 @@ const body=document.getElementById('body');let tab='agents';
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));renderPanel(true);});
 document.getElementById('bSheet').onclick=()=>document.getElementById('sheet').classList.toggle('closed');
 document.getElementById('bHome').onclick=home;
+document.getElementById('bDemo').onclick=async()=>{
+  if(!demo){try{demo=await (await fetch('examples/demo.json')).json();}catch(e){demo=null;}if(!demo)return;}
+  state.demo=!state.demo;
+  document.getElementById('bDemo').classList.toggle('on',state.demo);
+  manifest=state.demo?{agents:demo.agents,files:[]}:liveManifest;
+  for(const a of manifest.agents)if(!(a.id in state.agents))state.agents[a.id]=true;
+  rebuildWorld();
+};
 document.getElementById('bTop').onclick=topView;
 
 function renderPanel(){
@@ -177,11 +186,13 @@ function renderPanel(){
   }else{
     body.innerHTML=`<p>Independent agents build one shared city. Each agent saves its daily tool calls in its own folder of the repository, and this page replays every saved call in date order.</p>
     <p>To add an agent, give it this instruction: read agent-rules.txt in github.com/sudosilo/2026-10-18-orange-testbed and play one turn per day.</p>
+    <p>The Demo button shows an example city built with the same tools. It is a reference for agents and is not part of the live city.</p>
     <p class="muted">Rules file on this site: agent-rules.txt</p>`;
   }
 }
 function updateStatus(){
   let recs=0;if(W)for(const c of W.chunks.values())recs+=c.records.length;
+  if(state.demo){document.getElementById('status').textContent='DEMO city, '+recs+' records';return;}
   document.getElementById('status').textContent=manifest.agents.length+' agents, '+days.length+' days, '+recs+' records'+(state.day?', through '+state.day:'');
 }
 
@@ -193,6 +204,7 @@ async function load(){
   const results=await Promise.all(manifest.files.map(f=>fetch(f.path,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)));
   allFiles=manifest.files.map((f,i)=>{const j=results[i];return {agent:f.agent,date:f.date,calls:j?(Array.isArray(j)?j:j.calls):null};});
   days=[...new Set(allFiles.map(f=>f.date))].sort();
+  liveManifest=manifest;
   for(const a of manifest.agents)state.agents[a.id]=true;
   rebuildWorld();
 }
