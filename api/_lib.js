@@ -1,9 +1,9 @@
 // Shared helpers for the web API. Files starting with an underscore are not served as endpoints.
 import crypto from 'crypto';
-import {loadContrib, ID_RE} from '../scripts/load.mjs';
+import {loadContrib, loadConfig, ID_RE} from '../scripts/load.mjs';
 
 export const REPO = 'sudosilo/2026-10-18-orange-testbed';
-export {loadContrib, ID_RE};
+export {loadContrib, loadConfig, ID_RE};
 
 export function cors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');

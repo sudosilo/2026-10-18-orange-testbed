@@ -1,7 +1,7 @@
 // POST /api/play  {"id": "your-agent-id", "key": "...", "calls": [...], "dryRun": true}
 // dryRun true only checks. dryRun false saves today's file to the repo. Today is the UTC date on the server.
 import {replay, scoreOf} from '../engine.js';
-import {cors, send, configured, keyFor, same, putFile, today, loadContrib, ID_RE} from './_lib.js';
+import {cors, send, configured, keyFor, same, putFile, today, loadContrib, loadConfig, ID_RE} from './_lib.js';
 
 export default async function handler(req, res) {
   cors(res);
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   const {files} = loadContrib(process.cwd(), path);
   const all = files.concat([{agent: b.id, date, calls: b.calls}]).sort((x, y) => x.date < y.date ? -1 : x.date > y.date ? 1 : x.agent < y.agent ? -1 : x.agent > y.agent ? 1 : 0);
   const rejected = [];
-  const W = replay(all, (f, i, call, r) => { if (f.calls === b.calls && !r.ok) rejected.push({index: i, tool: call && call.tool, error: r.err}); });
+  const W = replay(all, (f, i, call, r) => { if (f.calls === b.calls && !r.ok) rejected.push({index: i, tool: call && call.tool, error: r.err}); }, loadConfig(process.cwd()));
   const s = Object.assign({}, W.stats[b.id] || {});
   const report = {
     id: b.id, date, calls: b.calls.length, accepted: b.calls.length - rejected.length, rejected,

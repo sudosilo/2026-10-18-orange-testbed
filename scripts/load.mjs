@@ -5,6 +5,10 @@ import path from 'path';
 export const ID_RE = /^[a-z0-9-]{1,32}$/;
 export const FILE_RE = /^(\d{4}-\d{2}-\d{2})\.json$/;
 
+export function loadConfig(root){
+  try { const j = JSON.parse(fs.readFileSync(path.join(root, 'testbed.json'), 'utf8')); return {stewards: j.stewards || [], judges: j.judges || []}; } catch (e) { return {stewards: [], judges: []}; }
+}
+
 export function loadContrib(root, skipPath){
   const dir = path.join(root, 'contrib');
   const agents = [], files = [];

@@ -63,8 +63,8 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,finalize} from './engine.js';
 
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let manifest={agents:[],files:[]},liveManifest=null,allFiles=[],days=[],W=null,demo=null;
-const state={demo:false,names:true,anim:true,agents:{},disc:Object.fromEntries(DISC.map(d=>[d,true])),flags:true,detail:'auto',radius:3,cut:30,day:null};
+let config={stewards:[],judges:[]},manifest={agents:[],files:[]},liveManifest=null,allFiles=[],days=[],W=null,demo=null;
+const state={demo:false,fixes:true,names:true,anim:true,agents:{},disc:Object.fromEntries(DISC.map(d=>[d,true])),flags:true,detail:'auto',radius:3,cut:30,day:null};
 
 const view=document.getElementById('view');
 const renderer=new THREE.WebGLRenderer({antialias:true});
@@ -89,7 +89,7 @@ function agentName(id){const a=manifest.agents.find(x=>x.id===id);return a&&a.in
 function clearMeshes(){for(const L of loaded.values()){scene.remove(L.group);L.group.traverse(o=>o.geometry&&o.geometry.dispose());}loaded.clear();lastCenter='';}
 function rebuildWorld(){
   if(state.demo&&demo){W=createWorld();for(const c of demo.calls)applyCall(W,c.agent,c);finalize(W);}
-  else W=replay(allFiles.filter(f=>!state.day||f.date<=state.day));
+  else W=replay(allFiles.filter(f=>!state.day||f.date<=state.day).map(f=>state.fixes||!config.stewards.includes(f.agent)||!Array.isArray(f.calls)?f:Object.assign({},f,{calls:f.calls.filter(c=>c&&c.tool==='judge_score')})),null,config);
   for(const id of Object.keys(W.stats))if(!(id in state.agents))state.agents[id]=true;
   clearMeshes();updateChunks(true);renderPanel(true);updateStatus();
 }
@@ -111,6 +111,7 @@ function buildChunk(c){
   const add=(bk,hex,segs)=>{const g=groups[bk]||(groups[bk]={pos:[],col:[]});const col=new THREE.Color(hex);for(const p of segs){const v=toV(p);g.pos.push(v[0],v[1],v[2]);g.col.push(col.r,col.g,col.b);}};
   const group=new THREE.Group(),batches=[];
   for(const r of c.records){
+    if(r.hidden&&state.fixes)continue;
     const m=r.meta||{};
     if((m.anim||m.billboard)&&anims.length<MAX_ANIM_PER_CHUNK){
       const piv=m.anim&&m.anim.type==='path'?m.anim.pts[0]:pivotOf(r);
@@ -232,7 +233,8 @@ function renderPanel(){
   }else if(tab==='layers'){
     const di=days.indexOf(state.day);
     body.innerHTML=DISC.map(d=>`<label class="tg"><input type="checkbox" data-disc="${d}" ${state.disc[d]?'checked':''}>${d}${DETAIL.has(d)?' <span class="muted">(detail)</span>':''}</label>`).join('')+
-    `<label class="tg"><input type="checkbox" id="an" ${state.anim?'checked':''}>animations</label>
+    `<label class="tg"><input type="checkbox" id="fx" ${state.fixes?'checked':''}>steward fixes <span class="muted">(off shows the city as the builders left it)</span></label>
+    <label class="tg"><input type="checkbox" id="an" ${state.anim?'checked':''}>animations</label>
     <label class="tg"><input type="checkbox" id="nm" ${state.names?'checked':''}>names, signs and activity notes</label>
     <label class="tg"><input type="checkbox" id="fl" ${state.flags?'checked':''}><span class="flag">check flags and owner marks</span></label>
     <div class="row"><span>Detail layers</span>${['auto','always','off'].map(m=>`<button data-detail="${m}" class="${state.detail===m?'on':''}">${m}</button>`).join(' ')}</div>
@@ -241,6 +243,7 @@ function renderPanel(){
     <div style="padding-top:8px">Load radius <span id="radv">${state.radius}</span> chunks<input type="range" id="rad" min="1" max="8" step="1" value="${state.radius}"></div>`;
     body.querySelectorAll('[data-disc]').forEach(i=>i.onchange=()=>{state.disc[i.dataset.disc]=i.checked;applyVisibility();});
     body.querySelector('#fl').onchange=e=>{state.flags=e.target.checked;applyVisibility();};
+    body.querySelector('#fx').onchange=e=>{state.fixes=e.target.checked;rebuildWorld();};
     body.querySelector('#an').onchange=e=>{state.anim=e.target.checked;};
     body.querySelector('#nm').onchange=e=>{state.names=e.target.checked;applyVisibility();};
     body.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>{state.detail=b.dataset.detail;applyVisibility();renderPanel();});
@@ -249,8 +252,8 @@ function renderPanel(){
     body.querySelector('#rad').onchange=e=>{state.radius=+e.target.value;updateChunks(true);renderPanel();};
   }else if(tab==='scores'){
     const rows=W?Object.entries(W.stats).sort((a,b)=>scoreOf(b[1])-scoreOf(a[1])):[];
-    body.innerHTML=(rows.length?rows.map(([id,s])=>`<div class="row"><span class="sw" style="background:${agentColor(id)}"></span><div style="flex:1"><b>${esc(agentName(id))}</b> score ${scoreOf(s)}<div class="kv muted"><span>calls</span><span>${s.calls}</span><span>records</span><span>${s.records}</span><span>chunks owned</span><span>${s.chunks}</span><span>reference checks passed</span><span>${s.passed}</span><span>naming points</span><span>${s.names}</span><span>organic shapes</span><span>${s.organic}</span><span>interior detail</span><span>${s.detail}</span><span>human activity</span><span>${s.activity}</span><span>animations</span><span>${s.anim}</span><span>texture and gradient</span><span>${s.texture}</span><span>reference violations</span><span>${s.violations}</span><span>unnamed streets or buildings</span><span>${s.unnamed}</span><span>duplicate building names</span><span>${s.dupNames}</span><span>border mismatches</span><span>${s.mismatches}</span><span>wall clashes</span><span>${s.clashes}</span><span>rejected calls</span><span>${s.rejected}</span></div></div></div>`).join(''):'<p class="muted">No scores yet.</p>')+
-    '<p class="muted" style="padding-top:8px">Score adds checks passed, naming points, organic shapes, interior detail, animations, textures and gradients, and 2 per human activity. It subtracts 5 per violation, 10 per border mismatch, 10 per wall clash, 2 per unnamed street or building, 5 per duplicate building name and 1 per rejected call.</p>';
+    body.innerHTML=(rows.length?rows.map(([id,s])=>`<div class="row"><span class="sw" style="background:${agentColor(id)}"></span><div style="flex:1"><b>${esc(agentName(id))}</b> score ${scoreOf(s)}<div class="kv muted"><span>calls</span><span>${s.calls}</span><span>records</span><span>${s.records}</span><span>chunks owned</span><span>${s.chunks}</span><span>reference checks passed</span><span>${s.passed}</span><span>naming points</span><span>${s.names}</span><span>organic shapes</span><span>${s.organic}</span><span>interior detail</span><span>${s.detail}</span><span>human activity</span><span>${s.activity}</span><span>animations</span><span>${s.anim}</span><span>texture and gradient</span><span>${s.texture}</span><span>judge points</span><span>${s.judge}</span><span>steward fixes made</span><span>${s.fixes}</span><span>reference violations</span><span>${s.violations}</span><span>unnamed streets or buildings</span><span>${s.unnamed}</span><span>duplicate building names</span><span>${s.dupNames}</span><span>border mismatches</span><span>${s.mismatches}</span><span>wall clashes</span><span>${s.clashes}</span><span>rejected calls</span><span>${s.rejected}</span></div></div></div>`).join(''):'<p class="muted">No scores yet.</p>')+
+    '<p class="muted" style="padding-top:8px">Score adds judge points, checks passed, naming points, organic shapes, interior detail, animations, textures and gradients, and 2 per human activity. It subtracts 5 per violation, 10 per border mismatch, 10 per wall clash, 2 per unnamed street or building, 5 per duplicate building name and 1 per rejected call.</p>';
   }else if(tab==='log'){
     const L=W?W.log.slice(-150).reverse():[];
     body.innerHTML='<div class="log">'+(L.length?L.map(l=>`<div class="${l.flag?'flag':''}">${esc(l.date)} ${esc(agentName(l.agent))}: ${esc(l.msg)}</div>`).join(''):'<div class="muted">Log is empty.</div>')+'</div>';
@@ -268,6 +271,7 @@ function updateStatus(){
 }
 
 async function load(){
+  try{const r=await fetch('testbed.json',{cache:'no-store'});if(r.ok)config=await r.json();}catch(e){}
   try{
     const r=await fetch('manifest.json',{cache:'no-store'});
     if(r.ok)manifest=await r.json();

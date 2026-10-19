@@ -37,15 +37,18 @@ const vchunk = (c)=>Array.isArray(c)&&c.length===2&&c.every(isInt);
 const ok = (o)=>Object.assign({ok:true},o||{});
 const err = (m)=>({ok:false,err:m});
 
-export function createWorld(){return {chunks:new Map(),idIndex:new Map(),nextId:1,stats:{},log:[],ctx:null};}
-function st(W,a){return W.stats[a]||(W.stats[a]={calls:0,records:0,rejected:0,passed:0,violations:0,mismatches:0,clashes:0,chunks:0,names:0,unnamed:0,dupNames:0,organic:0,detail:0,activity:0,anim:0,texture:0});}
+// config comes from testbed.json: {"stewards": [...], "judges": [...]}
+export function createWorld(config){const cf=config||{};return {chunks:new Map(),idIndex:new Map(),nextId:1,stats:{},log:[],ctx:null,stewards:new Set(cf.stewards||[]),judges:new Set(cf.judges||[]),renames:{street:new Map(),building:new Map()},judged:new Set()};}
+export const JUDGE_CATEGORIES=['cohesion','realism','organic','activity','interest','consistency'];
+function st(W,a){return W.stats[a]||(W.stats[a]={calls:0,records:0,rejected:0,passed:0,violations:0,mismatches:0,clashes:0,chunks:0,names:0,unnamed:0,dupNames:0,organic:0,detail:0,activity:0,anim:0,texture:0,fixes:0,judge:0});}
 function container(W,cx,cy){
   const k=key(cx,cy);let c=W.chunks.get(k);
   if(!c){c={cx,cy,k,owner:null,grants:{},records:[],ports:{},lots:[],pens:[],flags:[],nodes:new Map()};W.chunks.set(k,c);}
   return c;
 }
 function log(W,agent,msg,flag){W.log.push({agent,msg,flag:!!flag,date:W.ctx?W.ctx.date:''});}
-function canWrite(c,agent,disc){
+function canWrite(c,agent,disc,W){
+  if(W&&W.stewards.has(agent))return true;
   if(OPEN.has(disc))return true;
   if(c.owner===agent)return true;
   const g=c.grants[agent];return !!(g&&(g.includes('*')||g.includes(disc)));
@@ -112,7 +115,7 @@ export const TOOLS = {
     if(!vcol(a.color))return err('color must be a palette index 0 to '+(PALETTE.length-1));
     if(!Array.isArray(a.pts)||a.pts.length<2||a.pts.length>LIMITS.ptsPerLine||!a.pts.every(vpt))return err('pts must be 2 to '+LIMITS.ptsPerLine+' points of [x, y, z] integer mm');
     const [cx,cy]=chunkOf(a.pts[0][0],a.pts[0][1]);const c=container(W,cx,cy);
-    if(!canWrite(c,agent,a.discipline))return err('no write access to chunk '+c.k+' for '+a.discipline);
+    if(!canWrite(c,agent,a.discipline,W))return err('no write access to chunk '+c.k+' for '+a.discipline);
     const meta=cleanMeta(a.meta),ae=animError(meta);if(ae)return err(ae);
     if(a.color2!==undefined&&!vcol(a.color2))return err('color2 must be a palette index');
     const rec={id:W.nextId++,agent,discipline:a.discipline,color:a.color,color2:a.color2,kind:'line',pts:a.pts.map(p=>snap(c,p)),closed:!!a.closed,meta};
@@ -124,7 +127,7 @@ export const TOOLS = {
     if(!SYMBOL_TYPES.includes(a.type))return err('unknown symbol type');
     if(!vpt(a.at))return err('at must be [x, y, z] integer mm');
     const [cx,cy]=chunkOf(a.at[0],a.at[1]);const c=container(W,cx,cy);
-    if(!canWrite(c,agent,a.discipline))return err('no write access to chunk '+c.k+' for '+a.discipline);
+    if(!canWrite(c,agent,a.discipline,W))return err('no write access to chunk '+c.k+' for '+a.discipline);
     const meta=cleanMeta(a.meta),ae=animError(meta);if(ae)return err(ae);
     const rec={id:W.nextId++,agent,discipline:a.discipline,color:a.color,kind:'symbol',type:a.type,at:a.at.slice(),rot:Number.isFinite(a.rot)?a.rot:0,meta};
     commit(W,c,rec);return ok({id:rec.id});
@@ -138,7 +141,7 @@ export const TOOLS = {
     if(!isInt(a.spacing)||a.spacing<50||a.spacing>5000)return err('spacing must be integer mm from 50 to 5000');
     const angle=Number.isFinite(a.angle)?a.angle:0;
     const [cx,cy]=chunkOf(a.pts[0][0],a.pts[0][1]);const c=container(W,cx,cy);
-    if(!canWrite(c,agent,a.discipline))return err('no write access to chunk '+c.k+' for '+a.discipline);
+    if(!canWrite(c,agent,a.discipline,W))return err('no write access to chunk '+c.k+' for '+a.discipline);
     const meta=cleanMeta(a.meta),ae=animError(meta);if(ae)return err(ae);
     const rec={id:W.nextId++,agent,discipline:a.discipline,color:a.color,color2:a.color2,kind:'hatch',pts:a.pts.map(p=>p.slice()),pattern:a.pattern,spacing:a.spacing,angle,meta};
     if(!hatchSegs(rec).length)return err('hatch made no lines: check the points form a flat polygon larger than the spacing');
@@ -170,8 +173,52 @@ export const TOOLS = {
   declare_penetration(W,agent,a){
     if(!vpt(a.at))return err('at must be [x, y, z] integer mm');
     const [cx,cy]=chunkOf(a.at[0],a.at[1]);const c=container(W,cx,cy);
-    if(!canWrite(c,agent,'plumbing')&&!canWrite(c,agent,'electrical'))return err('no write access to chunk '+c.k);
+    if(!canWrite(c,agent,'plumbing',W)&&!canWrite(c,agent,'electrical',W))return err('no write access to chunk '+c.k);
     c.pens.push({agent,at:a.at.slice()});return ok();
+  },
+  // Steward tools. Only ids listed as stewards in testbed.json may use them.
+  // Steward fixes change what the city looks like but never change another agent's score.
+  steward_hide(W,agent,a){
+    if(!W.stewards.has(agent))return err('only stewards can hide records');
+    const k=W.idIndex.get(a.id);if(!k)return err('no record with that id');
+    const r=W.chunks.get(k).records.find(x=>x.id===a.id);
+    if(typeof a.reason!=='string'||a.reason.trim().length<3)return err('a steward must give a reason');
+    r.hidden={by:agent,reason:a.reason.slice(0,200)};st(W,agent).fixes++;log(W,agent,'hid record '+a.id+' of '+r.agent+': '+a.reason.slice(0,120));return ok();
+  },
+  steward_unhide(W,agent,a){
+    if(!W.stewards.has(agent))return err('only stewards can unhide records');
+    const k=W.idIndex.get(a.id);if(!k)return err('no record with that id');
+    const r=W.chunks.get(k).records.find(x=>x.id===a.id);delete r.hidden;return ok();
+  },
+  steward_set_port(W,agent,a){
+    if(!W.stewards.has(agent))return err('only stewards can override ports');
+    if(!vchunk(a.chunk)||!NBR[a.edge]||!isInt(a.value)||a.value<0||a.value>S/2)return err('needs chunk, edge and value');
+    if(typeof a.reason!=='string'||a.reason.trim().length<3)return err('a steward must give a reason');
+    container(W,a.chunk[0],a.chunk[1]).ports[a.edge]=a.value;st(W,agent).fixes++;log(W,agent,'set '+a.edge+' port of '+key(a.chunk[0],a.chunk[1])+' to '+a.value+': '+a.reason.slice(0,120));return ok();
+  },
+  steward_rename(W,agent,a){
+    if(!W.stewards.has(agent))return err('only stewards can rename');
+    if(a.kind!=='street'&&a.kind!=='building')return err('kind must be street or building');
+    if(typeof a.from!=='string'||typeof a.to!=='string'||!a.to.trim()||a.to.length>60)return err('needs from and to names');
+    if(typeof a.reason!=='string'||a.reason.trim().length<3)return err('a steward must give a reason');
+    W.renames[a.kind].set(a.from.trim().toLowerCase(),a.to.trim());st(W,agent).fixes++;log(W,agent,'renamed '+a.kind+' "'+a.from+'" to "'+a.to+'": '+a.reason.slice(0,120));return ok();
+  },
+  steward_reassign(W,agent,a){
+    if(!W.stewards.has(agent))return err('only stewards can reassign chunks');
+    if(!vchunk(a.chunk)||typeof a.owner!=='string')return err('needs chunk and owner');
+    if(typeof a.reason!=='string'||a.reason.trim().length<3)return err('a steward must give a reason');
+    const c=container(W,a.chunk[0],a.chunk[1]);if(c.owner&&W.stats[c.owner])W.stats[c.owner].chunks--;c.owner=a.owner||null;if(c.owner)st(W,c.owner).chunks++;
+    st(W,agent).fixes++;log(W,agent,'gave '+c.k+' to '+(a.owner||'nobody')+': '+a.reason.slice(0,120));return ok();
+  },
+  // Judge tool. Only ids listed as judges in testbed.json may use it. One score per judge, agent and category per day.
+  judge_score(W,agent,a){
+    if(!W.judges.has(agent))return err('only judges can score');
+    if(typeof a.agent!=='string'||!JUDGE_CATEGORIES.includes(a.category))return err('needs agent and a category: '+JUDGE_CATEGORIES.join(', '));
+    if(!isInt(a.points)||a.points<-20||a.points>20)return err('points must be an integer from -20 to 20');
+    const jk=agent+'|'+a.agent+'|'+a.category+'|'+(W.ctx?W.ctx.date:'');
+    if(W.judged.has(jk))return err('already scored '+a.agent+' for '+a.category+' today');
+    W.judged.add(jk);st(W,a.agent).judge+=a.points;
+    log(W,agent,'judged '+a.agent+' '+a.category+' '+(a.points>0?'+':'')+a.points+(typeof a.note==='string'?': '+a.note.slice(0,200):''));return ok();
   },
   remove(W,agent,a){
     const k=W.idIndex.get(a.id);if(!k)return err('no record with that id');
@@ -190,8 +237,8 @@ export function applyCall(W,agent,call){
 }
 
 // files: [{agent, date, calls}] already sorted by date then agent.
-export function replay(files,onResult){
-  const W=createWorld();
+export function replay(files,onResult,config){
+  const W=createWorld(config);
   for(const f of files){
     W.ctx={date:f.date,claims:0,agent:f.agent};
     if(!Array.isArray(f.calls)){log(W,f.agent,'file '+f.date+' has no calls array',true);continue;}
@@ -336,7 +383,7 @@ export function finalize(W){
       const names=Array.isArray(m.street)?m.street:[m.street];
       if(!names.length||!names.every(nameOf)){s.unnamed++;c.flags.push(r.pts[0]);W.log.push({agent:r.agent,msg:'street record '+r.id+' in '+c.k+' has no meta.street name',flag:true,date:r.date});}
       else for(const n of names){const k=n.trim().toLowerCase();if(!streetsSeen.has(k)){streetsSeen.add(k);s.names+=1;}
-        const lk=c.k+'|'+k;if(!streetsSeen.has(lk)){streetsSeen.add(lk);const p=r.pts[0],q=r.pts[r.pts.length>1?1:0];W.labels.push({k:c.k,text:n.trim(),at:[(p[0]+q[0])/2,(p[1]+q[1])/2,300],kind:'street'});}}
+        const lk=c.k+'|'+k;if(!streetsSeen.has(lk)){streetsSeen.add(lk);const p=r.pts[0],q=r.pts[r.pts.length>1?1:0];if(!r.hidden)W.labels.push({k:c.k,text:W.renames.street.get(k)||n.trim(),at:[(p[0]+q[0])/2,(p[1]+q[1])/2,300],kind:'street'});}}
     }
     if(r.kind==='line'&&m.wall){
       if(!nameOf(m.building)){s.unnamed++;c.flags.push(r.pts[0]);W.log.push({agent:r.agent,msg:'wall record '+r.id+' in '+c.k+' has no meta.building name',flag:true,date:r.date});}
@@ -345,7 +392,7 @@ export function finalize(W){
         if(!b){
           const xs=r.pts.map(p=>p[0]),ys=r.pts.map(p=>p[1]);
           buildings.set(k,{own,box:[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)],agent:r.agent,ck:c.k,detail:0});s.names+=3;
-          W.labels.push({k:c.k,text:m.building.trim(),at:[(Math.min(...xs)+Math.max(...xs))/2,(Math.min(...ys)+Math.max(...ys))/2,(isInt(m.h)?m.h:3048)+1500],kind:'building'});
+          if(!r.hidden)W.labels.push({k:c.k,text:W.renames.building.get(k)||m.building.trim(),at:[(Math.min(...xs)+Math.max(...xs))/2,(Math.min(...ys)+Math.max(...ys))/2,(isInt(m.h)?m.h:3048)+1500],kind:'building'});
         }else if(b.own!==own){s.dupNames++;c.flags.push(r.pts[0]);W.log.push({agent:r.agent,msg:'building name "'+m.building.trim()+'" is already used by '+b.agent+' in '+b.ck,flag:true,date:r.date});}
       }
     }
@@ -357,9 +404,9 @@ export function finalize(W){
       const t=typeof m.activity==='string'?m.activity.trim().toLowerCase():'';
       const ak=r.agent+c.k;
       if(t.length>=3&&t.length<=80&&!actText.has(ak+'|'+t)&&(activity[ak]||0)<40){actText.add(ak+'|'+t);activity[ak]=(activity[ak]||0)+1;s.activity++;}
-      if(typeof m.activity==='string')W.labels.push({k:c.k,text:m.activity.trim().slice(0,80),at:[r.at[0],r.at[1],r.at[2]+2200],kind:'activity'});
+      if(typeof m.activity==='string'&&!r.hidden)W.labels.push({k:c.k,text:m.activity.trim().slice(0,80),at:[r.at[0],r.at[1],r.at[2]+2200],kind:'activity'});
     }
-    if(r.kind==='symbol'&&r.type==='sign'&&typeof m.text==='string')W.labels.push({k:c.k,text:m.text.trim().slice(0,60),at:[r.at[0],r.at[1],r.at[2]+3200],kind:'sign'});
+    if(r.kind==='symbol'&&r.type==='sign'&&typeof m.text==='string'&&!r.hidden)W.labels.push({k:c.k,text:m.text.trim().slice(0,60),at:[r.at[0],r.at[1],r.at[2]+3200],kind:'sign'});
   }
   for(const [c,r] of recs){
     if(!DETAIL.has(r.discipline))continue;
@@ -370,10 +417,10 @@ export function finalize(W){
   }
 }
 
-export const scoreOf = (s)=>(s.passed||0)+(s.anim||0)+(s.texture||0)+(s.names||0)+(s.organic||0)+(s.detail||0)+2*(s.activity||0)-5*(s.violations||0)-10*(s.mismatches||0)-10*(s.clashes||0)-2*(s.unnamed||0)-5*(s.dupNames||0)-(s.rejected||0);
+export const scoreOf = (s)=>(s.judge||0)+(s.passed||0)+(s.anim||0)+(s.texture||0)+(s.names||0)+(s.organic||0)+(s.detail||0)+2*(s.activity||0)-5*(s.violations||0)-10*(s.mismatches||0)-10*(s.clashes||0)-2*(s.unnamed||0)-5*(s.dupNames||0)-(s.rejected||0);
 
 // Text summary agents read before they play.
-export function summary(W,detailChunk){
+export function summary(W,detailChunk,all){
   const owned=[],frontier=new Set();
   for(const c of W.chunks.values()){
     if(!c.owner&&!c.records.length)continue;
@@ -391,7 +438,9 @@ export function summary(W,detailChunk){
   };
   if(detailChunk){
     const c=W.chunks.get(key(detailChunk[0],detailChunk[1]));
-    out.detail=c?{chunk:detailChunk,owner:c.owner,ports:c.ports,penetrations:c.pens,records:c.records.map(r=>{const o={id:r.id,agent:r.agent,discipline:r.discipline,color:r.color,kind:r.kind};if(r.kind==='line'||r.kind==='hatch'){o.pts=r.pts;if(r.kind==='line')o.closed=r.closed;else{o.pattern=r.pattern;o.spacing=r.spacing;o.angle=r.angle;}if(r.color2!==undefined)o.color2=r.color2;}else{o.type=r.type;o.at=r.at;o.rot=r.rot;}if(r.meta)o.meta=r.meta;return o;})}:null;
+    out.detail=c?{chunk:detailChunk,owner:c.owner,ports:c.ports,penetrations:c.pens,records:c.records.map(r=>{const o={id:r.id,agent:r.agent,discipline:r.discipline,color:r.color,kind:r.kind};if(r.kind==='line'||r.kind==='hatch'){o.pts=r.pts;if(r.kind==='line')o.closed=r.closed;else{o.pattern=r.pattern;o.spacing=r.spacing;o.angle=r.angle;}if(r.color2!==undefined)o.color2=r.color2;}else{o.type=r.type;o.at=r.at;o.rot=r.rot;}if(r.meta)o.meta=r.meta;if(r.hidden)o.hidden=r.hidden;return o;})}:null;
   }
+  if(all){out.allRecords=[];for(const c of W.chunks.values())for(const r of c.records){const o={id:r.id,chunk:[c.cx,c.cy],agent:r.agent,discipline:r.discipline,kind:r.kind,date:r.date};if(r.kind==='symbol'){o.type=r.type;o.at=r.at;}else o.pts=r.pts;if(r.meta)o.meta=r.meta;if(r.hidden)o.hidden=r.hidden;out.allRecords.push(o);}}
+  out.stewards=[...W.stewards];out.judges=[...W.judges];out.renames={street:Object.fromEntries(W.renames.street),building:Object.fromEntries(W.renames.building)};
   return out;
 }
