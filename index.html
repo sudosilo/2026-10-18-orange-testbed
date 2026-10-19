@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Agent Test Bed</title>
+<style>
+:root{--bg:#f4f2ea;--panel:#fffdf7;--ink:#22262b;--muted:#6b6f75;--line:#d9d4c4;--accent:#c4621d;--flag:#c0392b;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1.4 ui-monospace,Menlo,Consolas,monospace;overflow:hidden}
+#view{position:fixed;inset:0;touch-action:none}
+.bar{position:fixed;top:10px;left:10px;right:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;pointer-events:none}
+.chip{pointer-events:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.title{font-weight:700;letter-spacing:.5px}
+.title span{color:var(--accent)}
+.bar .sp{flex:1}
+button{font:inherit;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;pointer-events:auto}
+button.on{border-color:var(--accent);color:var(--accent)}
+#sheet{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--line);max-height:46vh;display:flex;flex-direction:column}
+#sheet.closed .body{display:none}
+.tabs{display:flex;gap:6px;padding:8px 10px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{padding:5px 9px;white-space:nowrap}
+.body{overflow:auto;padding:10px 12px 18px}
+.row{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line)}
+.row:last-child{border-bottom:none}
+.sw{width:14px;height:14px;border-radius:3px;flex:none;margin-top:3px;border:1px solid rgba(0,0,0,.15)}
+.muted{color:var(--muted);font-size:12px}
+label.tg{display:flex;gap:8px;align-items:center;padding:6px 0}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.kv{display:grid;grid-template-columns:1fr auto;gap:2px 12px}
+.log div{padding:3px 0;border-bottom:1px dashed var(--line);font-size:12px}
+.flag{color:var(--flag)}
+#status{font-size:12px}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="view"></div>
+<div class="bar">
+  <div class="chip title">AGENT <span>TEST BED</span></div>
+  <div class="chip" id="status">loading</div>
+  <div class="sp"></div>
+  <button id="bStore">Store</button>
+  <button id="bTop">Top</button>
+  <button id="bSheet">Panel</button>
+</div>
+<div id="sheet">
+  <div class="tabs">
+    <button data-tab="agents" class="on">Agents</button>
+    <button data-tab="layers">Layers</button>
+    <button data-tab="scores">Scores</button>
+    <button data-tab="log">Log</button>
+  </div>
+  <div class="body" id="body"></div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+
+// World units are whole millimeters. One chunk is one city block plus half of each street around it.
+const S = 79248;
+const SIDEWALK = 3048;
+const PALETTE = ['#1f3a5f','#b4442c','#2f6b3a','#7a4f9a','#c07a12','#2a7f87','#8a2f55','#5a5a5a','#5c7a1f','#a35d2a','#3557a8','#9c8a1a'];
+const DISC = ['street','paving','lot','structure','interior','electrical','plumbing','vegetation','vehicle'];
+const DETAIL = new Set(['interior','electrical','plumbing']);
+const REF = {
+  door_height:[2032,2438,'Door height'],
+  door_width:[813,1219,'Door leaf clear width'],
+  knob_height:[864,1219,'Door hardware height'],
+  ceiling_height:[2438,3658,'Ceiling height'],
+  stall_width:[2591,3658,'Parking stall width'],
+  stall_depth:[5486,6096,'Parking stall depth'],
+  counter_height:[864,1118,'Counter height'],
+  shelf_height:[1219,2134,'Shelf height'],
+  outlet_height:[305,1219,'Outlet height'],
+  beam_height:[3048,6096,'Beam bottom height']
+};
+const AGENTS = [
+  {id:'a',name:'Agent A',role:'Streets and parcels. 60 ft right of way. Never reads neighbors.',color:0,row:18288,lots:[2,4],reads:false},
+  {id:'b',name:'Agent B',role:'Streets and parcels. 66 ft right of way. Reads neighbor ports and matches them.',color:6,row:20117,lots:[3,3],reads:true},
+  {id:'c',name:'Agent C',role:'Mission 1. Convenience store on chunk 0:0.',color:4},
+  {id:'d',name:'Agent D',role:'Trees and grass.',color:2},
+  {id:'e',name:'Agent E',role:'Cars, parked by reading stall records.',color:10}
+];
+const AG = Object.fromEntries(AGENTS.map(a=>[a.id,a]));
+
+function hash(x,y){let h=Math.imul(x|0,374761393)^Math.imul(y|0,668265263);h=Math.imul(h^(h>>>13),1274126177);return (h^(h>>>16))>>>0;}
+function rng(seed){let a=seed>>>0;return()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+
+// World store. In production this map lives in Redis, one field per chunk key.
+const world = new Map();
+const idIndex = new Map();
+let nextId = 1;
+const stats = {};
+for (const a of AGENTS) stats[a.id] = {records:0,rejected:0,passed:0,violations:0,mismatches:0,clashes:0};
+const logLines = [];
+function log(agent,msg,flag){logLines.unshift({agent,msg,flag});if(logLines.length>80)logLines.pop();}
+function key(cx,cy){return cx+':'+cy;}
+function chunkOf(x,y){return [Math.floor(x/S),Math.floor(y/S)];}
+function ownerOf(cx,cy){if(cx===0&&cy===0)return 'a';return (hash(cx,cy)&1)?'b':'a';}
+function container(cx,cy){const k=key(cx,cy);let c=world.get(k);if(!c){c={cx,cy,k,owner:ownerOf(cx,cy),records:[],ports:{},lots:[],pens:[],flags:[],nodes:new Map(),built:false};world.set(k,c);}return c;}
+function canWrite(agent,c,disc){
+  if(c.owner===agent&&(disc==='street'||disc==='paving'||disc==='lot'))return true;
+  if(agent==='c'&&c.k==='0:0'&&['structure','interior','electrical','plumbing','paving'].includes(disc))return true;
+  if(agent==='d'&&disc==='vegetation')return true;
+  if(agent==='e'&&disc==='vehicle')return true;
+  return false;
+}
+function snap(c,p){
+  const cs=300,gx=Math.round(p[0]/cs),gy=Math.round(p[1]/cs),gz=Math.round(p[2]/cs);
+  for(let i=-1;i<=1;i++)for(let j=-1;j<=1;j++){const n=c.nodes.get((gx+i)+','+(gy+j)+','+gz);if(n&&Math.hypot(n[0]-p[0],n[1]-p[1])<=150&&n[2]===p[2])return n.slice();}
+  c.nodes.set(gx+','+gy+','+gz,p.slice());return p;
+}
+function runChecks(c,rec){
+  if(!rec.meta||!rec.meta.checks)return;
+  for(const [k,v] of rec.meta.checks){
+    const r=REF[k];if(!r)continue;
+    if(v<r[0]||v>r[1]){stats[rec.agent].violations++;c.flags.push(rec.pts?rec.pts[0]:rec.at);log(rec.agent,r[2]+' '+v+' mm is outside '+r[0]+' to '+r[1],true);}
+    else stats[rec.agent].passed++;
+  }
+}
+function commit(c,rec){c.records.push(rec);idIndex.set(rec.id,c.k);stats[rec.agent].records++;runChecks(c,rec);c.dirty=true;}
+const ok=(o)=>Object.assign({ok:true},o||{});
+const err=(m)=>({ok:false,err:m});
+const vpt=(p)=>Array.isArray(p)&&p.length===3&&p.every(Number.isFinite);
+const vcol=(n)=>Number.isInteger(n)&&n>=0&&n<PALETTE.length;
+const opp={n:'s',s:'n',e:'w',w:'e'};
+const nbr={n:[0,1],s:[0,-1],e:[1,0],w:[-1,0]};
+
+// The tool contract. Agents only act through these calls and every call is validated.
+const TOOLS = {
+  place_line(agent,a){
+    if(!DISC.includes(a.discipline))return err('discipline not in list');
+    if(!vcol(a.color))return err('color not in palette');
+    if(!Array.isArray(a.pts)||a.pts.length<2||a.pts.length>256||!a.pts.every(vpt))return err('bad points');
+    const [cx,cy]=chunkOf(a.pts[0][0],a.pts[0][1]);const c=container(cx,cy);
+    if(!canWrite(agent,c,a.discipline))return err('no write access to '+c.k+' for '+a.discipline);
+    const pts=a.pts.map(p=>snap(c,p.map(Math.round)));
+    const rec={id:nextId++,agent,discipline:a.discipline,color:a.color,kind:'line',pts,closed:!!a.closed,meta:a.meta||null};
+    commit(c,rec);return ok({id:rec.id});
+  },
+  place_symbol(agent,a){
+    if(!DISC.includes(a.discipline))return err('discipline not in list');
+    if(!vcol(a.color))return err('color not in palette');
+    if(!SYMBOLS[a.type])return err('unknown symbol');
+    if(!vpt(a.at))return err('bad point');
+    const [cx,cy]=chunkOf(a.at[0],a.at[1]);const c=container(cx,cy);
+    if(!canWrite(agent,c,a.discipline))return err('no write access to '+c.k+' for '+a.discipline);
+    const rec={id:nextId++,agent,discipline:a.discipline,color:a.color,kind:'symbol',type:a.type,at:a.at.map(Math.round),rot:Number(a.rot)||0,meta:a.meta||null};
+    commit(c,rec);return ok({id:rec.id});
+  },
+  define_lot(agent,a){
+    if(!Array.isArray(a.pts)||a.pts.length<3||!a.pts.every(vpt))return err('bad lot polygon');
+    const r=TOOLS.place_line(agent,{discipline:'lot',color:a.color,pts:a.pts,closed:true,meta:{zone:a.zone}});
+    if(!r.ok)return r;
+    const c=world.get(idIndex.get(r.id));c.lots.push({id:r.id,pts:a.pts,zone:a.zone});return r;
+  },
+  declare_port(agent,a){
+    const c=container(a.chunk[0],a.chunk[1]);
+    if(c.owner!==agent)return err('only the chunk owner sets ports');
+    if(!nbr[a.edge]||!Number.isInteger(a.value))return err('bad port');
+    c.ports[a.edge]=a.value;return ok();
+  },
+  declare_penetration(agent,a){
+    if(!vpt(a.at))return err('bad point');
+    const [cx,cy]=chunkOf(a.at[0],a.at[1]);const c=container(cx,cy);
+    if(!canWrite(agent,c,'plumbing')&&!canWrite(agent,c,'electrical'))return err('no access');
+    c.pens.push({agent,at:a.at});return ok();
+  },
+  query_ports(agent,a){
+    const c=container(a.chunk[0],a.chunk[1]);const out={self:Object.assign({},c.ports),neighbors:{}};
+    for(const e in nbr){const n=world.get(key(c.cx+nbr[e][0],c.cy+nbr[e][1]));if(n&&n.built&&n.ports[opp[e]]!=null)out.neighbors[e]=n.ports[opp[e]];}
+    return ok(out);
+  },
+  query_lots(agent,a){const c=container(a.chunk[0],a.chunk[1]);return ok({lots:c.lots.map(l=>({id:l.id,zone:l.zone,pts:l.pts.map(p=>p.slice())}))});},
+  query_records(agent,a){const c=container(a.chunk[0],a.chunk[1]);return ok({records:c.records.filter(r=>!a.discipline||r.discipline===a.discipline).map(r=>({id:r.id,agent:r.agent,discipline:r.discipline,meta:r.meta}))});},
+  remove(agent,a){
+    const k=idIndex.get(a.id);if(!k)return err('no such record');
+    const c=world.get(k);const i=c.records.findIndex(r=>r.id===a.id);
+    if(c.records[i].agent!==agent)return err('agents can only remove their own records');
+    c.records.splice(i,1);idIndex.delete(a.id);stats[agent].records--;c.dirty=true;return ok();
+  }
+};
+const api={call(agent,tool,args){const t=TOOLS[tool];const r=t?t(agent,args||{}):err('unknown tool');if(!r.ok){stats[agent].rejected++;log(agent,'rejected '+tool+': '+r.err,true);}return r;}};
+window.testbed=api;
+
+// Symbol shapes, all line segments in millimeters.
+function circle(cx,cy,z,r,n){const s=[];for(let i=0;i<n;i++){const a0=i/n*Math.PI*2,a1=(i+1)/n*Math.PI*2;s.push([cx+Math.cos(a0)*r,cy+Math.sin(a0)*r,z],[cx+Math.cos(a1)*r,cy+Math.sin(a1)*r,z]);}return s;}
+function boxSegs(x0,y0,x1,y1,z0,z1){const q=[[x0,y0],[x1,y0],[x1,y1],[x0,y1]],s=[];for(let i=0;i<4;i++){const a=q[i],b=q[(i+1)%4];s.push([a[0],a[1],z0],[b[0],b[1],z0],[a[0],a[1],z1],[b[0],b[1],z1],[a[0],a[1],z0],[a[0],a[1],z1]);}return s;}
+function rotSegs(segs,ox,oy,oz,rot){const c=Math.cos(rot),s=Math.sin(rot);return segs.map(p=>[ox+p[0]*c-p[1]*s,oy+p[0]*s+p[1]*c,oz+p[2]]);}
+const SYMBOLS={
+  tree:(x,y,z)=>[[x,y,z],[x,y,z+3000],...circle(x,y,z+3000,1800,8),...circle(x,y,z+4600,1200,8),...circle(x,y,z,500,6)],
+  grass:(x,y,z)=>[[x,y,z],[x-120,y,z+300],[x,y,z],[x,y,z+380],[x,y,z],[x+120,y,z+300]],
+  car:(x,y,z,r)=>rotSegs([...boxSegs(-914,-2286,914,2286,0,762),...boxSegs(-800,-1100,800,1000,762,1448)],x,y,z,r),
+  light:(x,y,z)=>{const h=305;return [[x-h,y-h,z],[x+h,y-h,z],[x+h,y-h,z],[x+h,y+h,z],[x+h,y+h,z],[x-h,y+h,z],[x-h,y+h,z],[x-h,y-h,z],[x-h,y-h,z],[x+h,y+h,z]];},
+  outlet:(x,y,z)=>[[x,y,z-57],[x,y,z+57],[x-38,y,z],[x+38,y,z],[x,y-38,z],[x,y+38,z]],
+  knob:(x,y,z)=>[[x-40,y,z],[x,y,z+40],[x,y,z+40],[x+40,y,z],[x+40,y,z],[x,y,z-40],[x,y,z-40],[x-40,y,z]],
+  pole:(x,y,z)=>[[x,y,z],[x,y,z+9144],[x-900,y,z+8230],[x+900,y,z+8230]],
+  mark:(x,y,z)=>[[x-600,y-600,z],[x+600,y+600,z],[x-600,y+600,z],[x+600,y-600,z]]
+};
+function recSegs(r){
+  if(r.kind==='symbol')return SYMBOLS[r.type](r.at[0],r.at[1],r.at[2],r.rot);
+  const s=[],p=r.pts;for(let i=0;i<p.length-1;i++)s.push(p[i],p[i+1]);if(r.closed&&p.length>2)s.push(p[p.length-1],p[0]);return s;
+}
+
+// Agents. Each one is a stand-in for a model and only uses api.call.
+function streetAgent(c){
+  const ag=AG[c.owner],A=ag.id,col=ag.color;
+  const x0=c.cx*S,y0=c.cy*S,x1=x0+S,y1=y0+S,def=Math.round(ag.row/2)-SIDEWALK;
+  const off={n:def,s:def,e:def,w:def};
+  if(ag.reads){const q=api.call(A,'query_ports',{chunk:[c.cx,c.cy]});if(q.ok)for(const e in q.neighbors)off[e]=q.neighbors[e];}
+  for(const e in off)api.call(A,'declare_port',{chunk:[c.cx,c.cy],edge:e,value:off[e]});
+  for(let x=x0+1524;x<x1;x+=12192)api.call(A,'place_line',{discipline:'street',color:col,pts:[[x,y0,0],[Math.min(x+3048,x1),y0,0]]});
+  for(let y=y0+1524;y<y1;y+=12192)api.call(A,'place_line',{discipline:'street',color:col,pts:[[x0,y,0],[x0,Math.min(y+3048,y1),0]]});
+  const cr=[x0+off.w,y0+off.s,x1-off.e,y1-off.n];
+  api.call(A,'place_line',{discipline:'street',color:col,closed:true,pts:[[cr[0],cr[1],0],[cr[2],cr[1],0],[cr[2],cr[3],0],[cr[0],cr[3],0]]});
+  const P=[cr[0]+SIDEWALK,cr[1]+SIDEWALK,cr[2]-SIDEWALK,cr[3]-SIDEWALK];
+  const [nx,ny]=c.k==='0:0'?[2,2]:ag.lots;
+  const r=rng(hash(c.cx,c.cy)+7);
+  const w=(P[2]-P[0])/nx,h=(P[3]-P[1])/ny;
+  for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){
+    const a=Math.round(P[0]+i*w),b=Math.round(P[1]+j*h),a2=Math.round(P[0]+(i+1)*w),b2=Math.round(P[1]+(j+1)*h);
+    const zone=(c.k==='0:0'&&i===0&&j===0)?'commercial':(r()<.25?'commercial':'residential');
+    api.call(A,'define_lot',{color:col,zone,pts:[[a,b,0],[a2,b,0],[a2,b2,0],[a,b2,0]]});
+  }
+}
+
+function storeAgent(c){
+  const A='c',CS=4,CI=7,CE=10,CP=5,CV=9;
+  const L=(pts,disc,col,meta,closed)=>api.call(A,'place_line',{discipline:disc,color:col,pts,closed:!!closed,meta});
+  const SY=(type,at,disc,col,meta,rot)=>api.call(A,'place_symbol',{type,at,discipline:disc,color:col,meta,rot:rot||0});
+  const box=(x0,y0,x1,y1,z0,z1,disc,col,meta)=>{L([[x0,y0,z0],[x1,y0,z0],[x1,y1,z0],[x0,y1,z0]],disc,col,meta,true);L([[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]],disc,col,null,true);for(const [x,y] of [[x0,y0],[x1,y0],[x1,y1],[x0,y1]])L([[x,y,z0],[x,y,z1]],disc,col);};
+  const q=api.call(A,'query_lots',{chunk:[c.cx,c.cy]});if(!q.ok)return;
+  const lot=q.lots.find(l=>l.zone==='commercial');if(!lot)return;
+  const xs=lot.pts.map(p=>p[0]),ys=lot.pts.map(p=>p[1]);
+  const lx0=Math.min(...xs),lx1=Math.max(...xs),ly0=Math.min(...ys),ly1=Math.max(...ys);
+  const ports=api.call(A,'query_ports',{chunk:[c.cx,c.cy]}).self;
+  const H=4267,bw=18288,bd=12192;
+  const bx0=Math.round(lx0+(lx1-lx0-bw)/2),bx1=bx0+bw,by1=ly1-1524,by0=by1-bd,mx=bx0+bw/2;
+  // Shell
+  L([[bx0,by0,0],[bx1,by0,0],[bx1,by1,0],[bx0,by1,0]],'structure',CS,{wall:true,h:H,zmin:-1500},true);
+  L([[bx0,by0,H],[bx1,by0,H],[bx1,by1,H],[bx0,by1,H]],'structure',CS,null,true);
+  for(const [x,y] of [[bx0,by0],[bx1,by0],[bx1,by1],[bx0,by1]])L([[x,y,0],[x,y,H]],'structure',CS);
+  for(let x=bx0+2438;x<bx1;x+=2438)L([[x,by0,3962],[x,by1,3962]],'structure',CS,x===bx0+2438?{checks:[['beam_height',3962]]}:null);
+  // Front doors, two leaves
+  L([[mx-914,by0,0],[mx-914,by0,2134],[mx+914,by0,2134],[mx+914,by0,0]],'structure',CS,{checks:[['door_height',2134],['door_width',914]]});
+  L([[mx,by0,0],[mx,by0,2134]],'structure',CS);
+  SY('knob',[mx-152,by0,965],'structure',CS,{checks:[['knob_height',965]]});
+  SY('knob',[mx+152,by0,965],'structure',CS,{checks:[['knob_height',965]]});
+  // Restroom partitions and door
+  const rx=bx1-2438,ry=by1-2438;
+  L([[rx,ry,0],[rx,by1,0],[rx,by1,3048],[rx,ry,3048],[rx,ry,0]],'structure',CS,{wall:true,h:3048,zmin:0});
+  L([[rx,ry,0],[rx+457,ry,0]],'structure',CS,{wall:true,h:3048,zmin:0});
+  L([[rx+1371,ry,0],[bx1,ry,0]],'structure',CS,{wall:true,h:3048,zmin:0});
+  L([[rx,ry,3048],[bx1,ry,3048]],'structure',CS);
+  L([[rx+457,ry,0],[rx+457,ry,2032],[rx+1371,ry,2032],[rx+1371,ry,0]],'structure',CS,{checks:[['door_height',2032],['door_width',914]]});
+  SY('knob',[rx+1219,ry,965],'structure',CS,{checks:[['knob_height',965]]});
+  // Ceiling grid
+  for(let x=bx0+1219;x<bx1;x+=1219)L([[x,by0,3048],[x,by1,3048]],'interior',CI,x===bx0+1219?{checks:[['ceiling_height',3048]]}:null);
+  for(let y=by0+1219;y<by1;y+=1219)L([[bx0,y,3048],[bx1,y,3048]],'interior',CI);
+  // Shelving, coolers, counter
+  for(let i=0;i<4;i++){const gx=bx0+2438+i*2743;box(gx,by0+4572,gx+1219,by1-2438,0,1829,'interior',CI,i===0?{checks:[['shelf_height',1829]]}:null);}
+  box(bx0+610,by1-1066,rx-610,by1-152,0,2134,'interior',CI);
+  for(let x=bx0+610+762;x<rx-610;x+=762)L([[x,by1-1066,0],[x,by1-1066,2134]],'interior',CI);
+  box(mx+2438,by0+1524,mx+4877,by0+2286,0,1067,'interior',CI,{checks:[['counter_height',1067]]});
+  // Electrical
+  box(bx1-152,by0+1524,bx1,by0+2032,1524,2438,'electrical',CE);
+  L([[bx1-76,by0+1778,2438],[bx1-76,by0+1778,3200],[bx0+1500,by0+1778,3200]],'electrical',CE);
+  for(let x=bx0+1500;x<rx;x+=3048){L([[x,by0+1778,3200],[x,by1-1500,3200]],'electrical',CE);for(let y=by0+2438;y<by1-1500;y+=2438)SY('light',[x,y,3048],'electrical',CE);}
+  for(let x=bx0+1829;x<bx1-610;x+=3658)SY('outlet',[x,by0+60,457],'electrical',CE,x===bx0+1829?{checks:[['outlet_height',457]]}:null);
+  for(let y=by0+1829;y<by1-610;y+=3658)SY('outlet',[bx0+60,y,457],'electrical',CE);
+  const poleX=bx1+3048,poleY=ly0-1524;
+  SY('pole',[poleX,poleY,0],'electrical',CE);
+  L([[poleX,poleY,7620],[bx1,by0,H]],'electrical',CE);
+  // Plumbing, water and sewer from the street, both entering through declared penetrations
+  const curbY=c.cy*S+ports.s;
+  const wx=bx1-1219,sx=bx1-1829;
+  api.call(A,'declare_penetration',{at:[wx,by0,-914]});
+  api.call(A,'declare_penetration',{at:[sx,by0,-1219]});
+  L([[wx,curbY,-914],[wx,by0-300,-914],[wx,by0+300,-300],[wx,by1-1219,-300],[wx,by1-1219,381]],'plumbing',CP);
+  L([[wx,by1-1219,-300],[bx1-610,by1-1219,-300],[bx1-610,by1-1219,864]],'plumbing',CP);
+  L([[sx,by1-1219,0],[sx,by1-1219,-600],[sx,by0+300,-900],[sx,by0-300,-1219],[sx,curbY,-1524]],'plumbing',CP);
+  // Paving: walk, stalls, drive aisle, curb cut
+  L([[bx0-1524,by0,0],[bx0-1524,by0-1524,0],[bx1+1524,by0-1524,0],[bx1+1524,by0,0]],'paving',CV);
+  const sy1=by0-1524,sy0=sy1-5486;
+  let x=lx0+1524;
+  L([[x,sy0,0],[x,sy1,0],[x+3658,sy1,0],[x+3658,sy0,0]],'paving',CV,{checks:[['stall_width',3658],['stall_depth',5486]],stall:[x+1829,(sy0+sy1)/2]});
+  SY('mark',[x+1829,(sy0+sy1)/2,0],'paving',CV);
+  x+=3658;
+  for(let k=0;k<5;k++)L([[x+k*488,sy1,0],[x+k*488+488,sy0,0]],'paving',CV);
+  x+=2438;
+  while(x+2743<=lx1-1524){L([[x,sy0,0],[x,sy1,0],[x+2743,sy1,0],[x+2743,sy0,0]],'paving',CV,{checks:[['stall_width',2743],['stall_depth',5486]],stall:[x+1371,(sy0+sy1)/2]});x+=2743;}
+  const dx=lx0+3048;
+  L([[dx,ly0,0],[dx,curbY+10,0]],'paving',CV);
+  L([[dx+7315,ly0,0],[dx+7315,curbY+10,0]],'paving',CV);
+  clashCheck(c);
+}
+
+function clashCheck(c){
+  const walls=c.records.filter(r=>r.meta&&r.meta.wall);
+  const runs=c.records.filter(r=>r.kind==='line'&&(r.discipline==='plumbing'||r.discipline==='electrical'));
+  for(const run of runs){
+    const rs=recSegs(run);
+    for(let i=0;i<rs.length;i+=2){
+      const a=rs[i],b=rs[i+1];
+      for(const w of walls){
+        const ws=recSegs(w);
+        for(let j=0;j<ws.length;j+=2){
+          const p=ws[j],q=ws[j+1];
+          const d=(b[0]-a[0])*(q[1]-p[1])-(b[1]-a[1])*(q[0]-p[0]);if(Math.abs(d)<1e-9)continue;
+          const t=((p[0]-a[0])*(q[1]-p[1])-(p[1]-a[1])*(q[0]-p[0]))/d;
+          const u=((p[0]-a[0])*(b[1]-a[1])-(p[1]-a[1])*(b[0]-a[0]))/d;
+          if(t<=0.001||t>=0.999||u<0||u>1)continue;
+          const X=a[0]+t*(b[0]-a[0]),Y=a[1]+t*(b[1]-a[1]),Z=a[2]+t*(b[2]-a[2]);
+          if(Z<w.meta.zmin||Z>w.meta.h)continue;
+          const okPen=c.pens.some(pn=>pn.agent===run.agent&&Math.hypot(pn.at[0]-X,pn.at[1]-Y)<=400);
+          if(!okPen){stats[run.agent].clashes++;c.flags.push([X,Y,Z]);log(run.agent,run.discipline+' run crosses a wall with no declared penetration',true);}
+        }
+      }
+    }
+  }
+}
+
+function vegAgent(c){
+  const A='d',col=2,r=rng(hash(c.cx,c.cy)+99);
+  const q=api.call(A,'query_ports',{chunk:[c.cx,c.cy]});if(!q.ok)return;
+  const o=q.self,x0=c.cx*S,y0=c.cy*S,x1=x0+S,y1=y0+S,m=SIDEWALK/2;
+  const lots=api.call(A,'query_lots',{chunk:[c.cx,c.cy]}).lots;
+  const store=lots.find(l=>l.zone==='commercial'&&c.k==='0:0');
+  const skip=(x,y)=>store&&x>=Math.min(...store.pts.map(p=>p[0]))-2000&&x<=Math.max(...store.pts.map(p=>p[0]))+2000&&y<=Math.min(...store.pts.map(p=>p[1]));
+  for(let x=x0+o.w+6000;x<x1-o.e-3000;x+=9144){
+    if(!skip(x,y0+o.s+m))api.call(A,'place_symbol',{type:'tree',discipline:'vegetation',color:col,at:[x,y0+o.s+m,0]});
+    api.call(A,'place_symbol',{type:'tree',discipline:'vegetation',color:col,at:[x,y1-o.n-m,0]});
+  }
+  for(let y=y0+o.s+6000;y<y1-o.n-3000;y+=9144){
+    api.call(A,'place_symbol',{type:'tree',discipline:'vegetation',color:col,at:[x0+o.w+m,y,0]});
+    api.call(A,'place_symbol',{type:'tree',discipline:'vegetation',color:col,at:[x1-o.e-m,y,0]});
+  }
+  for(const l of lots){
+    if(l.zone!=='residential')continue;
+    const xs=l.pts.map(p=>p[0]),ys=l.pts.map(p=>p[1]);
+    const a=Math.min(...xs),b=Math.min(...ys),w=Math.max(...xs)-a,h=Math.max(...ys)-b;
+    for(let k=0;k<6;k++)api.call(A,'place_symbol',{type:'grass',discipline:'vegetation',color:8,at:[Math.round(a+1000+r()*(w-2000)),Math.round(b+1000+r()*(h-2000)),0]});
+  }
+}
+
+function carAgent(c){
+  const A='e',col=10,r=rng(hash(c.cx,c.cy)+3);
+  const recs=api.call(A,'query_records',{chunk:[c.cx,c.cy],discipline:'paving'}).records;
+  for(const rec of recs){if(rec.meta&&rec.meta.stall&&r()<.6)api.call(A,'place_symbol',{type:'car',discipline:'vehicle',color:col,at:[Math.round(rec.meta.stall[0]),Math.round(rec.meta.stall[1]),0],rot:0});}
+  const n=Math.floor(r()*3),y0=c.cy*S;
+  for(let k=0;k<n;k++)api.call(A,'place_symbol',{type:'car',discipline:'vehicle',color:col+1,at:[Math.round(c.cx*S+8000+r()*(S-16000)),y0+1800,0],rot:-Math.PI/2});
+}
+
+function portCheck(c){
+  for(const e in nbr){
+    const n=world.get(key(c.cx+nbr[e][0],c.cy+nbr[e][1]));
+    if(!n||!n.built)continue;
+    const mine=c.ports[e],theirs=n.ports[opp[e]];
+    if(mine==null||theirs==null||Math.abs(mine-theirs)<=50)continue;
+    stats[c.owner].mismatches++;
+    const x0=c.cx*S,y0=c.cy*S;
+    const pt=e==='s'?[x0+S/2,y0,0]:e==='n'?[x0+S/2,y0+S-1,0]:e==='w'?[x0,y0+S/2,0]:[x0+S-1,y0+S/2,0];
+    c.flags.push(pt);
+    log(c.owner,'curb mismatch on '+e+' edge of '+c.k+': '+mine+' vs '+theirs+' mm',true);
+  }
+}
+
+function generate(c){
+  c.built=true;
+  streetAgent(c);
+  if(c.k==='0:0')storeAgent(c);
+  vegAgent(c);
+  carAgent(c);
+  portCheck(c);
+  c.dirty=true;
+}
+
+// Rendering
+const view=document.getElementById('view');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.setClearColor(0xf4f2ea,1);
+renderer.localClippingEnabled=true;
+view.appendChild(renderer.domElement);
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.1,6000);
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true;controls.maxPolarAngle=Math.PI*0.495;controls.maxDistance=1500;
+const clip=new THREE.Plane(new THREE.Vector3(0,-1,0),20);
+const mat=new THREE.LineBasicMaterial({vertexColors:true,clippingPlanes:[clip]});
+const toV=(p)=>[p[0]/1000,p[2]/1000,-p[1]/1000];
+
+const state={agents:Object.fromEntries(AGENTS.map(a=>[a.id,true])),disc:Object.fromEntries(DISC.map(d=>[d,true])),flags:true,detail:'auto',radius:3,cut:20};
+const loaded=new Map();
+let grid=null;
+
+function buildChunk(c){
+  const old=loaded.get(c.k);if(old){scene.remove(old.group);old.group.traverse(o=>o.geometry&&o.geometry.dispose());}
+  const groups={};
+  const add=(bk,hex,segs)=>{const g=groups[bk]||(groups[bk]={pos:[],col:[]});const col=new THREE.Color(hex);for(const p of segs){const v=toV(p);g.pos.push(v[0],v[1],v[2]);g.col.push(col.r,col.g,col.b);}};
+  for(const r of c.records)add(r.agent+'|'+r.discipline,PALETTE[r.color],recSegs(r));
+  for(const f of c.flags){const s=[[f[0]-1500,f[1]-1500,f[2]],[f[0]+1500,f[1]+1500,f[2]],[f[0]-1500,f[1]+1500,f[2]],[f[0]+1500,f[1]-1500,f[2]],[f[0],f[1],f[2]],[f[0],f[1],f[2]+6000]];add('sys|flags','#c0392b',s);}
+  const group=new THREE.Group();const batches=[];
+  for(const bk in groups){
+    const g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.Float32BufferAttribute(groups[bk].pos,3));
+    g.setAttribute('color',new THREE.Float32BufferAttribute(groups[bk].col,3));
+    const m=new THREE.LineSegments(g,mat);const [agent,disc]=bk.split('|');m.userData={agent,disc};m.frustumCulled=true;
+    group.add(m);batches.push(m);
+  }
+  scene.add(group);
+  loaded.set(c.k,{group,batches,cx:c.cx,cy:c.cy});
+  c.dirty=false;
+}
+
+function applyVisibility(){
+  const cam=camera.position;
+  for(const [k,L] of loaded){
+    const ccx=(L.cx+.5)*S/1000,ccz=-(L.cy+.5)*S/1000;
+    const near=Math.hypot(cam.x-ccx,cam.y,cam.z-ccz)<170;
+    for(const m of L.batches){
+      const {agent,disc}=m.userData;
+      if(agent==='sys'){m.visible=state.flags;continue;}
+      let v=state.agents[agent]&&state.disc[disc];
+      if(v&&DETAIL.has(disc))v=state.detail==='always'||(state.detail==='auto'&&near);
+      m.visible=v;
+    }
+  }
+}
+
+let lastCenter='';
+const queue=[];
+function updateChunks(force){
+  const t=controls.target;
+  const cx=Math.floor(t.x*1000/S),cy=Math.floor(-t.z*1000/S);
+  const ck=cx+':'+cy+':'+state.radius;
+  if(ck===lastCenter&&!force)return;
+  lastCenter=ck;
+  const want=new Set();queue.length=0;
+  const R=state.radius;
+  for(let dx=-R;dx<=R;dx++)for(let dy=-R;dy<=R;dy++){const c=container(cx+dx,cy+dy);want.add(c.k);if(!loaded.has(c.k)||!c.built||c.dirty)queue.push({c,d:dx*dx+dy*dy});}
+  queue.sort((a,b)=>a.d-b.d);
+  for(const [k,L] of loaded)if(!want.has(k)){scene.remove(L.group);L.group.traverse(o=>o.geometry&&o.geometry.dispose());loaded.delete(k);}
+  if(grid){scene.remove(grid);grid.geometry.dispose();}
+  const n=2*R+1,size=n*S/1000;
+  grid=new THREE.GridHelper(size,n*4,0xd9d4c4,0xe9e5d8);
+  grid.position.set((cx+.5)*S/1000,-0.02,-(cy+.5)*S/1000);
+  scene.add(grid);
+}
+function drainQueue(){
+  let budget=3;
+  while(queue.length&&budget>0){
+    const {c}=queue.shift();
+    if(!c.built)generate(c);
+    buildChunk(c);budget--;
+  }
+  // Rebuild chunks touched by neighbor writes, such as mismatch flags.
+  for(const [k] of loaded){const c=world.get(k);if(c.dirty&&budget>0){buildChunk(c);budget--;}}
+  if(budget<3){applyVisibility();renderPanel(false);}
+}
+
+function storeFocus(){const cx=(0+.25)*S/1000,cz=-(0+.25)*S/1000;controls.target.set(cx,0,cz);camera.position.set(cx+38,30,cz+42);}
+function topView(){const t=controls.target;camera.position.set(t.x,260,t.z+0.01);}
+storeFocus();
+
+// Panel
+const body=document.getElementById('body');
+let tab='agents';
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));renderPanel(true);});
+document.getElementById('bSheet').onclick=()=>document.getElementById('sheet').classList.toggle('closed');
+document.getElementById('bStore').onclick=storeFocus;
+document.getElementById('bTop').onclick=topView;
+function scoreOf(s){return s.passed-5*s.violations-10*s.mismatches-10*s.clashes-s.rejected;}
+function renderPanel(force){
+  if(!force&&(tab==='agents'||tab==='layers'))return;
+  if(tab==='agents'){
+    body.innerHTML=AGENTS.map(a=>`<label class="row"><input type="checkbox" data-agent="${a.id}" ${state.agents[a.id]?'checked':''}><span class="sw" style="background:${PALETTE[a.color]}"></span><span><b>${a.name}</b><br><span class="muted">${a.role}</span></span></label>`).join('');
+    body.querySelectorAll('[data-agent]').forEach(i=>i.onchange=()=>{state.agents[i.dataset.agent]=i.checked;applyVisibility();});
+  }else if(tab==='layers'){
+    body.innerHTML=DISC.map(d=>`<label class="tg"><input type="checkbox" data-disc="${d}" ${state.disc[d]?'checked':''}>${d}${DETAIL.has(d)?' <span class="muted">(detail)</span>':''}</label>`).join('')+
+    `<label class="tg"><input type="checkbox" id="fl" ${state.flags?'checked':''}><span class="flag">check flags</span></label>
+    <div class="row"><span>Detail layers</span><span class="sp"></span>${['auto','always','off'].map(m=>`<button data-detail="${m}" class="${state.detail===m?'on':''}">${m}</button>`).join(' ')}</div>
+    <div style="padding-top:8px">Section cut height <span id="cutv">${state.cut} m</span><input type="range" id="cut" min="0.5" max="20" step="0.5" value="${state.cut}"></div>
+    <div style="padding-top:8px">Load radius <span id="radv">${state.radius}</span> chunks<input type="range" id="rad" min="1" max="6" step="1" value="${state.radius}"></div>`;
+    body.querySelectorAll('[data-disc]').forEach(i=>i.onchange=()=>{state.disc[i.dataset.disc]=i.checked;applyVisibility();});
+    body.querySelector('#fl').onchange=e=>{state.flags=e.target.checked;applyVisibility();};
+    body.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>{state.detail=b.dataset.detail;applyVisibility();renderPanel(true);});
+    body.querySelector('#cut').oninput=e=>{state.cut=+e.target.value;clip.constant=state.cut;body.querySelector('#cutv').textContent=state.cut+' m';};
+    body.querySelector('#rad').onchange=e=>{state.radius=+e.target.value;body.querySelector('#radv').textContent=state.radius;updateChunks(true);};
+  }else if(tab==='scores'){
+    body.innerHTML=AGENTS.map(a=>{const s=stats[a.id];return `<div class="row"><span class="sw" style="background:${PALETTE[a.color]}"></span><div style="flex:1"><b>${a.name}</b> score ${scoreOf(s)}<div class="kv muted"><span>records</span><span>${s.records}</span><span>reference checks passed</span><span>${s.passed}</span><span>reference violations</span><span>${s.violations}</span><span>border mismatches</span><span>${s.mismatches}</span><span>wall clashes</span><span>${s.clashes}</span><span>rejected calls</span><span>${s.rejected}</span></div></div></div>`;}).join('')+
+    `<div class="muted" style="padding-top:8px">Score is checks passed, minus 5 per violation, 10 per border mismatch, 10 per clash, 1 per rejected call.</div>`;
+  }else{
+    body.innerHTML='<div class="log">'+(logLines.length?logLines.map(l=>`<div class="${l.flag?'flag':''}">${AG[l.agent]?AG[l.agent].name:l.agent}: ${l.msg}</div>`).join(''):'<div class="muted">Log is empty.</div>')+'</div>';
+  }
+}
+renderPanel(true);
+
+const status=document.getElementById('status');
+let frame=0;
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+function loop(){
+  requestAnimationFrame(loop);
+  controls.update();
+  updateChunks(false);
+  drainQueue();
+  if(++frame%15===0){
+    applyVisibility();
+    let recs=0;for(const [k] of loaded)recs+=world.get(k).records.length;
+    status.textContent=loaded.size+' chunks, '+recs+' records'+(queue.length?', building '+queue.length:'');
+  }
+  renderer.render(scene,camera);
+}
+updateChunks(true);
+loop();
+</script>
+</body>
+</html>
