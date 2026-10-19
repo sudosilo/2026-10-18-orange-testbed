@@ -67,12 +67,13 @@ function runChecks(W,c,rec){
     if(!Array.isArray(ch))continue;
     const r=REF[ch[0]];if(!r||!isInt(ch[1]))continue;
     if(ch[1]<r[0]||ch[1]>r[1]){st(W,rec.agent).violations++;c.flags.push(rec.pts?rec.pts[0]:rec.at);log(W,rec.agent,r[2]+' '+ch[1]+' mm is outside '+r[0]+' to '+r[1],true);}
-    else st(W,rec.agent).passed++;
+    else (rec.passed||(rec.passed=[])).push(ch[0]);
   }
 }
 function commit(W,c,rec){rec.date=W.ctx?W.ctx.date:'';c.records.push(rec);W.idIndex.set(rec.id,c.k);st(W,rec.agent).records++;runChecks(W,c,rec);}
 function cleanMeta(m){if(!m||typeof m!=='object')return null;try{const s=JSON.stringify(m);return s.length>4000?null:JSON.parse(s);}catch(e){return null;}}
 export const TURNS_PER_DAY=6;
+export const CHECKS_PER_KEY=8, CHECKS_PER_CHUNK=60;
 export const ANIM_TYPES=['spin','sway','bob','blink','path'];
 export const HATCH_PATTERNS=['lines','cross','brick','dots','gradient'];
 // Returns an error string, or null when the animation settings are valid.
@@ -373,12 +374,12 @@ export function clashCheck(W){
 const nameOf=(v)=>typeof v==='string'&&v.trim().length>=1&&v.length<=60;
 export function finalize(W){
   clashCheck(W);
-  for(const s of Object.values(W.stats)){s.names=0;s.unnamed=0;s.dupNames=0;s.organic=0;s.detail=0;s.activity=0;s.anim=0;s.texture=0;}
+  for(const s of Object.values(W.stats)){s.passed=0;s.names=0;s.unnamed=0;s.dupNames=0;s.organic=0;s.detail=0;s.activity=0;s.anim=0;s.texture=0;}
   const buildings=new Map(),streetsSeen=new Set();
   W.labels=[];
   const recs=[];for(const c of W.chunks.values())for(const r of c.records)recs.push([c,r]);
   recs.sort((a,b)=>a[1].id-b[1].id);
-  const organic={},detail={},activity={},actText=new Set(),anim={},tex={};
+  const organic={},detail={},activity={},actText=new Set(),anim={},tex={},chk={};
   // Bonus caps refresh every turn, so an agent can keep coming back to a place and keep scoring.
   // Only the first TURNS_PER_DAY turns of each UTC day get a fresh window; later turns that day share the last one.
   const turnsByDay={};
@@ -388,6 +389,8 @@ export function finalize(W){
   const win=(r)=>{const d=String(r.date||'');return d.slice(0,10)+'#'+(turnIdx[r.agent+'|'+d]||0);};
   for(const [c,r] of recs){
     const s=st(W,r.agent),m=r.meta||{},ak2=r.agent+'|'+c.k+'|'+win(r);
+    // Passing reference checks: at most CHECKS_PER_KEY per check type and CHECKS_PER_CHUNK in all, per agent, chunk and turn.
+    if(r.passed){for(const key of r.passed){const kk=ak2+'|'+key;if((chk[kk]||0)<CHECKS_PER_KEY&&(chk[ak2]||0)<CHECKS_PER_CHUNK){chk[kk]=(chk[kk]||0)+1;chk[ak2]=(chk[ak2]||0)+1;s.passed++;}}}
     if((m.anim||m.billboard)&&(anim[ak2]||0)<30){anim[ak2]=(anim[ak2]||0)+1;s.anim++;}
     if((r.kind==='hatch'||r.color2!==undefined)&&(tex[ak2]||0)<40){tex[ak2]=(tex[ak2]||0)+1;s.texture++;}
     if(r.kind==='line'&&r.discipline==='street'){
