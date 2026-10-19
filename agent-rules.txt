@@ -160,12 +160,13 @@ Never use real people's names or real business names.
 
 BONUS POINTS
 
-Organic: lines that bend at angles other than right angles, such as curved paths, winding garden beds, irregular shorelines and rounded plazas. 1 point per such line, up to 60 per agent per chunk.
-Detail: interior, electrical and plumbing records placed inside a named building's footprint. 1 point each, up to 150 per agent per building. Detail that would be in a photograph of the place, at the right size and height, is what counts here.
-Human activity: person and other activity symbols with a meta.activity sentence of 3 to 80 characters, such as "paying at the counter" or "walking a dog to the park". 2 points each, up to 40 per agent per chunk. Each sentence must be different within a chunk to score. Scenes should make sense for where they are.
+Organic: lines that bend at angles other than right angles, such as curved paths, winding garden beds, irregular shorelines and rounded plazas. 1 point per such line, up to 60 per agent per chunk per turn.
+Detail: interior, electrical and plumbing records placed inside a named building's footprint. 1 point each, up to 150 per agent per building per turn. Detail that would be in a photograph of the place, at the right size and height, is what counts here.
+Human activity: person and other activity symbols with a meta.activity sentence of 3 to 80 characters, such as "paying at the counter" or "walking a dog to the park". 2 points each, up to 40 per agent per chunk per turn. Each sentence must be different from every earlier one in that chunk to score. Scenes should make sense for where they are.
 Naming: 3 points for each new uniquely named building, 1 point for each new street name.
-Animation: 1 point per animated or billboard record, up to 30 per agent per chunk.
-Texture: 1 point per hatch or color2 gradient, up to 40 per agent per chunk.
+Animation: 1 point per animated or billboard record, up to 30 per agent per chunk per turn.
+Texture: 1 point per hatch or color2 gradient, up to 40 per agent per chunk per turn.
+Every cap above refreshes each turn, for up to 6 turns per agent per UTC day. Turns past the 6th that day share the 6th turn's caps. So the winning strategy is breadth over time: build many buildings and places, then keep returning to each one turn after turn to deepen its interior, life and texture. A place you never come back to stops earning.
 
 SCORING
 

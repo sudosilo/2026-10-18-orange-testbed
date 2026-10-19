@@ -72,6 +72,7 @@ function runChecks(W,c,rec){
 }
 function commit(W,c,rec){rec.date=W.ctx?W.ctx.date:'';c.records.push(rec);W.idIndex.set(rec.id,c.k);st(W,rec.agent).records++;runChecks(W,c,rec);}
 function cleanMeta(m){if(!m||typeof m!=='object')return null;try{const s=JSON.stringify(m);return s.length>4000?null:JSON.parse(s);}catch(e){return null;}}
+export const TURNS_PER_DAY=6;
 export const ANIM_TYPES=['spin','sway','bob','blink','path'];
 export const HATCH_PATTERNS=['lines','cross','brick','dots','gradient'];
 // Returns an error string, or null when the animation settings are valid.
@@ -378,8 +379,15 @@ export function finalize(W){
   const recs=[];for(const c of W.chunks.values())for(const r of c.records)recs.push([c,r]);
   recs.sort((a,b)=>a[1].id-b[1].id);
   const organic={},detail={},activity={},actText=new Set(),anim={},tex={};
+  // Bonus caps refresh every turn, so an agent can keep coming back to a place and keep scoring.
+  // Only the first TURNS_PER_DAY turns of each UTC day get a fresh window; later turns that day share the last one.
+  const turnsByDay={};
+  for(const [,r] of recs){const d=String(r.date||''),k=r.agent+'|'+d.slice(0,10);(turnsByDay[k]||(turnsByDay[k]=new Set())).add(d);}
+  const turnIdx={};
+  for(const k in turnsByDay){[...turnsByDay[k]].sort().forEach((d,i)=>{turnIdx[k.split('|')[0]+'|'+d]=Math.min(i,TURNS_PER_DAY-1);});}
+  const win=(r)=>{const d=String(r.date||'');return d.slice(0,10)+'#'+(turnIdx[r.agent+'|'+d]||0);};
   for(const [c,r] of recs){
-    const s=st(W,r.agent),m=r.meta||{},ak2=r.agent+'|'+c.k;
+    const s=st(W,r.agent),m=r.meta||{},ak2=r.agent+'|'+c.k+'|'+win(r);
     if((m.anim||m.billboard)&&(anim[ak2]||0)<30){anim[ak2]=(anim[ak2]||0)+1;s.anim++;}
     if((r.kind==='hatch'||r.color2!==undefined)&&(tex[ak2]||0)<40){tex[ak2]=(tex[ak2]||0)+1;s.texture++;}
     if(r.kind==='line'&&r.discipline==='street'){
@@ -400,13 +408,13 @@ export function finalize(W){
       }
     }
     if(r.kind==='line'&&r.pts.length>=3){
-      const ok2=(organic[r.agent+c.k]||0)<60;
-      if(ok2){for(let i=1;i<r.pts.length-1;i++){const a=r.pts[i-1],b=r.pts[i],d=r.pts[i+1];const a1=Math.atan2(b[1]-a[1],b[0]-a[0]),a2=Math.atan2(d[1]-b[1],d[0]-b[0]);if(Math.hypot(b[0]-a[0],b[1]-a[1])<1||Math.hypot(d[0]-b[0],d[1]-b[1])<1)continue;let t=Math.abs(a2-a1)*180/Math.PI%90;t=Math.min(t,90-t);if(t>5){s.organic++;organic[r.agent+c.k]=(organic[r.agent+c.k]||0)+1;break;}}}
+      const ok2=(organic[ak2]||0)<60;
+      if(ok2){for(let i=1;i<r.pts.length-1;i++){const a=r.pts[i-1],b=r.pts[i],d=r.pts[i+1];const a1=Math.atan2(b[1]-a[1],b[0]-a[0]),a2=Math.atan2(d[1]-b[1],d[0]-b[0]);if(Math.hypot(b[0]-a[0],b[1]-a[1])<1||Math.hypot(d[0]-b[0],d[1]-b[1])<1)continue;let t=Math.abs(a2-a1)*180/Math.PI%90;t=Math.min(t,90-t);if(t>5){s.organic++;organic[ak2]=(organic[ak2]||0)+1;break;}}}
     }
     if(r.kind==='symbol'&&r.discipline==='activity'){
       const t=typeof m.activity==='string'?m.activity.trim().toLowerCase():'';
       const ak=r.agent+c.k;
-      if(t.length>=3&&t.length<=80&&!actText.has(ak+'|'+t)&&(activity[ak]||0)<40){actText.add(ak+'|'+t);activity[ak]=(activity[ak]||0)+1;s.activity++;}
+      if(t.length>=3&&t.length<=80&&!actText.has(ak+'|'+t)&&(activity[ak2]||0)<40){actText.add(ak+'|'+t);activity[ak2]=(activity[ak2]||0)+1;s.activity++;}
       if(typeof m.activity==='string'&&!r.hidden)W.labels.push({k:c.k,text:m.activity.trim().slice(0,80),at:[r.at[0],r.at[1],r.at[2]+2200],kind:'activity'});
     }
     if(r.kind==='symbol'&&r.type==='sign'&&typeof m.text==='string'&&!r.hidden)W.labels.push({k:c.k,text:m.text.trim().slice(0,60),at:[r.at[0],r.at[1],r.at[2]+3200],kind:'sign'});
@@ -415,7 +423,7 @@ export function finalize(W){
     if(!DETAIL.has(r.discipline))continue;
     const p=r.kind==='line'?r.pts[0]:r.at;
     for(const b of buildings.values()){
-      if(b.ck===c.k&&p[0]>=b.box[0]&&p[0]<=b.box[2]&&p[1]>=b.box[1]&&p[1]<=b.box[3]){const dk=r.agent+'|'+b.own;if((detail[dk]||0)<150){detail[dk]=(detail[dk]||0)+1;st(W,r.agent).detail++;}break;}
+      if(b.ck===c.k&&p[0]>=b.box[0]&&p[0]<=b.box[2]&&p[1]>=b.box[1]&&p[1]<=b.box[3]){const dk=r.agent+'|'+b.own+'|'+b.ck+'|'+win(r);if((detail[dk]||0)<150){detail[dk]=(detail[dk]||0)+1;st(W,r.agent).detail++;}break;}
     }
   }
 }
