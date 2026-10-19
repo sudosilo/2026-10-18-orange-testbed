@@ -4,10 +4,10 @@
 export const S = 79248;
 export const SIDEWALK = 3048;
 export const PALETTE = ['#1f3a5f','#b4442c','#2f6b3a','#7a4f9a','#c07a12','#2a7f87','#8a2f55','#5a5a5a','#5c7a1f','#a35d2a','#3557a8','#9c8a1a'];
-export const DISC = ['street','paving','lot','structure','interior','electrical','plumbing','vegetation','vehicle'];
-export const OPEN = new Set(['vegetation','vehicle']);
+export const DISC = ['street','paving','lot','structure','interior','electrical','plumbing','vegetation','vehicle','activity'];
+export const OPEN = new Set(['vegetation','vehicle','activity']);
 export const DETAIL = new Set(['interior','electrical','plumbing']);
-export const LIMITS = {callsPerFile:2000, ptsPerLine:256, claimsPerFile:4};
+export const LIMITS = {ptsPerLine:256};
 export const REF = {
   door_height:[2032,2438,'Door height'],
   door_width:[813,1219,'Door leaf clear width'],
@@ -24,7 +24,7 @@ export const REF = {
   sidewalk_width:[1524,4572,'Sidewalk width'],
   lane_width:[3048,3658,'Travel lane width']
 };
-export const SYMBOL_TYPES = ['tree','shrub','grass','car','truck','light','outlet','switch','knob','pole','hydrant','sign','mark'];
+export const SYMBOL_TYPES = ['tree','shrub','grass','car','truck','light','outlet','switch','knob','pole','hydrant','sign','mark','person','dog','bench','table','bike','cart','umbrella'];
 
 const OPP = {n:'s',s:'n',e:'w',w:'e'};
 const NBR = {n:[0,1],s:[0,-1],e:[1,0],w:[-1,0]};
@@ -38,7 +38,7 @@ const ok = (o)=>Object.assign({ok:true},o||{});
 const err = (m)=>({ok:false,err:m});
 
 export function createWorld(){return {chunks:new Map(),idIndex:new Map(),nextId:1,stats:{},log:[],ctx:null};}
-function st(W,a){return W.stats[a]||(W.stats[a]={calls:0,records:0,rejected:0,passed:0,violations:0,mismatches:0,clashes:0,chunks:0});}
+function st(W,a){return W.stats[a]||(W.stats[a]={calls:0,records:0,rejected:0,passed:0,violations:0,mismatches:0,clashes:0,chunks:0,names:0,unnamed:0,dupNames:0,organic:0,detail:0,activity:0});}
 function container(W,cx,cy){
   const k=key(cx,cy);let c=W.chunks.get(k);
   if(!c){c={cx,cy,k,owner:null,grants:{},records:[],ports:{},lots:[],pens:[],flags:[],nodes:new Map()};W.chunks.set(k,c);}
@@ -68,13 +68,12 @@ function runChecks(W,c,rec){
   }
 }
 function commit(W,c,rec){rec.date=W.ctx?W.ctx.date:'';c.records.push(rec);W.idIndex.set(rec.id,c.k);st(W,rec.agent).records++;runChecks(W,c,rec);}
-function cleanMeta(m){if(!m||typeof m!=='object')return null;try{const s=JSON.stringify(m);return s.length>2000?null:JSON.parse(s);}catch(e){return null;}}
+function cleanMeta(m){if(!m||typeof m!=='object')return null;try{const s=JSON.stringify(m);return s.length>4000?null:JSON.parse(s);}catch(e){return null;}}
 function anyOwned(W){for(const c of W.chunks.values())if(c.owner)return true;return false;}
 
 export const TOOLS = {
   claim_chunk(W,agent,a){
     if(!vchunk(a.chunk))return err('chunk must be [cx, cy] integers');
-    if(W.ctx&&++W.ctx.claims>LIMITS.claimsPerFile)return err('claim limit per day reached');
     const c=container(W,a.chunk[0],a.chunk[1]);
     if(c.owner)return err('chunk '+c.k+' is already owned by '+c.owner);
     if(!anyOwned(W)){if(c.k!=='0:0')return err('the first claim in the world must be chunk 0:0');}
@@ -158,11 +157,10 @@ export function replay(files,onResult){
   for(const f of files){
     W.ctx={date:f.date,claims:0,agent:f.agent};
     if(!Array.isArray(f.calls)){log(W,f.agent,'file '+f.date+' has no calls array',true);continue;}
-    if(f.calls.length>LIMITS.callsPerFile)log(W,f.agent,'file '+f.date+' cut to '+LIMITS.callsPerFile+' calls',true);
-    f.calls.slice(0,LIMITS.callsPerFile).forEach((call,i)=>{const r=applyCall(W,f.agent,call);if(onResult)onResult(f,i,call,r);});
+    f.calls.forEach((call,i)=>{const r=applyCall(W,f.agent,call);if(onResult)onResult(f,i,call,r);});
   }
   W.ctx=null;
-  clashCheck(W);
+  finalize(W);
   return W;
 }
 
@@ -183,10 +181,22 @@ export const SYMBOLS = {
   pole:(x,y,z)=>[[x,y,z],[x,y,z+9144],[x-900,y,z+8230],[x+900,y,z+8230]],
   hydrant:(x,y,z)=>[...circle(x,y,z,150,6),[x,y,z],[x,y,z+760],[x-200,y,z+500],[x+200,y,z+500]],
   sign:(x,y,z,r)=>rot([[0,0,0],[0,0,2134],[-300,0,2134],[300,0,2134],[300,0,2134],[300,0,2740],[300,0,2740],[-300,0,2740],[-300,0,2740],[-300,0,2134]],x,y,z,r),
-  mark:(x,y,z)=>[[x-600,y-600,z],[x+600,y+600,z],[x-600,y+600,z],[x+600,y-600,z]]
+  mark:(x,y,z)=>[[x-600,y-600,z],[x+600,y+600,z],[x-600,y+600,z],[x+600,y-600,z]],
+  person:(x,y,z,r,m)=>{
+    const pose=m&&m.pose;
+    if(pose==='sitting')return rot([...circle(0,0,1250,110,6).map(p=>[p[0],p[1],p[2]]),[0,0,1140],[0,0,450],[0,0,450],[0,350,450],[0,350,450],[0,350,0],[0,0,950],[150,250,650],[0,0,950],[-150,250,650]],x,y,z,r);
+    const w=pose==='walking'?220:0;
+    return rot([...circle(0,0,1600,110,6),[0,0,1490],[0,0,900],[0,0,900],[-120,w,0],[0,0,900],[120,-w,0],[0,0,1350],[-300,-w,950],[0,0,1350],[300,w,950]],x,y,z,r);
+  },
+  dog:(x,y,z,r)=>rot([[0,-350,450],[0,350,450],[0,350,450],[0,500,600],[0,-350,450],[0,-450,600],[0,-300,450],[0,-300,0],[0,300,450],[0,300,0]],x,y,z,r),
+  bench:(x,y,z,r)=>rot([...boxSegs(-900,-200,900,200,430,460),[-800,0,0],[-800,0,430],[800,0,0],[800,0,430],[-900,200,460],[-900,250,850],[900,200,460],[900,250,850],[-900,250,850],[900,250,850]],x,y,z,r),
+  table:(x,y,z)=>[...circle(x,y,z+740,450,8),[x,y,z],[x,y,z+740],[x-300,y,z],[x+300,y,z]],
+  bike:(x,y,z,r)=>{const v=(cy,cz,rr)=>{const o=[];for(let k=0;k<8;k++){const a0=k/8*Math.PI*2,a1=(k+1)/8*Math.PI*2;o.push([0,cy+Math.cos(a0)*rr,cz+Math.sin(a0)*rr],[0,cy+Math.cos(a1)*rr,cz+Math.sin(a1)*rr]);}return o;};return rot([...v(-550,330,330),...v(550,330,330),[0,-550,330],[0,0,600],[0,0,600],[0,550,330],[0,0,600],[0,-150,850],[0,550,330],[0,450,950]],x,y,z,r);},
+  cart:(x,y,z,r)=>rot([...boxSegs(-250,-400,250,400,300,800),[-250,-400,800],[-250,-650,1000],[250,-400,800],[250,-650,1000]],x,y,z,r),
+  umbrella:(x,y,z)=>[[x,y,z],[x,y,z+2300],...circle(x,y,z+2100,1100,8),[x,y,z+2300],[x+1100,y,z+2100],[x,y,z+2300],[x-1100,y,z+2100]]
 };
 export function recSegs(r){
-  if(r.kind==='symbol')return SYMBOLS[r.type](r.at[0],r.at[1],r.at[2],r.rot);
+  if(r.kind==='symbol')return SYMBOLS[r.type](r.at[0],r.at[1],r.at[2],r.rot,r.meta);
   const s=[],p=r.pts;for(let i=0;i<p.length-1;i++)s.push(p[i],p[i+1]);if(r.closed&&p.length>2)s.push(p[p.length-1],p[0]);return s;
 }
 
@@ -221,7 +231,57 @@ export function clashCheck(W){
   }
 }
 
-export const scoreOf = (s)=>s.passed-5*s.violations-10*s.mismatches-10*s.clashes-s.rejected;
+// Naming, organic shape, detail and human activity. Recomputed from scratch after every replay.
+const nameOf=(v)=>typeof v==='string'&&v.trim().length>=1&&v.length<=60;
+export function finalize(W){
+  clashCheck(W);
+  for(const s of Object.values(W.stats)){s.names=0;s.unnamed=0;s.dupNames=0;s.organic=0;s.detail=0;s.activity=0;}
+  const buildings=new Map(),streetsSeen=new Set();
+  W.labels=[];
+  const recs=[];for(const c of W.chunks.values())for(const r of c.records)recs.push([c,r]);
+  recs.sort((a,b)=>a[1].id-b[1].id);
+  const organic={},detail={},activity={},actText=new Set();
+  for(const [c,r] of recs){
+    const s=st(W,r.agent),m=r.meta||{};
+    if(r.kind==='line'&&r.discipline==='street'){
+      const names=Array.isArray(m.street)?m.street:[m.street];
+      if(!names.length||!names.every(nameOf)){s.unnamed++;c.flags.push(r.pts[0]);W.log.push({agent:r.agent,msg:'street record '+r.id+' in '+c.k+' has no meta.street name',flag:true,date:r.date});}
+      else for(const n of names){const k=n.trim().toLowerCase();if(!streetsSeen.has(k)){streetsSeen.add(k);s.names+=1;}
+        const lk=c.k+'|'+k;if(!streetsSeen.has(lk)){streetsSeen.add(lk);const p=r.pts[0],q=r.pts[r.pts.length>1?1:0];W.labels.push({k:c.k,text:n.trim(),at:[(p[0]+q[0])/2,(p[1]+q[1])/2,300],kind:'street'});}}
+    }
+    if(r.kind==='line'&&m.wall){
+      if(!nameOf(m.building)){s.unnamed++;c.flags.push(r.pts[0]);W.log.push({agent:r.agent,msg:'wall record '+r.id+' in '+c.k+' has no meta.building name',flag:true,date:r.date});}
+      else{
+        const k=m.building.trim().toLowerCase(),own=r.agent+'|'+c.k,b=buildings.get(k);
+        if(!b){
+          const xs=r.pts.map(p=>p[0]),ys=r.pts.map(p=>p[1]);
+          buildings.set(k,{own,box:[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)],agent:r.agent,ck:c.k,detail:0});s.names+=3;
+          W.labels.push({k:c.k,text:m.building.trim(),at:[(Math.min(...xs)+Math.max(...xs))/2,(Math.min(...ys)+Math.max(...ys))/2,(isInt(m.h)?m.h:3048)+1500],kind:'building'});
+        }else if(b.own!==own){s.dupNames++;c.flags.push(r.pts[0]);W.log.push({agent:r.agent,msg:'building name "'+m.building.trim()+'" is already used by '+b.agent+' in '+b.ck,flag:true,date:r.date});}
+      }
+    }
+    if(r.kind==='line'&&r.pts.length>=3){
+      const ok2=(organic[r.agent+c.k]||0)<60;
+      if(ok2){for(let i=1;i<r.pts.length-1;i++){const a=r.pts[i-1],b=r.pts[i],d=r.pts[i+1];const a1=Math.atan2(b[1]-a[1],b[0]-a[0]),a2=Math.atan2(d[1]-b[1],d[0]-b[0]);if(Math.hypot(b[0]-a[0],b[1]-a[1])<1||Math.hypot(d[0]-b[0],d[1]-b[1])<1)continue;let t=Math.abs(a2-a1)*180/Math.PI%90;t=Math.min(t,90-t);if(t>5){s.organic++;organic[r.agent+c.k]=(organic[r.agent+c.k]||0)+1;break;}}}
+    }
+    if(r.kind==='symbol'&&r.discipline==='activity'){
+      const t=typeof m.activity==='string'?m.activity.trim().toLowerCase():'';
+      const ak=r.agent+c.k;
+      if(t.length>=3&&t.length<=80&&!actText.has(ak+'|'+t)&&(activity[ak]||0)<40){actText.add(ak+'|'+t);activity[ak]=(activity[ak]||0)+1;s.activity++;}
+      if(typeof m.activity==='string')W.labels.push({k:c.k,text:m.activity.trim().slice(0,80),at:[r.at[0],r.at[1],r.at[2]+2200],kind:'activity'});
+    }
+    if(r.kind==='symbol'&&r.type==='sign'&&typeof m.text==='string')W.labels.push({k:c.k,text:m.text.trim().slice(0,60),at:[r.at[0],r.at[1],r.at[2]+3200],kind:'sign'});
+  }
+  for(const [c,r] of recs){
+    if(!DETAIL.has(r.discipline))continue;
+    const p=r.kind==='line'?r.pts[0]:r.at;
+    for(const b of buildings.values()){
+      if(b.ck===c.k&&p[0]>=b.box[0]&&p[0]<=b.box[2]&&p[1]>=b.box[1]&&p[1]<=b.box[3]){const dk=r.agent+'|'+b.own;if((detail[dk]||0)<150){detail[dk]=(detail[dk]||0)+1;st(W,r.agent).detail++;}break;}
+    }
+  }
+}
+
+export const scoreOf = (s)=>(s.passed||0)+(s.names||0)+(s.organic||0)+(s.detail||0)+2*(s.activity||0)-5*(s.violations||0)-10*(s.mismatches||0)-10*(s.clashes||0)-2*(s.unnamed||0)-5*(s.dupNames||0)-(s.rejected||0);
 
 // Text summary agents read before they play.
 export function summary(W,detailChunk){

@@ -25,7 +25,7 @@ console.log(JSON.stringify({
   calls: Array.isArray(calls) ? calls.length : 0,
   accepted: (Array.isArray(calls) ? calls.length : 0) - rejected.length,
   rejected,
-  added: {records: delta('records'), checksPassed: delta('passed'), violations: delta('violations'), mismatches: delta('mismatches'), clashes: delta('clashes')},
-  scoreAfter: scoreOf(Object.assign({passed:0,violations:0,mismatches:0,clashes:0,rejected:0}, s)),
+  added: Object.fromEntries(['records','passed','names','organic','detail','activity','violations','mismatches','clashes','unnamed','dupNames'].map(k => [k, delta(k)])),
+  scoreAfter: scoreOf(s),
   newFlags: W.log.filter(l => l.flag && l.agent === agent && l.date === date).map(l => l.msg)
 }, null, 1));
