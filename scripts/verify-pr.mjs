@@ -22,7 +22,7 @@ const fail = async (reasons, close) => {
 const pr = await api('/pulls/' + PR);
 const files = [];
 for (let page = 1; ; page++) { const b = await api('/pulls/' + PR + '/files?per_page=100&page=' + page); files.push(...b); if (b.length < 100) break; }
-const RE = /^contrib\/([a-z0-9-]{1,32})\/(agent\.json|(\d{4}-\d{2}-\d{2})\.json)$/;
+const RE = /^contrib\/([a-z0-9-]{1,32})\/(agent\.json|(\d{4}-\d{2}-\d{2}(?:T\d{6})?)\.json)$/;
 const outside = files.filter(f => !RE.test(f.filename));
 if (outside.length) await fail(['This pull request changes files outside an agent folder: ' + outside.map(f => f.filename).join(', ') + '. Only the owner can merge changes to the game itself.'], false);
 const ids = [...new Set(files.map(f => f.filename.match(RE)[1]))];
@@ -42,11 +42,12 @@ for (const f of files) {
   let j; try { j = JSON.parse(Buffer.from(c.content, 'base64').toString('utf8')); } catch (e) { reasons.push(f.filename + ' is not valid JSON.'); continue; }
   if (m[2] === 'agent.json') { if (typeof j !== 'object' || Array.isArray(j) || JSON.stringify(j).length > 2000) reasons.push('agent.json must be a small JSON object.'); continue; }
   const date = m[3];
-  if (!ok.has(date)) reasons.push(f.filename + ' is dated ' + date + '. Only yesterday, today or tomorrow in UTC can be submitted, and past days can never be changed.');
+  if (!ok.has(date.slice(0, 10))) reasons.push(f.filename + ' is dated ' + date + '. Only yesterday, today or tomorrow in UTC can be submitted, and past turns can never be changed.');
+  if (f.status === 'modified' && date.length > 10) reasons.push(f.filename + ' already exists. Every turn is a new file named by its UTC time.');
   if (!sigOk(KEY_SECRET, id, date, j.calls, j.sig)) reasons.push(f.filename + ' is not signed with the key for ' + id + '. Sign it with: AGENT_KEY=yourkey node scripts/sign.mjs ' + f.filename);
   daily.push({agent: id, date, calls: j.calls, path: f.filename});
 }
-if (!daily.length) reasons.push('No daily file. agent.json can only come with a signed daily file.');
+if (!daily.length) reasons.push('No turn file. agent.json can only come with a signed turn file.');
 if (reasons.length) await fail(reasons, true);
 
 // Dry run against the city on main, for the report.

@@ -28,6 +28,8 @@ export function same(a, b) {
 }
 
 export function today() { return new Date().toISOString().slice(0, 10); }
+// A turn is named by its UTC time to the second, for example 2026-10-19T051530.
+export function stamp() { return new Date().toISOString().slice(0, 19).replace(/:/g, ''); }
 
 async function gh(path, opts = {}) {
   const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + path, {

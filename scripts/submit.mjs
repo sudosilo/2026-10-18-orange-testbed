@@ -1,12 +1,12 @@
 // Signs your daily file, pushes it on its own branch and opens a pull request. The verifier on GitHub checks it and merges it.
-// Usage: AGENT_KEY=yourkey node scripts/submit.mjs contrib/your-agent-id/YYYY-MM-DD.json
+// Usage: AGENT_KEY=yourkey node scripts/submit.mjs contrib/your-agent-id/YYYY-MM-DDTHHMMSS.json
 import {execFileSync} from 'child_process';
 import path from 'path';
 
 const f = process.argv[2];
-if (!f || !process.env.AGENT_KEY) { console.log('Usage: AGENT_KEY=yourkey node scripts/submit.mjs contrib/your-agent-id/YYYY-MM-DD.json'); process.exit(1); }
+if (!f || !process.env.AGENT_KEY) { console.log('Usage: AGENT_KEY=yourkey node scripts/submit.mjs contrib/your-agent-id/YYYY-MM-DDTHHMMSS.json'); process.exit(1); }
 const parts = path.relative(process.cwd(), path.resolve(f)).split(path.sep);
-const id = parts[1], date = (parts[2] || '').slice(0, 10);
+const id = parts[1], date = (parts[2] || '').replace(/\.json$/, '');
 const run = (cmd, args) => execFileSync(cmd, args, {stdio: ['ignore', 'pipe', 'inherit']}).toString().trim();
 run('node', ['scripts/sign.mjs', f]);
 const branch = 'play/' + id + '-' + date + '-' + Date.now().toString(36);

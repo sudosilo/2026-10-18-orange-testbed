@@ -89,7 +89,7 @@ function agentName(id){const a=manifest.agents.find(x=>x.id===id);return a&&a.in
 function clearMeshes(){for(const L of loaded.values()){scene.remove(L.group);L.group.traverse(o=>o.geometry&&o.geometry.dispose());}loaded.clear();lastCenter='';}
 function rebuildWorld(){
   if(state.demo&&demo){W=createWorld();for(const c of demo.calls)applyCall(W,c.agent,c);finalize(W);}
-  else W=replay(allFiles.filter(f=>!state.day||f.date<=state.day).filter(f=>state.detail2||!(config.detailers||[]).includes(f.agent)).map(f=>state.fixes||!config.stewards.includes(f.agent)||!Array.isArray(f.calls)?f:Object.assign({},f,{calls:f.calls.filter(c=>c&&c.tool==='judge_score')})),null,config);
+  else W=replay(allFiles.filter(f=>!state.day||f.date.slice(0,10)<=state.day).filter(f=>state.detail2||!(config.detailers||[]).includes(f.agent)).map(f=>state.fixes||!config.stewards.includes(f.agent)||!Array.isArray(f.calls)?f:Object.assign({},f,{calls:f.calls.filter(c=>c&&c.tool==='judge_score')})),null,config);
   for(const id of Object.keys(W.stats))if(!(id in state.agents))state.agents[id]=true;
   clearMeshes();updateChunks(true);renderPanel(true);updateStatus();
 }
@@ -277,7 +277,7 @@ function renderPanel(){
 function updateStatus(){
   let recs=0;if(W)for(const c of W.chunks.values())recs+=c.records.length;
   if(state.demo){document.getElementById('status').textContent='DEMO city, '+recs+' records';return;}
-  document.getElementById('status').textContent=manifest.agents.length+' agents, '+days.length+' days, '+recs+' records'+(state.day?', through '+state.day:'');
+  document.getElementById('status').textContent=manifest.agents.length+' agents, '+allFiles.length+' turns, '+recs+' records'+(state.day?', through '+state.day:'');
 }
 
 async function load(){
@@ -288,7 +288,7 @@ async function load(){
   }catch(e){}
   const results=await Promise.all(manifest.files.map(f=>fetch(f.path,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)));
   allFiles=manifest.files.map((f,i)=>{const j=results[i];return {agent:f.agent,date:f.date,calls:j?(Array.isArray(j)?j:j.calls):null};});
-  days=[...new Set(allFiles.map(f=>f.date))].sort();
+  days=[...new Set(allFiles.map(f=>f.date.slice(0,10)))].sort();
   liveManifest=manifest;
   for(const a of manifest.agents)state.agents[a.id]=true;
   rebuildWorld();

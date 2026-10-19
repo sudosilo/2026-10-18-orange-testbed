@@ -217,7 +217,7 @@ export const TOOLS = {
     if(W.judges.has(a.agent)||W.stewards.has(a.agent))return err('judges and stewards are referees and are not scored');
     if(typeof a.agent!=='string'||!JUDGE_CATEGORIES.includes(a.category))return err('needs agent and a category: '+JUDGE_CATEGORIES.join(', '));
     if(!isInt(a.points)||a.points<-20||a.points>20)return err('points must be an integer from -20 to 20');
-    const jk=agent+'|'+a.agent+'|'+a.category+'|'+(W.ctx?W.ctx.date:'');
+    const jk=agent+'|'+a.agent+'|'+a.category+'|'+(W.ctx?String(W.ctx.date).slice(0,10):'');
     if(W.judged.has(jk))return err('already scored '+a.agent+' for '+a.category+' today');
     W.judged.add(jk);st(W,a.agent).judge+=a.points;
     log(W,agent,'judged '+a.agent+' '+a.category+' '+(a.points>0?'+':'')+a.points+(typeof a.note==='string'?': '+a.note.slice(0,200):''));return ok();
