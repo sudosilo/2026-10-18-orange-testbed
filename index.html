@@ -64,7 +64,7 @@ import {S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,final
 
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let manifest={agents:[],files:[]},liveManifest=null,allFiles=[],days=[],W=null,demo=null;
-const state={demo:false,names:true,agents:{},disc:Object.fromEntries(DISC.map(d=>[d,true])),flags:true,detail:'auto',radius:3,cut:30,day:null};
+const state={demo:false,names:true,anim:true,agents:{},disc:Object.fromEntries(DISC.map(d=>[d,true])),flags:true,detail:'auto',radius:3,cut:30,day:null};
 
 const view=document.getElementById('view');
 const renderer=new THREE.WebGLRenderer({antialias:true});
@@ -94,22 +94,70 @@ function rebuildWorld(){
   clearMeshes();updateChunks(true);renderPanel(true);updateStatus();
 }
 
+const colCache={};
+const pc=(i)=>colCache[i]||(colCache[i]=new THREE.Color(PALETTE[i]));
+function pushSegs(g,r,segs,off){
+  const c1=pc(r.color),c2=r.color2!=null?pc(r.color2):null;
+  for(const p of segs){
+    const v=toV(off?[p[0]-off[0],p[1]-off[1],p[2]-off[2]]:p);g.pos.push(v[0],v[1],v[2]);
+    if(c2&&p.length>3){const t=p[3];g.col.push(c1.r+(c2.r-c1.r)*t,c1.g+(c2.g-c1.g)*t,c1.b+(c2.b-c1.b)*t);}else g.col.push(c1.r,c1.g,c1.b);
+  }
+}
+function mkLines(pos,col){const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('color',new THREE.Float32BufferAttribute(col,3));return new THREE.LineSegments(g,mat);}
+const MAX_ANIM_PER_CHUNK=60;
+function pivotOf(r){const a=r.meta&&r.meta.anim;if(a&&a.pivot)return a.pivot;if(r.kind==='symbol')return r.at;const p=r.pts;let x=0,y=0,z=Infinity;for(const q of p){x+=q[0];y+=q[1];z=Math.min(z,q[2]);}return [x/p.length,y/p.length,z];}
 function buildChunk(c){
-  const groups={};
+  const groups={},anims=[];
   const add=(bk,hex,segs)=>{const g=groups[bk]||(groups[bk]={pos:[],col:[]});const col=new THREE.Color(hex);for(const p of segs){const v=toV(p);g.pos.push(v[0],v[1],v[2]);g.col.push(col.r,col.g,col.b);}};
-  for(const r of c.records)add(r.agent+'|'+r.discipline,PALETTE[r.color],recSegs(r));
+  const group=new THREE.Group(),batches=[];
+  for(const r of c.records){
+    const m=r.meta||{};
+    if((m.anim||m.billboard)&&anims.length<MAX_ANIM_PER_CHUNK){
+      const piv=m.anim&&m.anim.type==='path'?m.anim.pts[0]:pivotOf(r);
+      const base=r.kind==='symbol'?Object.assign({},r,{rot:0}):r;
+      const local=m.anim&&m.anim.type==='path'&&r.kind==='symbol'?r.at:piv;
+      const g={pos:[],col:[]};pushSegs(g,base,recSegs(base),local);
+      const obj=mkLines(g.pos,g.col);obj.userData={agent:r.agent,disc:r.discipline};
+      const pv=toV(piv);obj.position.set(pv[0],pv[1],pv[2]);
+      const pathV=m.anim&&m.anim.type==='path'?(()=>{const q=m.anim.pts.map(toV);const d=[0];for(let i=1;i<q.length;i++)d.push(d[i-1]+Math.hypot(q[i][0]-q[i-1][0],q[i][1]-q[i-1][1],q[i][2]-q[i-1][2]));return {q,d,L:d[d.length-1]||1};})():null;
+      anims.push({obj,anim:m.anim||null,billboard:!!m.billboard,rot:r.kind==='symbol'?r.rot:0,pathV,phase:(r.id%97)/97});
+      group.add(obj);batches.push(obj);continue;
+    }
+    const bk=r.agent+'|'+r.discipline,g=groups[bk]||(groups[bk]={pos:[],col:[]});pushSegs(g,r,recSegs(r),null);
+  }
   for(const f of c.flags)add('sys|flags','#c0392b',[[f[0]-1500,f[1]-1500,f[2]],[f[0]+1500,f[1]+1500,f[2]],[f[0]-1500,f[1]+1500,f[2]],[f[0]+1500,f[1]-1500,f[2]],[f[0],f[1],f[2]],[f[0],f[1],f[2]+6000]]);
   if(c.owner){const x0=c.cx*S,y0=c.cy*S,o=600;add('sys|owner',agentColor(c.owner),[[x0+o,y0+o,0],[x0+o+6000,y0+o,0],[x0+o,y0+o,0],[x0+o,y0+o+6000,0]]);}
-  const group=new THREE.Group(),batches=[];
   for(const L of (W.labels||[]))if(L.k===c.k){const sp=label(L);if(sp){group.add(sp);batches.push(sp);}}
-  for(const bk in groups){
-    const g=new THREE.BufferGeometry();
-    g.setAttribute('position',new THREE.Float32BufferAttribute(groups[bk].pos,3));
-    g.setAttribute('color',new THREE.Float32BufferAttribute(groups[bk].col,3));
-    const m=new THREE.LineSegments(g,mat);const [agent,disc]=bk.split('|');m.userData={agent,disc};
-    group.add(m);batches.push(m);
+  for(const bk in groups){const m=mkLines(groups[bk].pos,groups[bk].col);const [agent,disc]=bk.split('|');m.userData={agent,disc};group.add(m);batches.push(m);}
+  scene.add(group);loaded.set(c.k,{group,batches,anims,cx:c.cx,cy:c.cy});
+}
+// Animation moves whole line objects with transforms only. No geometry is rebuilt per frame and nothing is lit or shaded.
+function animate(t){
+  const cam=camera.position;
+  for(const L of loaded.values()){
+    if(!L.anims.length)continue;
+    const near=Math.hypot(cam.x-(L.cx+.5)*S/1000,cam.y,cam.z+(L.cy+.5)*S/1000)<400;
+    for(const A of L.anims){
+      const o=A.obj,a=A.anim;
+      let yaw=A.rot;
+      o.rotation.set(0,0,0);
+      if(state.anim&&near&&a){
+        const ph=t+A.phase*(a.period||10);
+        if(a.type==='spin')yaw+=t*a.rpm/60*Math.PI*2;
+        else if(a.type==='sway'){o.rotation.x=Math.sin(ph/a.period*Math.PI*2)*a.deg*Math.PI/180;}
+        else if(a.type==='bob'){o.position.y=o.userData.y0??(o.userData.y0=o.position.y);o.position.y=o.userData.y0+Math.sin(ph/a.period*Math.PI*2)*a.mm/1000;}
+        else if(a.type==='blink'){o.userData.blinkOff=((ph/a.period)%1)>(a.duty??0.5);}
+        else if(a.type==='path'&&A.pathV){
+          const P=A.pathV,dist=((t*a.speed/1000)+A.phase*P.L)%P.L;let i=1;while(i<P.d.length-1&&P.d[i]<dist)i++;
+          const f=(dist-P.d[i-1])/((P.d[i]-P.d[i-1])||1),p0=P.q[i-1],p1=P.q[i];
+          o.position.set(p0[0]+(p1[0]-p0[0])*f,p0[1]+(p1[1]-p0[1])*f,p0[2]+(p1[2]-p0[2])*f);
+          if(Math.hypot(p1[0]-p0[0],p1[2]-p0[2])>1e-6)yaw=Math.atan2(-(p1[0]-p0[0]),-(p1[2]-p0[2]));
+        }
+      }else o.userData.blinkOff=false;
+      if(A.billboard){yaw=Math.atan2(cam.x-o.position.x,cam.z-o.position.z);}
+      o.rotation.y=yaw;
+    }
   }
-  scene.add(group);loaded.set(c.k,{group,batches,cx:c.cx,cy:c.cy});
 }
 const texCache=new Map();
 function label(L){
@@ -136,7 +184,7 @@ function applyVisibility(){
       const {agent,disc}=m.userData;
       if(disc==='names'){m.visible=state.names&&(m.userData.kind!=='activity'||near);continue;}
       if(agent==='sys'){m.visible=state.flags;continue;}
-      let v=state.agents[agent]!==false&&state.disc[disc];
+      let v=state.agents[agent]!==false&&state.disc[disc]&&!m.userData.blinkOff;
       if(v&&DETAIL.has(disc))v=state.detail==='always'||(state.detail==='auto'&&near);
       m.visible=v;
     }
@@ -184,7 +232,8 @@ function renderPanel(){
   }else if(tab==='layers'){
     const di=days.indexOf(state.day);
     body.innerHTML=DISC.map(d=>`<label class="tg"><input type="checkbox" data-disc="${d}" ${state.disc[d]?'checked':''}>${d}${DETAIL.has(d)?' <span class="muted">(detail)</span>':''}</label>`).join('')+
-    `<label class="tg"><input type="checkbox" id="nm" ${state.names?'checked':''}>names, signs and activity notes</label>
+    `<label class="tg"><input type="checkbox" id="an" ${state.anim?'checked':''}>animations</label>
+    <label class="tg"><input type="checkbox" id="nm" ${state.names?'checked':''}>names, signs and activity notes</label>
     <label class="tg"><input type="checkbox" id="fl" ${state.flags?'checked':''}><span class="flag">check flags and owner marks</span></label>
     <div class="row"><span>Detail layers</span>${['auto','always','off'].map(m=>`<button data-detail="${m}" class="${state.detail===m?'on':''}">${m}</button>`).join(' ')}</div>
     <div style="padding-top:8px">Show through day <span id="dayv">${state.day||'latest'}</span><input type="range" id="day" min="0" max="${Math.max(days.length-1,0)}" step="1" value="${di<0?Math.max(days.length-1,0):di}" ${days.length<2?'disabled':''}></div>
@@ -192,6 +241,7 @@ function renderPanel(){
     <div style="padding-top:8px">Load radius <span id="radv">${state.radius}</span> chunks<input type="range" id="rad" min="1" max="8" step="1" value="${state.radius}"></div>`;
     body.querySelectorAll('[data-disc]').forEach(i=>i.onchange=()=>{state.disc[i.dataset.disc]=i.checked;applyVisibility();});
     body.querySelector('#fl').onchange=e=>{state.flags=e.target.checked;applyVisibility();};
+    body.querySelector('#an').onchange=e=>{state.anim=e.target.checked;};
     body.querySelector('#nm').onchange=e=>{state.names=e.target.checked;applyVisibility();};
     body.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>{state.detail=b.dataset.detail;applyVisibility();renderPanel();});
     body.querySelector('#day').onchange=e=>{const i=+e.target.value;state.day=i>=days.length-1?null:days[i];rebuildWorld();};
@@ -199,8 +249,8 @@ function renderPanel(){
     body.querySelector('#rad').onchange=e=>{state.radius=+e.target.value;updateChunks(true);renderPanel();};
   }else if(tab==='scores'){
     const rows=W?Object.entries(W.stats).sort((a,b)=>scoreOf(b[1])-scoreOf(a[1])):[];
-    body.innerHTML=(rows.length?rows.map(([id,s])=>`<div class="row"><span class="sw" style="background:${agentColor(id)}"></span><div style="flex:1"><b>${esc(agentName(id))}</b> score ${scoreOf(s)}<div class="kv muted"><span>calls</span><span>${s.calls}</span><span>records</span><span>${s.records}</span><span>chunks owned</span><span>${s.chunks}</span><span>reference checks passed</span><span>${s.passed}</span><span>naming points</span><span>${s.names}</span><span>organic shapes</span><span>${s.organic}</span><span>interior detail</span><span>${s.detail}</span><span>human activity</span><span>${s.activity}</span><span>reference violations</span><span>${s.violations}</span><span>unnamed streets or buildings</span><span>${s.unnamed}</span><span>duplicate building names</span><span>${s.dupNames}</span><span>border mismatches</span><span>${s.mismatches}</span><span>wall clashes</span><span>${s.clashes}</span><span>rejected calls</span><span>${s.rejected}</span></div></div></div>`).join(''):'<p class="muted">No scores yet.</p>')+
-    '<p class="muted" style="padding-top:8px">Score adds checks passed, naming points, organic shapes, interior detail and 2 per human activity. It subtracts 5 per violation, 10 per border mismatch, 10 per wall clash, 2 per unnamed street or building, 5 per duplicate building name and 1 per rejected call.</p>';
+    body.innerHTML=(rows.length?rows.map(([id,s])=>`<div class="row"><span class="sw" style="background:${agentColor(id)}"></span><div style="flex:1"><b>${esc(agentName(id))}</b> score ${scoreOf(s)}<div class="kv muted"><span>calls</span><span>${s.calls}</span><span>records</span><span>${s.records}</span><span>chunks owned</span><span>${s.chunks}</span><span>reference checks passed</span><span>${s.passed}</span><span>naming points</span><span>${s.names}</span><span>organic shapes</span><span>${s.organic}</span><span>interior detail</span><span>${s.detail}</span><span>human activity</span><span>${s.activity}</span><span>animations</span><span>${s.anim}</span><span>texture and gradient</span><span>${s.texture}</span><span>reference violations</span><span>${s.violations}</span><span>unnamed streets or buildings</span><span>${s.unnamed}</span><span>duplicate building names</span><span>${s.dupNames}</span><span>border mismatches</span><span>${s.mismatches}</span><span>wall clashes</span><span>${s.clashes}</span><span>rejected calls</span><span>${s.rejected}</span></div></div></div>`).join(''):'<p class="muted">No scores yet.</p>')+
+    '<p class="muted" style="padding-top:8px">Score adds checks passed, naming points, organic shapes, interior detail, animations, textures and gradients, and 2 per human activity. It subtracts 5 per violation, 10 per border mismatch, 10 per wall clash, 2 per unnamed street or building, 5 per duplicate building name and 1 per rejected call.</p>';
   }else if(tab==='log'){
     const L=W?W.log.slice(-150).reverse():[];
     body.innerHTML='<div class="log">'+(L.length?L.map(l=>`<div class="${l.flag?'flag':''}">${esc(l.date)} ${esc(agentName(l.agent))}: ${esc(l.msg)}</div>`).join(''):'<div class="muted">Log is empty.</div>')+'</div>';
@@ -232,7 +282,8 @@ async function load(){
 
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
 let frame=0;
-function loop(){requestAnimationFrame(loop);controls.update();updateChunks(false);if(++frame%15===0)applyVisibility();renderer.render(scene,camera);}
+const clock=new THREE.Clock();
+function loop(){requestAnimationFrame(loop);controls.update();updateChunks(false);animate(clock.getElapsedTime());if(++frame%3===0)applyVisibility();renderer.render(scene,camera);}
 renderPanel();
 load();
 loop();

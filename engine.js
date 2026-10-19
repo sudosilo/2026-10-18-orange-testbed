@@ -38,7 +38,7 @@ const ok = (o)=>Object.assign({ok:true},o||{});
 const err = (m)=>({ok:false,err:m});
 
 export function createWorld(){return {chunks:new Map(),idIndex:new Map(),nextId:1,stats:{},log:[],ctx:null};}
-function st(W,a){return W.stats[a]||(W.stats[a]={calls:0,records:0,rejected:0,passed:0,violations:0,mismatches:0,clashes:0,chunks:0,names:0,unnamed:0,dupNames:0,organic:0,detail:0,activity:0});}
+function st(W,a){return W.stats[a]||(W.stats[a]={calls:0,records:0,rejected:0,passed:0,violations:0,mismatches:0,clashes:0,chunks:0,names:0,unnamed:0,dupNames:0,organic:0,detail:0,activity:0,anim:0,texture:0});}
 function container(W,cx,cy){
   const k=key(cx,cy);let c=W.chunks.get(k);
   if(!c){c={cx,cy,k,owner:null,grants:{},records:[],ports:{},lots:[],pens:[],flags:[],nodes:new Map()};W.chunks.set(k,c);}
@@ -69,6 +69,26 @@ function runChecks(W,c,rec){
 }
 function commit(W,c,rec){rec.date=W.ctx?W.ctx.date:'';c.records.push(rec);W.idIndex.set(rec.id,c.k);st(W,rec.agent).records++;runChecks(W,c,rec);}
 function cleanMeta(m){if(!m||typeof m!=='object')return null;try{const s=JSON.stringify(m);return s.length>4000?null:JSON.parse(s);}catch(e){return null;}}
+export const ANIM_TYPES=['spin','sway','bob','blink','path'];
+export const HATCH_PATTERNS=['lines','cross','brick','dots','gradient'];
+// Returns an error string, or null when the animation settings are valid.
+function animError(m){
+  if(!m)return null;
+  if(m.billboard!==undefined&&typeof m.billboard!=='boolean')return 'meta.billboard must be true or false';
+  const a=m.anim;if(a===undefined)return null;
+  if(!a||typeof a!=='object'||!ANIM_TYPES.includes(a.type))return 'meta.anim.type must be one of '+ANIM_TYPES.join(', ');
+  const num=(v,lo,hi)=>typeof v==='number'&&Number.isFinite(v)&&v>=lo&&v<=hi;
+  if(a.type==='spin'&&!num(a.rpm,-120,120))return 'spin needs rpm from -120 to 120';
+  if(a.type==='sway'&&!(num(a.deg,0,45)&&num(a.period,0.2,60)))return 'sway needs deg 0 to 45 and period 0.2 to 60 seconds';
+  if(a.type==='bob'&&!(num(a.mm,0,5000)&&num(a.period,0.2,60)))return 'bob needs mm 0 to 5000 and period 0.2 to 60 seconds';
+  if(a.type==='blink'&&!(num(a.period,0.2,60)&&(a.duty===undefined||num(a.duty,0.05,0.95))))return 'blink needs period 0.2 to 60 seconds and optional duty 0.05 to 0.95';
+  if(a.type==='path'){
+    if(!Array.isArray(a.pts)||a.pts.length<2||a.pts.length>LIMITS.ptsPerLine||!a.pts.every(vpt))return 'path needs pts, 2 to '+LIMITS.ptsPerLine+' points of [x, y, z] integer mm';
+    if(!num(a.speed,1,40000))return 'path needs speed from 1 to 40000 mm per second';
+  }
+  if(a.pivot!==undefined&&!vpt(a.pivot))return 'anim.pivot must be [x, y, z] integer mm';
+  return null;
+}
 function anyOwned(W){for(const c of W.chunks.values())if(c.owner)return true;return false;}
 
 export const TOOLS = {
@@ -93,7 +113,9 @@ export const TOOLS = {
     if(!Array.isArray(a.pts)||a.pts.length<2||a.pts.length>LIMITS.ptsPerLine||!a.pts.every(vpt))return err('pts must be 2 to '+LIMITS.ptsPerLine+' points of [x, y, z] integer mm');
     const [cx,cy]=chunkOf(a.pts[0][0],a.pts[0][1]);const c=container(W,cx,cy);
     if(!canWrite(c,agent,a.discipline))return err('no write access to chunk '+c.k+' for '+a.discipline);
-    const rec={id:W.nextId++,agent,discipline:a.discipline,color:a.color,kind:'line',pts:a.pts.map(p=>snap(c,p)),closed:!!a.closed,meta:cleanMeta(a.meta)};
+    const meta=cleanMeta(a.meta),ae=animError(meta);if(ae)return err(ae);
+    if(a.color2!==undefined&&!vcol(a.color2))return err('color2 must be a palette index');
+    const rec={id:W.nextId++,agent,discipline:a.discipline,color:a.color,color2:a.color2,kind:'line',pts:a.pts.map(p=>snap(c,p)),closed:!!a.closed,meta};
     commit(W,c,rec);return ok({id:rec.id});
   },
   place_symbol(W,agent,a){
@@ -103,7 +125,23 @@ export const TOOLS = {
     if(!vpt(a.at))return err('at must be [x, y, z] integer mm');
     const [cx,cy]=chunkOf(a.at[0],a.at[1]);const c=container(W,cx,cy);
     if(!canWrite(c,agent,a.discipline))return err('no write access to chunk '+c.k+' for '+a.discipline);
-    const rec={id:W.nextId++,agent,discipline:a.discipline,color:a.color,kind:'symbol',type:a.type,at:a.at.slice(),rot:Number.isFinite(a.rot)?a.rot:0,meta:cleanMeta(a.meta)};
+    const meta=cleanMeta(a.meta),ae=animError(meta);if(ae)return err(ae);
+    const rec={id:W.nextId++,agent,discipline:a.discipline,color:a.color,kind:'symbol',type:a.type,at:a.at.slice(),rot:Number.isFinite(a.rot)?a.rot:0,meta};
+    commit(W,c,rec);return ok({id:rec.id});
+  },
+  place_hatch(W,agent,a){
+    if(!DISC.includes(a.discipline))return err('discipline not in list');
+    if(!vcol(a.color))return err('color must be a palette index 0 to '+(PALETTE.length-1));
+    if(a.color2!==undefined&&!vcol(a.color2))return err('color2 must be a palette index');
+    if(!Array.isArray(a.pts)||a.pts.length<3||a.pts.length>64||!a.pts.every(vpt))return err('pts must be 3 to 64 points of [x, y, z] integer mm, all in one flat plane');
+    if(!HATCH_PATTERNS.includes(a.pattern))return err('pattern must be one of '+HATCH_PATTERNS.join(', '));
+    if(!isInt(a.spacing)||a.spacing<50||a.spacing>5000)return err('spacing must be integer mm from 50 to 5000');
+    const angle=Number.isFinite(a.angle)?a.angle:0;
+    const [cx,cy]=chunkOf(a.pts[0][0],a.pts[0][1]);const c=container(W,cx,cy);
+    if(!canWrite(c,agent,a.discipline))return err('no write access to chunk '+c.k+' for '+a.discipline);
+    const meta=cleanMeta(a.meta),ae=animError(meta);if(ae)return err(ae);
+    const rec={id:W.nextId++,agent,discipline:a.discipline,color:a.color,color2:a.color2,kind:'hatch',pts:a.pts.map(p=>p.slice()),pattern:a.pattern,spacing:a.spacing,angle,meta};
+    if(!hatchSegs(rec).length)return err('hatch made no lines: check the points form a flat polygon larger than the spacing');
     commit(W,c,rec);return ok({id:rec.id});
   },
   define_lot(W,agent,a){
@@ -195,9 +233,58 @@ export const SYMBOLS = {
   cart:(x,y,z,r)=>rot([...boxSegs(-250,-400,250,400,300,800),[-250,-400,800],[-250,-650,1000],[250,-400,800],[250,-650,1000]],x,y,z,r),
   umbrella:(x,y,z)=>[[x,y,z],[x,y,z+2300],...circle(x,y,z+2100,1100,8),[x,y,z+2300],[x+1100,y,z+2100],[x,y,z+2300],[x-1100,y,z+2100]]
 };
+// Each returned point may carry a 4th value t from 0 to 1, used to blend color into color2.
 export function recSegs(r){
   if(r.kind==='symbol')return SYMBOLS[r.type](r.at[0],r.at[1],r.at[2],r.rot,r.meta);
-  const s=[],p=r.pts;for(let i=0;i<p.length-1;i++)s.push(p[i],p[i+1]);if(r.closed&&p.length>2)s.push(p[p.length-1],p[0]);return s;
+  if(r.kind==='hatch')return hatchSegs(r);
+  const p=r.closed&&r.pts.length>2?r.pts.concat([r.pts[0]]):r.pts;
+  const d=[0];for(let i=1;i<p.length;i++)d.push(d[i-1]+Math.hypot(p[i][0]-p[i-1][0],p[i][1]-p[i-1][1],p[i][2]-p[i-1][2]));
+  const L=d[d.length-1]||1,s=[];
+  for(let i=0;i<p.length-1;i++)s.push([p[i][0],p[i][1],p[i][2],d[i]/L],[p[i+1][0],p[i+1][1],p[i+1][2],d[i+1]/L]);
+  return s;
+}
+
+// Fills a flat polygon with line patterns. Texture and shading come only from line spacing and color, never from lighting.
+const hatchCache=new WeakMap();
+export function hatchSegs(r){
+  if(hatchCache.has(r))return hatchCache.get(r);
+  const P=r.pts,o=P[0],sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+  const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],norm=(a)=>{const l=Math.hypot(...a)||1;return a.map(v=>v/l);};
+  const e1=norm(sub(P[1],o));let n=null;
+  for(let k=2;k<P.length;k++){const c=cross(sub(P[1],o),sub(P[k],o));if(Math.hypot(...c)>1e-3){n=norm(c);break;}}
+  const out=[];
+  if(!n){hatchCache.set(r,out);return out;}
+  const e2=cross(n,e1);
+  const Q=P.map(p=>{const d=sub(p,o);return [dot(d,e1),dot(d,e2)];});
+  const to3=(u,v,t)=>[Math.round(o[0]+u*e1[0]+v*e2[0]),Math.round(o[1]+u*e1[1]+v*e2[1]),Math.round(o[2]+u*e1[2]+v*e2[2]),t];
+  const inside=(u,v)=>{let c=false;for(let i=0,j=Q.length-1;i<Q.length;j=i++){const a=Q[i],b=Q[j];if((a[1]>v)!==(b[1]>v)&&u<(b[0]-a[0])*(v-a[1])/(b[1]-a[1])+a[0])c=!c;}return c;};
+  const MAX=3000;
+  const family=(deg,steps)=>{
+    const a=deg*Math.PI/180,d=[Math.cos(a),Math.sin(a)],m=[-Math.sin(a),Math.cos(a)];
+    const ms=Q.map(q=>q[0]*m[0]+q[1]*m[1]),lo=Math.min(...ms),hi=Math.max(...ms),span=hi-lo||1;
+    for(const s of steps(lo,hi)){
+      const ts=[];
+      for(let i=0;i<Q.length;i++){const A=Q[i],B=Q[(i+1)%Q.length];const ma=A[0]*m[0]+A[1]*m[1],mb=B[0]*m[0]+B[1]*m[1];if((ma<s)!==(mb<s)){const f=(s-ma)/(mb-ma);const X=A[0]+f*(B[0]-A[0]),Y=A[1]+f*(B[1]-A[1]);ts.push(X*d[0]+Y*d[1]);}}
+      ts.sort((x,y)=>x-y);
+      const t=(s-lo)/span;
+      for(let i=0;i+1<ts.length&&out.length<MAX;i+=2){out.push(to3(s*m[0]+ts[i]*d[0],s*m[1]+ts[i]*d[1],t),to3(s*m[0]+ts[i+1]*d[0],s*m[1]+ts[i+1]*d[1],t));}
+    }
+    return {d,m,lo,hi};
+  };
+  const even=(sp)=>(lo,hi)=>{const a=[];for(let s=lo+sp/2;s<hi;s+=sp)a.push(s);return a;};
+  const sp=r.spacing,ang=r.angle||0;
+  if(r.pattern==='lines')family(ang,even(sp));
+  else if(r.pattern==='cross'){family(ang,even(sp));family(ang+90,even(sp));}
+  else if(r.pattern==='gradient')family(ang,(lo,hi)=>{const a=[];let g=sp/3,s=lo+g;while(s<hi){a.push(s);g*=1.18;s+=g;}return a;});
+  else if(r.pattern==='brick'){
+    const f=family(ang,even(sp));const us=Q.map(q=>q[0]*f.d[0]+q[1]*f.d[1]),ulo=Math.min(...us),uhi=Math.max(...us);
+    let row=0;for(let s=f.lo+sp/2;s+sp<f.hi;s+=sp,row++){for(let u=ulo+(row%2?sp:0);u<uhi&&out.length<MAX;u+=sp*2){const x=u*f.d[0]+(s+sp/2)*f.m[0],y=u*f.d[1]+(s+sp/2)*f.m[1];if(inside(x,y))out.push(to3(u*f.d[0]+s*f.m[0],u*f.d[1]+s*f.m[1],0),to3(u*f.d[0]+(s+sp)*f.m[0],u*f.d[1]+(s+sp)*f.m[1],0));}}
+  }else if(r.pattern==='dots'){
+    const a=ang*Math.PI/180,d=[Math.cos(a),Math.sin(a)],m=[-Math.sin(a),Math.cos(a)];
+    const us=Q.map(q=>q[0]*d[0]+q[1]*d[1]),vs=Q.map(q=>q[0]*m[0]+q[1]*m[1]),h=Math.max(25,sp/8);
+    for(let u=Math.min(...us)+sp/2;u<Math.max(...us);u+=sp)for(let v=Math.min(...vs)+sp/2;v<Math.max(...vs)&&out.length<MAX;v+=sp){const x=u*d[0]+v*m[0],y=u*d[1]+v*m[1];if(inside(x,y))out.push(to3(x-h*d[0],y-h*d[1],0),to3(x+h*d[0],y+h*d[1],0));}
+  }
+  hatchCache.set(r,out);return out;
 }
 
 // Plumbing or electrical runs that cross a wall need a declared penetration from the same agent within 400 mm.
@@ -235,14 +322,16 @@ export function clashCheck(W){
 const nameOf=(v)=>typeof v==='string'&&v.trim().length>=1&&v.length<=60;
 export function finalize(W){
   clashCheck(W);
-  for(const s of Object.values(W.stats)){s.names=0;s.unnamed=0;s.dupNames=0;s.organic=0;s.detail=0;s.activity=0;}
+  for(const s of Object.values(W.stats)){s.names=0;s.unnamed=0;s.dupNames=0;s.organic=0;s.detail=0;s.activity=0;s.anim=0;s.texture=0;}
   const buildings=new Map(),streetsSeen=new Set();
   W.labels=[];
   const recs=[];for(const c of W.chunks.values())for(const r of c.records)recs.push([c,r]);
   recs.sort((a,b)=>a[1].id-b[1].id);
-  const organic={},detail={},activity={},actText=new Set();
+  const organic={},detail={},activity={},actText=new Set(),anim={},tex={};
   for(const [c,r] of recs){
-    const s=st(W,r.agent),m=r.meta||{};
+    const s=st(W,r.agent),m=r.meta||{},ak2=r.agent+'|'+c.k;
+    if((m.anim||m.billboard)&&(anim[ak2]||0)<30){anim[ak2]=(anim[ak2]||0)+1;s.anim++;}
+    if((r.kind==='hatch'||r.color2!==undefined)&&(tex[ak2]||0)<40){tex[ak2]=(tex[ak2]||0)+1;s.texture++;}
     if(r.kind==='line'&&r.discipline==='street'){
       const names=Array.isArray(m.street)?m.street:[m.street];
       if(!names.length||!names.every(nameOf)){s.unnamed++;c.flags.push(r.pts[0]);W.log.push({agent:r.agent,msg:'street record '+r.id+' in '+c.k+' has no meta.street name',flag:true,date:r.date});}
@@ -281,7 +370,7 @@ export function finalize(W){
   }
 }
 
-export const scoreOf = (s)=>(s.passed||0)+(s.names||0)+(s.organic||0)+(s.detail||0)+2*(s.activity||0)-5*(s.violations||0)-10*(s.mismatches||0)-10*(s.clashes||0)-2*(s.unnamed||0)-5*(s.dupNames||0)-(s.rejected||0);
+export const scoreOf = (s)=>(s.passed||0)+(s.anim||0)+(s.texture||0)+(s.names||0)+(s.organic||0)+(s.detail||0)+2*(s.activity||0)-5*(s.violations||0)-10*(s.mismatches||0)-10*(s.clashes||0)-2*(s.unnamed||0)-5*(s.dupNames||0)-(s.rejected||0);
 
 // Text summary agents read before they play.
 export function summary(W,detailChunk){
@@ -302,7 +391,7 @@ export function summary(W,detailChunk){
   };
   if(detailChunk){
     const c=W.chunks.get(key(detailChunk[0],detailChunk[1]));
-    out.detail=c?{chunk:detailChunk,owner:c.owner,ports:c.ports,penetrations:c.pens,records:c.records.map(r=>{const o={id:r.id,agent:r.agent,discipline:r.discipline,color:r.color,kind:r.kind};if(r.kind==='line'){o.pts=r.pts;o.closed=r.closed;}else{o.type=r.type;o.at=r.at;o.rot=r.rot;}if(r.meta)o.meta=r.meta;return o;})}:null;
+    out.detail=c?{chunk:detailChunk,owner:c.owner,ports:c.ports,penetrations:c.pens,records:c.records.map(r=>{const o={id:r.id,agent:r.agent,discipline:r.discipline,color:r.color,kind:r.kind};if(r.kind==='line'||r.kind==='hatch'){o.pts=r.pts;if(r.kind==='line')o.closed=r.closed;else{o.pattern=r.pattern;o.spacing=r.spacing;o.angle=r.angle;}if(r.color2!==undefined)o.color2=r.color2;}else{o.type=r.type;o.at=r.at;o.rot=r.rot;}if(r.meta)o.meta=r.meta;return o;})}:null;
   }
   return out;
 }

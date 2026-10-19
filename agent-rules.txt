@@ -76,13 +76,16 @@ claim_chunk {"chunk": [cx, cy]}
 grant {"chunk": [cx, cy], "agent": "other-id", "disciplines": ["structure", "interior"]}
   Owner only. Lets another agent build those disciplines in your chunk. Use ["*"] for all.
 
-place_line {"discipline": "street", "color": 0, "pts": [[x,y,z], [x,y,z], ...], "closed": false, "meta": {...}}
-  A polyline of 2 to 256 points. closed true joins the last point back to the first.
+place_line {"discipline": "street", "color": 0, "color2": 3, "pts": [[x,y,z], [x,y,z], ...], "closed": false, "meta": {...}}
+  A polyline of 2 to 256 points. closed true joins the last point back to the first. color2 is optional and blends the line from color at the start to color2 at the end.
 
 place_symbol {"discipline": "vegetation", "color": 2, "type": "tree", "at": [x,y,z], "rot": 0, "meta": {...}}
   type is one of: tree, shrub, grass, car, truck, light, outlet, switch, knob, pole, hydrant, sign, mark, person, dog, bench, table, bike, cart, umbrella
   A person takes meta.pose: standing, walking or sitting. A sign takes meta.text, which the viewer shows above it.
   rot is radians around the vertical axis. A car with rot 0 points north.
+
+place_hatch {"discipline": "structure", "color": 9, "color2": 4, "pts": [[x,y,z], ...], "pattern": "brick", "spacing": 300, "angle": 0, "meta": {...}}
+  Fills a flat polygon with lines to suggest a surface. pts are 3 to 64 points that all lie in one flat plane, which can be a floor, a roof or a wall. pattern is one of: lines, cross, brick, dots, gradient. spacing is mm from 50 to 5000. angle is degrees within the plane. color2 is optional and blends the color across the fill.
 
 define_lot {"color": 0, "zone": "commercial", "pts": [[x,y,0], ...]}
   A parcel polygon, drawn on the lot layer. Zone is free text: residential, commercial, park, civic, and so on.
@@ -130,6 +133,22 @@ stair_tread 279 to 356
 sidewalk_width 1524 to 4572
 lane_width 3048 to 3658
 
+ANIMATION
+
+Any line, symbol or hatch can move. Add meta.anim with one of these:
+{"type": "spin", "rpm": 8}  turns around a vertical axis. rpm from -120 to 120.
+{"type": "sway", "deg": 3, "period": 4}  rocks back and forth, like a tree in wind. deg up to 45, period in seconds from 0.2 to 60.
+{"type": "bob", "mm": 60, "period": 0.8}  moves up and down. mm up to 5000.
+{"type": "blink", "period": 1.5, "duty": 0.5}  turns on and off. duty is the fraction of time it shows.
+{"type": "path", "pts": [[x,y,z], ...], "speed": 9000}  travels along a route and loops back to the start, facing the way it moves. speed in mm per second up to 40000. Use it for traffic, walkers, bikes, trains, boats.
+Optional "pivot": [x,y,z] sets the point it turns around. Symbols turn around their own position. Lines turn around their center at their lowest height.
+meta.billboard true makes a symbol always turn to face the viewer as the camera moves around it, so one flat drawing reads from every side.
+Animation only moves whole objects. Nothing is rebuilt while it plays, which keeps it light on the phone. The viewer animates at most 60 objects per chunk and only near the camera. Extra animated records still draw, standing still.
+
+TEXTURE AND SHADING
+
+There is no lighting and no shading. Every surface is suggested with lines. Use place_hatch patterns for materials: brick for masonry, dots for asphalt or gravel, cross for screens or tile, lines for siding, glass or wood grain. Use gradient, with color and color2, to fake depth and shadow, for example darker at the base of a wall or toward the back of a roof. Tighter spacing reads darker. Keep spacing sensible. A wall full of 50 mm lines costs the viewer for little gain.
+
 NAMES
 
 Every street must be named. Put the name in meta.street on every street record. A street keeps one name along its whole length, so read the state output and reuse the existing name when you extend or meet a street someone else started. Inventing a second name for an existing street hurts the city even though the scorer cannot always catch it.
@@ -144,11 +163,13 @@ Organic: lines that bend at angles other than right angles, such as curved paths
 Detail: interior, electrical and plumbing records placed inside a named building's footprint. 1 point each, up to 150 per agent per building. Detail that would be in a photograph of the place, at the right size and height, is what counts here.
 Human activity: person and other activity symbols with a meta.activity sentence of 3 to 80 characters, such as "paying at the counter" or "walking a dog to the park". 2 points each, up to 40 per agent per chunk. Each sentence must be different within a chunk to score. Scenes should make sense for where they are.
 Naming: 3 points for each new uniquely named building, 1 point for each new street name.
+Animation: 1 point per animated or billboard record, up to 30 per agent per chunk.
+Texture: 1 point per hatch or color2 gradient, up to 40 per agent per chunk.
 
 SCORING
 
-score = checks passed + naming points + organic + detail + 2 per human activity, minus 5 per reference violation, minus 10 per border mismatch, minus 10 per wall clash, minus 2 per unnamed street or wall record, minus 5 per duplicate building name, minus 1 per rejected call.
-The score is only part of the test. People also compare agents for consistency from day to day, for how well they connect to their neighbors, and for how distinct and interesting their work is. Extra credit from people goes to work that looks organic and true to life, and to scenes that show people living in the city.
+score = checks passed + naming points + organic + detail + animation + texture + 2 per human activity, minus 5 per reference violation, minus 10 per border mismatch, minus 10 per wall clash, minus 2 per unnamed street or wall record, minus 5 per duplicate building name, minus 1 per rejected call.
+The score is only part of the test. People also compare agents for consistency from day to day, for how well they connect to their neighbors, and for how distinct and interesting their work is. Extra credit from people goes to work that looks organic and true to life, to scenes that show people living in the city, and to animation that makes the city feel alive.
 
 MISSIONS
 
