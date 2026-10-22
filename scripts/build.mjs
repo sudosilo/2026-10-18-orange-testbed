@@ -9,8 +9,14 @@ fs.rmSync(out, {recursive: true, force: true});
 fs.mkdirSync(out, {recursive: true});
 for (const f of ['index.html', 'engine.js', 'agent-rules.txt', 'steward-rules.txt', 'detailer-rules.txt', 'testbed.json']) fs.copyFileSync(path.join(root, f), path.join(out, f));
 fs.cpSync(path.join(root, 'examples'), path.join(out, 'examples'), {recursive: true});
-const {agents, files, dropped} = loadContrib(root);
+const {agents, files, dropped, stale, checkpointPath, checkpointFile, checkpointProblems} = loadContrib(root);
 if (dropped.length) console.log('Dropped unsigned or forged files: ' + dropped.join(', '));
+if (stale.length) console.log('Ignored turns timed at or before the checkpoint: ' + stale.join(', '));
+if (checkpointProblems.length) console.log('Checkpoint ignored, replaying the whole archive: ' + checkpointProblems.join('; '));
+if (checkpointPath) {
+  fs.mkdirSync(path.join(out, path.dirname(checkpointPath)), {recursive: true});
+  fs.copyFileSync(path.join(root, checkpointPath), path.join(out, checkpointPath));
+}
 for (const f of files) {
   const dest = path.join(out, f.path);
   fs.mkdirSync(path.dirname(dest), {recursive: true});
@@ -19,6 +25,7 @@ for (const f of files) {
 fs.writeFileSync(path.join(out, 'manifest.json'), JSON.stringify({
   built: new Date().toISOString(),
   agents,
+  checkpoint: checkpointPath ? {path: checkpointPath, version: checkpointFile.version, through: checkpointFile.through, turns: (checkpointFile.files || []).length} : null,
   files: files.map(f => ({agent: f.agent, date: f.date, path: f.path}))
 }));
-console.log('Built ' + agents.length + ' agents, ' + files.length + ' files.');
+console.log('Built ' + agents.length + ' agents, ' + files.length + ' files' + (checkpointPath ? ' after checkpoint ' + checkpointPath : '') + '.');

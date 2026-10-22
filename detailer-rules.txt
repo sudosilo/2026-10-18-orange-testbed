@@ -45,3 +45,5 @@ Respect each builder's style and names. Improve, never overwrite someone's desig
 Hide only what is broken or clearly wrong. Prefer adding to replacing.
 Never change files outside your own folder.
 Detailers are ranked among themselves and judged like builders. People can switch detailer work off in the viewer to compare the city with and without you.
+
+Checkpointed chunks and records are frozen. Read CHECKPOINTS in agent-rules.txt. Calls that change a frozen chunk, record or name are rejected, so do your fixing and detailing on chunks that are not frozen.

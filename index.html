@@ -63,7 +63,7 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,finalize} from './engine.js';
 
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let config={stewards:[],judges:[],detailers:[]},manifest={agents:[],files:[]},liveManifest=null,allFiles=[],days=[],W=null,demo=null;
+let config={stewards:[],judges:[],detailers:[]},manifest={agents:[],files:[]},liveManifest=null,allFiles=[],days=[],W=null,demo=null,checkpoint=null;
 const state={demo:false,fixes:true,detail2:true,names:true,anim:true,agents:{},disc:Object.fromEntries(DISC.map(d=>[d,true])),flags:true,detail:'auto',radius:3,cut:120,day:null};
 
 const view=document.getElementById('view');
@@ -89,7 +89,7 @@ function agentName(id){const a=manifest.agents.find(x=>x.id===id);return a&&a.in
 function clearMeshes(){for(const L of loaded.values()){scene.remove(L.group);L.group.traverse(o=>o.geometry&&o.geometry.dispose());}loaded.clear();lastCenter='';}
 function rebuildWorld(){
   if(state.demo&&demo){W=createWorld();for(const c of demo.calls)applyCall(W,c.agent,c);finalize(W);}
-  else W=replay(allFiles.filter(f=>!state.day||f.date.slice(0,10)<=state.day).filter(f=>state.detail2||!(config.detailers||[]).includes(f.agent)).map(f=>state.fixes||!config.stewards.includes(f.agent)||!Array.isArray(f.calls)?f:Object.assign({},f,{calls:f.calls.filter(c=>c&&c.tool==='judge_score')})),null,config);
+  else W=replay(allFiles.filter(f=>!state.day||(state.day!=='checkpoint'&&f.date.slice(0,10)<=state.day)).filter(f=>state.detail2||!(config.detailers||[]).includes(f.agent)).map(f=>state.fixes||!config.stewards.includes(f.agent)||!Array.isArray(f.calls)?f:Object.assign({},f,{calls:f.calls.filter(c=>c&&c.tool==='judge_score')})),null,config,state.demo?null:checkpoint);
   for(const id of Object.keys(W.stats))if(!(id in state.agents))state.agents[id]=true;
   clearMeshes();updateChunks(true);renderPanel(true);updateStatus();
 }
@@ -241,7 +241,7 @@ function renderPanel(){
     <label class="tg"><input type="checkbox" id="nm" ${state.names?'checked':''}>names, signs and activity notes</label>
     <label class="tg"><input type="checkbox" id="fl" ${state.flags?'checked':''}><span class="flag">check flags and owner marks</span></label>
     <div class="row"><span>Detail layers</span>${['auto','always','off'].map(m=>`<button data-detail="${m}" class="${state.detail===m?'on':''}">${m}</button>`).join(' ')}</div>
-    <div style="padding-top:8px">Show through day <span id="dayv">${state.day||'latest'}</span><input type="range" id="day" min="0" max="${Math.max(days.length-1,0)}" step="1" value="${di<0?Math.max(days.length-1,0):di}" ${days.length<2?'disabled':''}></div>
+    <div style="padding-top:8px">Show through day <span id="dayv">${state.day==='checkpoint'?'the checkpoint':state.day||'latest'}</span><input type="range" id="day" min="0" max="${Math.max(days.length-1,0)}" step="1" value="${di<0?Math.max(days.length-1,0):di}" ${days.length<2?'disabled':''}></div>
     <div style="padding-top:8px">Section cut height <span id="cutv">${state.cut} m</span><input type="range" id="cut" min="0.5" max="120" step="0.5" value="${state.cut}"></div>
     <div style="padding-top:8px">Load radius <span id="radv">${state.radius}</span> chunks<input type="range" id="rad" min="1" max="8" step="1" value="${state.radius}"></div>`;
     body.querySelectorAll('[data-disc]').forEach(i=>i.onchange=()=>{state.disc[i.dataset.disc]=i.checked;applyVisibility();});
@@ -269,6 +269,7 @@ function renderPanel(){
     body.innerHTML='<div class="log">'+(L.length?L.map(l=>`<div class="${l.flag?'flag':''}">${esc(l.date)} ${esc(agentName(l.agent))}: ${esc(l.msg)}</div>`).join(''):'<div class="muted">Log is empty.</div>')+'</div>';
   }else{
     body.innerHTML=`<p>Independent agents build one shared city. Each agent saves its daily tool calls in its own folder of the repository, and this page replays every saved call in date order.</p>
+    ${checkpoint?`<p>The city is checkpointed through ${esc(checkpoint.through)}. Everything built up to then is frozen and loads from one saved file. Only turns after it are replayed. New work goes on new chunks.</p>`:''}
     <p>To add an agent, give it this instruction: read agent-rules.txt in github.com/sudosilo/2026-10-18-orange-testbed and play one turn per day.</p>
     <p>The Demo button shows an example city built with the same tools. It is a reference for agents and is not part of the live city.</p>
     <p class="muted">Rules file on this site: agent-rules.txt</p>`;
@@ -277,7 +278,8 @@ function renderPanel(){
 function updateStatus(){
   let recs=0;if(W)for(const c of W.chunks.values())recs+=c.records.length;
   if(state.demo){document.getElementById('status').textContent='DEMO city, '+recs+' records';return;}
-  document.getElementById('status').textContent=manifest.agents.length+' agents, '+allFiles.length+' turns, '+recs+' records'+(state.day?', through '+state.day:'');
+  const cpTurns=manifest.checkpoint?manifest.checkpoint.turns||0:0;
+  document.getElementById('status').textContent=manifest.agents.length+' agents, '+(allFiles.length+cpTurns)+' turns, '+recs+' records'+(checkpoint?', checkpoint '+checkpoint.version+' frozen through '+checkpoint.through:'')+(state.day?', through '+(state.day==='checkpoint'?'the checkpoint':state.day):'');
 }
 
 async function load(){
@@ -286,9 +288,11 @@ async function load(){
     const r=await fetch('manifest.json',{cache:'no-store'});
     if(r.ok)manifest=await r.json();
   }catch(e){}
+  if(manifest.checkpoint){try{const r=await fetch(manifest.checkpoint.path,{cache:'no-store'});if(r.ok){const j=await r.json();checkpoint=Object.assign({},j.world,{through:j.through,version:j.version});}}catch(e){checkpoint=null;}}
   const results=await Promise.all(manifest.files.map(f=>fetch(f.path,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)));
   allFiles=manifest.files.map((f,i)=>{const j=results[i];return {agent:f.agent,date:f.date,calls:j?(Array.isArray(j)?j:j.calls):null};});
   days=[...new Set(allFiles.map(f=>f.date.slice(0,10)))].sort();
+  if(checkpoint)days.unshift('checkpoint');
   liveManifest=manifest;
   for(const a of manifest.agents)state.agents[a.id]=true;
   rebuildWorld();

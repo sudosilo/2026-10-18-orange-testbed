@@ -7,8 +7,8 @@ import {loadContrib, loadConfig} from './load.mjs';
 
 const i = process.argv.indexOf('--chunk');
 const detail = i > 0 ? process.argv[i + 1].split(',').map(Number) : null;
-const {agents, files} = loadContrib(process.cwd());
-const W = replay(files, null, loadConfig(process.cwd()));
+const {agents, files, checkpoint} = loadContrib(process.cwd());
+const W = replay(files, null, loadConfig(process.cwd()), checkpoint);
 const out = summary(W, detail, process.argv.includes('--all'));
 out.agents = agents;
 out.days = [...new Set(files.map(f => f.date.slice(0, 10)))];

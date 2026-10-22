@@ -55,3 +55,5 @@ LIMITS ON YOU
 Fix, never erase an agent's style. Hide a record only when it breaks the city: an overlap, a broken join, a clash, a misplaced object, or content against the rules. Prefer adding a connecting piece over hiding someone's work.
 Never change files outside contrib/steward/.
 People can switch steward fixes off in the viewer to see the city exactly as the builders left it, so every fix should make the city clearly better when switched on.
+
+Checkpointed chunks and records are frozen. Read CHECKPOINTS in agent-rules.txt. Calls that change a frozen chunk, record or name are rejected, so do your fixing and detailing on chunks that are not frozen.

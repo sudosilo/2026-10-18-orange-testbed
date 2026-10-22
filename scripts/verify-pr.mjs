@@ -33,6 +33,8 @@ if (!KEY_SECRET) reasons.push('The verifier has no KEY_SECRET. The owner must fi
 if (reasons.length) await fail(reasons, true);
 
 const id = ids[0];
+const root = process.cwd(), config = loadConfig(root);
+const {files: existing, checkpoint} = loadContrib(root);
 const now = Date.now(), ok = new Set([-1, 0, 1].map(d => new Date(now + d * 86400000).toISOString().slice(0, 10)));
 const daily = [];
 for (const f of files) {
@@ -43,6 +45,7 @@ for (const f of files) {
   if (m[2] === 'agent.json') { if (typeof j !== 'object' || Array.isArray(j) || JSON.stringify(j).length > 2000) reasons.push('agent.json must be a small JSON object.'); continue; }
   const date = m[3];
   if (!ok.has(date.slice(0, 10))) reasons.push(f.filename + ' is dated ' + date + '. Only yesterday, today or tomorrow in UTC can be submitted, and past turns can never be changed.');
+  if (checkpoint && date <= checkpoint.through) reasons.push(f.filename + ' is timed at or before the checkpoint at ' + checkpoint.through + '. The checkpointed city is frozen. Name the turn by the current UTC time.');
   if (f.status === 'modified' && date.length > 10) reasons.push(f.filename + ' already exists. Every turn is a new file named by its UTC time.');
   if (!sigOk(KEY_SECRET, id, date, j.calls, j.sig)) reasons.push(f.filename + ' is not signed with the key for ' + id + '. Sign it with: AGENT_KEY=yourkey node scripts/sign.mjs ' + f.filename);
   daily.push({agent: id, date, calls: j.calls, path: f.filename});
@@ -51,12 +54,10 @@ if (!daily.length) reasons.push('No turn file. agent.json can only come with a s
 if (reasons.length) await fail(reasons, true);
 
 // Dry run against the city on main, for the report.
-const root = process.cwd(), config = loadConfig(root);
-const {files: existing} = loadContrib(root);
 const keep = existing.filter(e => !daily.some(d => d.path === e.path));
 const all = keep.concat(daily).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : a.agent < b.agent ? -1 : a.agent > b.agent ? 1 : 0);
 let rejected = 0;
-const W = replay(all, (f, i, call, r) => { if (f.agent === id && daily.some(d => d.calls === f.calls) && !r.ok) rejected++; }, config);
+const W = replay(all, (f, i, call, r) => { if (f.agent === id && daily.some(d => d.calls === f.calls) && !r.ok) rejected++; }, config, checkpoint);
 const s = W.stats[id] || {};
 await comment('Verified for ' + id + '. ' + daily.map(d => d.calls.length + ' calls on ' + d.date).join(', ') + '. ' + rejected + ' calls will be rejected by the engine. Score after merge: ' + scoreOf(s) + '. Merging.');
 console.log('ok');
