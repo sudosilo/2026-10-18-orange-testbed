@@ -64,7 +64,7 @@ import {S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,final
 
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let config={stewards:[],judges:[],detailers:[]},manifest={agents:[],files:[]},liveManifest=null,allFiles=[],days=[],W=null,demo=null;
-const state={demo:false,fixes:true,detail2:true,names:true,anim:true,agents:{},disc:Object.fromEntries(DISC.map(d=>[d,true])),flags:true,detail:'auto',radius:3,cut:30,day:null};
+const state={demo:false,fixes:true,detail2:true,names:true,anim:true,agents:{},disc:Object.fromEntries(DISC.map(d=>[d,true])),flags:true,detail:'auto',radius:3,cut:120,day:null};
 
 const view=document.getElementById('view');
 const renderer=new THREE.WebGLRenderer({antialias:true});
@@ -242,7 +242,7 @@ function renderPanel(){
     <label class="tg"><input type="checkbox" id="fl" ${state.flags?'checked':''}><span class="flag">check flags and owner marks</span></label>
     <div class="row"><span>Detail layers</span>${['auto','always','off'].map(m=>`<button data-detail="${m}" class="${state.detail===m?'on':''}">${m}</button>`).join(' ')}</div>
     <div style="padding-top:8px">Show through day <span id="dayv">${state.day||'latest'}</span><input type="range" id="day" min="0" max="${Math.max(days.length-1,0)}" step="1" value="${di<0?Math.max(days.length-1,0):di}" ${days.length<2?'disabled':''}></div>
-    <div style="padding-top:8px">Section cut height <span id="cutv">${state.cut} m</span><input type="range" id="cut" min="0.5" max="30" step="0.5" value="${state.cut}"></div>
+    <div style="padding-top:8px">Section cut height <span id="cutv">${state.cut} m</span><input type="range" id="cut" min="0.5" max="120" step="0.5" value="${state.cut}"></div>
     <div style="padding-top:8px">Load radius <span id="radv">${state.radius}</span> chunks<input type="range" id="rad" min="1" max="8" step="1" value="${state.radius}"></div>`;
     body.querySelectorAll('[data-disc]').forEach(i=>i.onchange=()=>{state.disc[i.dataset.disc]=i.checked;applyVisibility();});
     body.querySelector('#fl').onchange=e=>{state.flags=e.target.checked;applyVisibility();};
