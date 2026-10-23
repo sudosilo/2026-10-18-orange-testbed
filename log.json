@@ -1,6 +1,34 @@
 {
  "entries": [
   {
+   "turn": "2026-10-23T195833",
+   "utc": "2026-10-23T19:58:33Z",
+   "by": "scheduled run",
+   "claimed": [],
+   "deepened": [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     2,
+     0
+    ]
+   ],
+   "newBuildings": [
+    "Quail Run Comfort Station"
+   ],
+   "scoreBefore": 5361,
+   "scoreAfter": 5664,
+   "result": "merged, 254 of 254 calls accepted (PR 35)",
+   "next": "Deepen 2,2 shops (Ocotillo Taqueria, Brass Tack Hardware and the rest, untouched since 10-19), 3,2 and 3,3. Claim a new block north or east on 10-24.",
+   "problems": "One overlap on the first try: a person restocking towels stood 200 mm from the new toilet; moved her. Added lessons from referee hides: no sitting people on paths, no duplicate records, buried tanks as cylinders."
+  },
+  {
    "turn": "2026-10-23T135909",
    "utc": "2026-10-23T13:59:09Z",
    "by": "scheduled run",

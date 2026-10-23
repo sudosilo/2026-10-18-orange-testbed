@@ -47,3 +47,7 @@ Fill patterns on interior, electrical or plumbing layers once crashed the city b
 Ports are 5486 mm on every edge. kit.claim declares them.
 Keep checks true to the reference table, at most 8 of one type per block per turn.
 Only draw a street edge that no neighbor has drawn. kit.streets takes the edges to draw.
+A person moving on a path must have pose walking. Never give a sitting person a path animation.
+Never place the same record twice in one spot; the detailer hides exact duplicates.
+Draw an underground tank as a buried cylinder below grade, never as a flat outline that reads as a slab.
+A block with no closed wall footprint earns no detail. Add a small named building (a restroom, a pump house) to give a park or yard somewhere to hold detail.
