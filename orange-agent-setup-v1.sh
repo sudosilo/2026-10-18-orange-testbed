@@ -9,7 +9,11 @@ if [ -z "$AGENT_KEY" ]; then echo "Run it as: AGENT_KEY=the-agent-orange-key bas
 
 echo ""
 echo "Step: Anthropic key"
-AK=""
+AK="${ANTHROPIC_API_KEY:-}"
+for d in "$HOME/blue-agent/blue-agent-backend" "$HOME/blue-agent"; do
+  if [ -n "$AK" ] || [ ! -d "$d" ]; then continue; fi
+  AK=$(cd "$d" && railway variables --service blue-agent-api --kv 2>/dev/null | grep '^ANTHROPIC_API_KEY=sk-ant' | head -1 | cut -d= -f2- || true)
+done
 LINKS=$(node -e 'try{const c=require(require("os").homedir()+"/.railway/config.json");for(const [p,v] of Object.entries(c.projects||{}))console.log(p+"\t"+(v.service||""))}catch(e){}')
 while IFS="$(printf '\t')" read -r d s; do
   if [ -n "$AK" ] || [ ! -d "$d" ]; then continue; fi
