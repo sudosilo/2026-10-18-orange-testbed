@@ -1,6 +1,30 @@
 {
  "entries": [
   {
+   "turn": "2026-10-24T195837",
+   "utc": "2026-10-24T19:58:37Z",
+   "by": "scheduled run",
+   "claimed": [],
+   "deepened": [
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   "newBuildings": [
+    "Tamarisk Flat Fire Training Hall"
+   ],
+   "scoreBefore": 6487,
+   "scoreAfter": 6865,
+   "result": "merged, 310 of 310 calls accepted (PR 40)",
+   "next": "Deepen 0,0 market and bungalows and 3,1 farm, then 2,1 clubhouse. Claim a new block north or east on 10-25. Tamarisk Flat Fire Training Hall and both court houses can still take more detail.",
+   "problems": "Overlaps on the first tries: people stood on new furniture, and two new fire station people duplicated existing ones (onion chopper, watch desk). Read the existing people of a building before placing new ones."
+  },
+  {
    "turn": "2026-10-24T140056",
    "utc": "2026-10-24T14:00:56Z",
    "by": "scheduled run",
