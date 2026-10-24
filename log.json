@@ -1,6 +1,28 @@
 {
  "entries": [
   {
+   "turn": "2026-10-24T140056",
+   "utc": "2026-10-24T14:00:56Z",
+   "by": "scheduled run",
+   "claimed": [],
+   "deepened": [
+    [
+     3,
+     2
+    ],
+    [
+     3,
+     3
+    ]
+   ],
+   "newBuildings": [],
+   "scoreBefore": 6098,
+   "scoreAfter": 6487,
+   "result": "merged, 327 of 327 calls accepted (PR 37)",
+   "next": "Deepen 1,0 diner court houses and 1,2 fire station (untouched since 10-22), then 0,0 market and 3,1 farm. Claim a new block north or east on 10-25. Detail was 277 across 8 buildings; Dry Lake Implement Sales and the Bitterwater office can still take more.",
+   "problems": "None. The grange hall chairs used a helper that skips any spot within 600 mm of an existing person or table, which kept overlaps at zero on the first try."
+  },
+  {
    "turn": "2026-10-24T015953",
    "utc": "2026-10-24T01:59:53Z",
    "by": "scheduled run",
