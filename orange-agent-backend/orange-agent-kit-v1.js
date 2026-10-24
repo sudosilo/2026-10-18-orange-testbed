@@ -67,13 +67,14 @@ function streets(cx, cy, edges) {
   line('street', C.curb, rounded(ox + CURB, oy + CURB, ox + S - CURB, oy + S - CURB, 4572, 0, 6), {street: names, part: 'gutter line'}, {closed: true});
   const sw = [[[ox + CURB + 4572, oy + CURB], [ox + S - CURB - 4572, oy + PL], 0, hs], [[ox + CURB + 4572, oy + S - PL], [ox + S - CURB - 4572, oy + S - CURB], 0, hn], [[ox + CURB, oy + CURB + 4572], [ox + PL, oy + S - CURB - 4572], 90, vw], [[ox + S - PL, oy + CURB + 4572], [ox + S - CURB, oy + S - CURB - 4572], 90, ve]];
   for (const [a, b, ang, nm] of sw) hatch('paving', C.curb, rect(a[0], a[1], b[0], b[1], 152), 'lines', 1524, ang + 90, {sidewalk: nm, checks: [['sidewalk_width', PL - CURB]]});
-  const H = (y, nm, x0, x1) => { line('street', C.yellow, [P(x0, y + 100), P(x1, y + 100)], {street: nm, part: 'double yellow', checks: [['lane_width', LANE]]}, {color2: C.yellow}); line('street', C.yellow, [P(x0, y - 100), P(x1, y - 100)], {street: nm, part: 'double yellow'}); line('street', C.white, [P(x0, y + LANE), P(x1, y + LANE)], {street: nm, part: 'parking lane edge'}); line('street', C.white, [P(x0, y - LANE), P(x1, y - LANE)], {street: nm, part: 'parking lane edge'}); };
-  const V = (x, nm, y0, y1) => { line('street', C.yellow, [P(x + 100, y0), P(x + 100, y1)], {street: nm, part: 'double yellow', checks: [['lane_width', LANE]]}); line('street', C.yellow, [P(x - 100, y0), P(x - 100, y1)], {street: nm, part: 'double yellow'}); line('street', C.white, [P(x + LANE, y0), P(x + LANE, y1)], {street: nm, part: 'parking lane edge'}); line('street', C.white, [P(x - LANE, y0), P(x - LANE, y1)], {street: nm, part: 'parking lane edge'}); };
+  // Only lines on this block's side of the centerline can be placed; the neighbor draws the other half.
+  const H = (y, nm, x0, x1) => { let first = true; for (const [d, col, part] of [[100, C.yellow, 'double yellow'], [-100, C.yellow, 'double yellow'], [LANE, C.white, 'parking lane edge'], [-LANE, C.white, 'parking lane edge']]) { if (y + d < oy || y + d >= oy + S) continue; line('street', col, [P(x0, y + d), P(x1, y + d)], Object.assign({street: nm, part}, first ? {checks: [['lane_width', LANE]]} : {})); first = false; } };
+  const V = (x, nm, y0, y1) => { let first = true; for (const [d, col, part] of [[100, C.yellow, 'double yellow'], [-100, C.yellow, 'double yellow'], [LANE, C.white, 'parking lane edge'], [-LANE, C.white, 'parking lane edge']]) { if (x + d < ox || x + d >= ox + S) continue; line('street', col, [P(x + d, y0), P(x + d, y1)], Object.assign({street: nm, part}, first ? {checks: [['lane_width', LANE]]} : {})); first = false; } };
   const lo = 7000, hi = S - 7000;
   if (edges.s) H(oy, hs, ox + lo, ox + hi);
   if (edges.w) V(ox, vw, oy + lo, oy + hi);
-  if (edges.n) H(oy + S - 1, hn, ox + lo, ox + hi);
-  if (edges.e) V(ox + S - 1, ve, oy + lo, oy + hi);
+  if (edges.n) H(oy + S, hn, ox + lo, ox + hi);
+  if (edges.e) V(ox + S, ve, oy + lo, oy + hi);
   sym('street', C.sign, 'sign', P(ox + CURB + 700, oy + CURB + 700), 0.785, {text: hs + ' / ' + vw});
   sym('street', C.sign, 'sign', P(ox + S - CURB - 700, oy + S - CURB - 700), 0.785, {text: hn + ' / ' + ve});
   sym('street', C.brick, 'hydrant', P(ox + CURB + 600, oy + S / 2), 0);
