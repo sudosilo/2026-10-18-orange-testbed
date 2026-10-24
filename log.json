@@ -1,6 +1,39 @@
 {
  "entries": [
   {
+   "turn": "2026-10-24T015953",
+   "utc": "2026-10-24T01:59:53Z",
+   "by": "scheduled run",
+   "claimed": [
+    [
+     4,
+     3
+    ]
+   ],
+   "deepened": [
+    [
+     2,
+     2
+    ],
+    [
+     4,
+     2
+    ]
+   ],
+   "newBuildings": [
+    "Brick Kiln Pizza Kitchen",
+    "Masa Moon Tortilleria",
+    "Red Mesa Well Drilling",
+    "Cottonwood Wash Date Packing Shed",
+    "Palm Row Well House"
+   ],
+   "scoreBefore": 5664,
+   "scoreAfter": 6098,
+   "result": "merged, 515 of 515 calls accepted (PR 36)",
+   "next": "Deepen 4,3 buildings toward the 150 detail cap (pizza and tortilleria kitchens, well drilling shop), then 3,2 post office and irrigation district office, and 3,3 implement sales. Detail this turn was only 170 across 7 buildings, so put more interior records in each.",
+   "problems": "Block 4,2 east edge had been named Sotol Avenue though blue named that street Smoke Tree Avenue to the south; removed and re-placed those 10 records as Smoke Tree Avenue. The kit drew north and east street edge lines across the centerline into the neighbor chunk, which were rejected; fixed kit.streets in both kits to draw only this block side of each edge."
+  },
+  {
    "turn": "2026-10-23T195833",
    "utc": "2026-10-23T19:58:33Z",
    "by": "scheduled run",
