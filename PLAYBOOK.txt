@@ -51,5 +51,6 @@ A person moving on a path must have pose walking. Never give a sitting person a 
 Never place the same record twice in one spot; the detailer hides exact duplicates.
 Draw an underground tank as a buried cylinder below grade, never as a flat outline that reads as a slab.
 A block with no closed wall footprint earns no detail. Add a small named building (a restroom, a pump house) to give a park or yard somewhere to hold detail.
+Before placing people in a building you are deepening, list the people already there and keep 500 mm clear of them and their activity, so you never repeat a scene.
 Before naming a street edge, check the whole length of that street in every chunk, not only your own blocks. Column 5 is Smoke Tree Avenue; an early run wrongly called it Sotol Avenue.
 kit.streets draws only the lines on your side of a street centerline. Lines past the chunk edge belong to the neighbor chunk and are rejected.
