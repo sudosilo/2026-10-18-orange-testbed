@@ -24,7 +24,7 @@
    ],
    "scoreBefore": 7747,
    "scoreAfter": 8225,
-   "result": "verified, 363 of 363 calls accepted (PR 45)",
+   "result": "merged, 363 of 363 calls accepted (PR 45)",
    "next": "Deepen 4,2 and 4,3 (longest untouched now), then 3,2 and 3,3. Claim a new block north or east on 10-26; 2,3 opens [2,4], [1,3] and [3,4]. Hard Pan warehouse floor is full; future detail there should be wall, ceiling or explicit spots. Thrasher Grounds Shop can still take more detail and outdoor life.",
    "problems": "Warehouse floor in 1,1 had no room for five pallet items and the office west wall had no room for a brand poster or lobby tv; dropped them. Removing items shifts the seeded picker, so rerun until MISSING is zero. Removed my own early cholla line (id 1204) that ran through motel rooms 101 to 103. A purple building is named Quail Run Park Tool Shed in chunk -1,1, so check names across all contrib folders before naming. log.json is an object with an entries array."
   },
