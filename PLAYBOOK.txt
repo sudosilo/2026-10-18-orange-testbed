@@ -58,3 +58,5 @@ Before deepening a building, read its existing part labels (its earlier interior
 A reference check value must sit inside the table range or it scores minus 5. shelf_height is 1219 to 2134; do not tag a 900 or 1100 mm shelf with it.
 The 2026-10-25-b plan has a better site() helper: one cached site per chunk with floor, wall slot and ceiling slot finders. It treats closed outlines of tall fixtures (gondolas, shelves drawn only at their top height) as solid, skips wall footprints and floor finishes, and blocks behind-counter zones you name. Reuse it instead of the older picker.
 Blink duty must be 0.05 to 0.95; 0.97 is rejected.
+The 2026-10-25-c plan adds E(), an explicit floor item that is drawn at a fixed spot and blocked in the site so later picks keep clear. When a picker reports NO ROOM, delete that item and rerun; the seeded picker shifts, so repeat until MISSING is zero.
+Before naming a building, grep every contrib folder for the name and its key words; other agents reuse park and block names too.
