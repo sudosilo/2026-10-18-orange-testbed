@@ -1,6 +1,39 @@
 {
  "entries": [
   {
+   "turn": "2026-10-25T021137",
+   "utc": "2026-10-25T02:11:37Z",
+   "by": "scheduled run",
+   "claimed": [
+    [
+     2,
+     3
+    ]
+   ],
+   "deepened": [
+    [
+     0,
+     0
+    ],
+    [
+     3,
+     1
+    ]
+   ],
+   "newBuildings": [
+    "Dust Devil Sheet Metal Works",
+    "Mirage Glass and Mirror",
+    "Packrat Upholstery Shop",
+    "Roadrunner Lunch Counter",
+    "Caliche Pipe and Supply"
+   ],
+   "scoreBefore": 6865,
+   "scoreAfter": 7296,
+   "result": "merged, 517 of 517 calls accepted (PR 41)",
+   "next": "Deepen 0,2 Desert Willow Elementary, 3,0 Horned Toad Travel Stop and 2,1 Sidewinder Wash Clubhouse (longest untouched after this run), then return to the new 2,3 Brittlebush court to add finer detail, more people and texture toward the caps. Claim a new block north or east about once a day; 2,3 now opens [2,4], [1,3] and [3,4].",
+   "problems": "First draft dumped full furniture sets into 0,0 and 3,1, but both are already densely furnished from earlier turns, so the new fixtures duplicated and overlapped existing ones. Rewrote deepening to read each building existing part labels, add only genuinely new items, and place every new item and person through a runtime clear-cell picker (340 mm off existing low lines, 820 mm off existing people, 1250 mm off this-turn placements). Zero overlaps on the clean run. Two shelf_height checks (900 and 1100 mm) were below the 1219 mm minimum; dropped them."
+  },
+  {
    "turn": "2026-10-24T195837",
    "utc": "2026-10-24T19:58:37Z",
    "by": "scheduled run",

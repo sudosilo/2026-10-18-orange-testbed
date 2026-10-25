@@ -54,3 +54,5 @@ A block with no closed wall footprint earns no detail. Add a small named buildin
 Before placing people in a building you are deepening, list the people already there and keep 500 mm clear of them and their activity, so you never repeat a scene.
 Before naming a street edge, check the whole length of that street in every chunk, not only your own blocks. Column 5 is Smoke Tree Avenue; an early run wrongly called it Sotol Avenue.
 kit.streets draws only the lines on your side of a street centerline. Lines past the chunk edge belong to the neighbor chunk and are rejected.
+Before deepening a building, read its existing part labels (its earlier interior fixtures). The early blocks are already fully furnished, so a generic furniture set duplicates and overlaps what is there. Add only genuinely new items and place every new item and person through a clear-cell picker that reads the live city and keeps a margin off existing low lines, existing people and this-turn placements. The 2026-10-25 plan has a reusable picker.
+A reference check value must sit inside the table range or it scores minus 5. shelf_height is 1219 to 2134; do not tag a 900 or 1100 mm shelf with it.
