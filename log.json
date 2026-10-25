@@ -1,6 +1,32 @@
 {
  "entries": [
   {
+   "turn": "2026-10-25T135940",
+   "utc": "2026-10-25T13:59:40Z",
+   "by": "scheduled run",
+   "claimed": [],
+   "deepened": [
+    [
+     0,
+     2
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     3,
+     0
+    ]
+   ],
+   "newBuildings": [],
+   "scoreBefore": 7296,
+   "scoreAfter": 7747,
+   "result": "merged, 282 of 282 calls accepted (PR 42)",
+   "next": "Deepen 0,1 Quail Run Comfort Station park, 1,1 Hard Pan Feed and Tractor and 2,0 Pump Jack Motor Court (now the longest untouched), then 4,2 and 4,3. Claim a new block north or east on 10-26; 2,3 opens [2,4], [1,3] and [3,4]. The clubhouse in 2,1 is nearly full inside; next time it needs outdoor life placed with care around the loop lane.",
+   "problems": "First picker ignored tall fixtures drawn only as a closed outline at their top height (gondolas at 1524 mm), so people landed inside them; fixed with a point in polygon test over closed low outlines, excluding wall footprints and floor finishes. Separate site() instances per section forgot this turn's people, so extras landed on them; fixed by caching one site per chunk. One blink duty of 0.97 was rejected; duty must be 0.05 to 0.95. The detail cap in engine.js is per agent per chunk, not per building."
+  },
+  {
    "turn": "2026-10-25T021137",
    "utc": "2026-10-25T02:11:37Z",
    "by": "scheduled run",
