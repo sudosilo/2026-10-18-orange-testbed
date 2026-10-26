@@ -413,34 +413,58 @@ export const APPOINTED={city_clerk:1,planning_director:1,parks_director:1};
 export const OFFICE_TITLES={mayor:'Mayor',council:'City Council',city_clerk:'City Clerk',planning_director:'Planning Director',parks_director:'Parks Director',commissioner:'Commissioner of Public Works',judge:'Municipal Judge'};
 const ORD_KINDS=['general','name_city','district','rezone'];
 // THE CENSUS. The city's people are called Sims. A Sim is a person or cyclist symbol that is not hidden.
-// Sims only count where they have homes: a block's population is the smaller of its Sims and its housing capacity.
-// Housing comes from named buildings whose wall records carry meta.homes, at SIMS_PER_HOME each, and a building
-// can hold at most one home per HOME_AREA square meters of footprint per floor (meta.floors, default 1).
-export const POP_NAME='Sims', SIMS_PER_HOME=3, HOME_AREA=40;
+// Sims live anywhere in the city that has homes. All Sims form one city-wide pool that fills every home: when there are
+// more Sims than beds every home is full, otherwise each housing block fills in proportion to its capacity.
+// A named building is housing when its lot is zoned residential, its name says it is a dwelling, or its walls carry meta.homes.
+// Homes are meta.homes when given, otherwise estimated from footprint and floors. Either way a building holds at most
+// one home per HOME_AREA square meters of floor. Each home houses meta.household Sims (1 to 8), default SIMS_PER_HOME.
+export const POP_NAME='Sims', SIMS_PER_HOME=3, HOME_AREA=40, UNIT_AREA=70, FLOOR_MM=3200;
+const DWELLING=/\b(apartments?|townhomes?|townhouses?|duplex|triplex|fourplex|cottage|bungalow|residence|casita|bunkhouse|farmhouse|ranch house|manufactured home|mobile home|condos?|lofts|dormitory|homes?)\b|heights (east|west|north|south)|courts building|space \d+/i;
+const NOT_DWELLING=/\b(office|laundry|nursery|clubhouse|shed|garage|pump|well house|skybridge|mausoleum|booth|stand|depot|station|school|clinic|library|chapel|church|store|shop|grocery|diner|cafe|bakery|bar|hall|center|plant|tower|tank|reservoir|showroom|service|welding|rental|post office)\b/i;
+const PLEX={duplex:2,triplex:3,fourplex:4};
 export function census(W){
-  const out={};
+  const blocks={},housing=[];
   for(const c of W.chunks.values()){
     let sims=0;const bld={};
     for(const r of c.records){
       if(r.hidden)continue;
       if(r.kind==='symbol'&&(r.type==='person'||r.type==='cyclist'))sims++;
       const m=r.meta||{};
-      if(r.kind==='line'&&m.wall&&nameOf(m.building)&&isInt(m.homes)&&m.homes>0){
-        const xs=r.pts.map(p=>p[0]),ys=r.pts.map(p=>p[1]);
-        const area=(Math.max(...xs)-Math.min(...xs))*(Math.max(...ys)-Math.min(...ys))/1e6;
-        const floors=isInt(m.floors)&&m.floors>0?Math.min(m.floors,200):1;
-        const cap=Math.min(m.homes,Math.floor(area*floors/HOME_AREA));
-        const k=m.building.trim().toLowerCase();bld[k]=Math.max(bld[k]||0,cap);
-      }
+      if(r.kind!=='line'||!m.wall||!nameOf(m.building))continue;
+      const xs=r.pts.map(p=>p[0]),ys=r.pts.map(p=>p[1]),box=[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];
+      const area=(box[2]-box[0])*(box[3]-box[1])/1e6,k=m.building.trim().toLowerCase();
+      const b=bld[k]||(bld[k]={name:m.building.trim(),agent:r.agent,area:0,box,h:0,homes:null,floors:null,household:null});
+      if(area>b.area){b.area=area;b.box=box;}
+      b.h=Math.max(b.h,isInt(m.h)?m.h:0);
+      if(isInt(m.homes)&&m.homes>0)b.homes=Math.max(b.homes||0,m.homes);
+      if(isInt(m.floors)&&m.floors>0)b.floors=Math.min(Math.max(b.floors||0,m.floors),200);
+      if(isInt(m.household)&&m.household>=1&&m.household<=8)b.household=m.household;
     }
-    const homes=Object.values(bld).reduce((a,b)=>a+b,0),capacity=homes*SIMS_PER_HOME;
-    if(sims||homes)out[c.k]={chunk:[c.cx,c.cy],owner:c.owner,sims,homes,capacity,population:Math.min(sims,capacity)};
+    let homes=0,capacity=0;
+    for(const b of Object.values(bld)){
+      const cx=(b.box[0]+b.box[2])/2,cy=(b.box[1]+b.box[3])/2;
+      const lot=c.lots.find(l=>{const xs=l.pts.map(p=>p[0]),ys=l.pts.map(p=>p[1]);return cx>=Math.min(...xs)&&cx<=Math.max(...xs)&&cy>=Math.min(...ys)&&cy<=Math.max(...ys);});
+      const zone=lot?String(lot.zone):'';
+      const named=DWELLING.test(b.name),res=/^residential/i.test(zone);
+      if(b.homes===null&&(NOT_DWELLING.test(b.name)&&!named||!(named||res)))continue;
+      const floors=b.floors||Math.max(1,Math.round(b.h/FLOOR_MM)),floorArea=b.area*floors;
+      const cap=Math.max(1,Math.floor(floorArea/HOME_AREA));
+      let est=PLEX[(b.name.toLowerCase().match(/duplex|triplex|fourplex/)||[])[0]]||(floorArea<250?1:Math.floor(floorArea/UNIT_AREA));
+      const h=Math.min(b.homes!==null?b.homes:est,cap),per=b.household||SIMS_PER_HOME;
+      homes+=h;capacity+=h*per;
+      housing.push({name:b.name,chunk:[c.cx,c.cy],agent:b.agent,zone,floors,floorArea:Math.round(floorArea),homes:h,household:per,capacity:h*per,declared:b.homes!==null});
+    }
+    if(sims||homes)blocks[c.k]={chunk:[c.cx,c.cy],owner:c.owner,sims,homes,capacity,population:0};
   }
-  return out;
+  let totSims=0,totCap=0;for(const b of Object.values(blocks)){totSims+=b.sims;totCap+=b.capacity;}
+  const fill=totCap?Math.min(1,totSims/totCap):0;
+  for(const b of Object.values(blocks))b.population=Math.floor(b.capacity*fill);
+  housing.sort((a,b)=>b.capacity-a.capacity);
+  return {blocks,housing,fill};
 }
 // Voting power: each block's population, cast by the agent that owns the block.
 export function votingPower(W){
-  const p={};for(const b of Object.values(census(W)))if(b.owner&&b.population&&isResident(W,b.owner))p[b.owner]=(p[b.owner]||0)+b.population;
+  const p={};for(const b of Object.values(census(W).blocks))if(b.owner&&b.population&&isResident(W,b.owner))p[b.owner]=(p[b.owner]||0)+b.population;
   return p;
 }
 const PARKS_DISC=new Set(['vegetation','activity','paving','structure','interior','electrical','plumbing']);
@@ -524,8 +548,8 @@ export function govSummary(W){
   const residents=[];for(const c of W.chunks.values())if(c.owner&&isResident(W,c.owner)&&!residents.includes(c.owner))residents.push(c.owner);
   const elections=Object.values(g.elections).map(e=>({id:e.id,offices:e.offices,opens:e.opens,closes:e.closes,status:e.tallied?'closed':(now<e.opens?'scheduled':'open'),candidates:Object.fromEntries(Object.entries(e.candidates).map(([o,c])=>[o,Object.keys(c)])),platforms:e.platforms||{},ballotsCast:Object.fromEntries(Object.entries(e.ballots).map(([o,b])=>[o,Object.keys(b).length])),results:e.results||null}));
   const cen=census(W),pw=votingPower(W);
-  const totals={sims:0,homes:0,capacity:0,population:0};for(const b of Object.values(cen))for(const k in totals)totals[k]+=b[k];
-  return {popName:POP_NAME,census:{totals,blocks:Object.values(cen),votingPower:pw},cityName:g.cityName,officials,residents:residents.sort(),elections,ordinances:Object.values(g.ordinances),districts:g.districts,history:g.history};
+  const totals={sims:0,homes:0,capacity:0,population:0};for(const b of Object.values(cen.blocks))for(const k in totals)totals[k]+=b[k];
+  return {popName:POP_NAME,census:{totals,blocks:Object.values(cen.blocks),housing:cen.housing,votingPower:pw},cityName:g.cityName,officials,residents:residents.sort(),elections,ordinances:Object.values(g.ordinances),districts:g.districts,history:g.history};
 }
 
 // Symbols and segments, all in mm.

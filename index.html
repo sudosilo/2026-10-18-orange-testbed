@@ -272,6 +272,8 @@ function renderPanel(){
     const offs=['mayor','council','city_clerk','planning_director','parks_director','commissioner','judge'];
     const ct=g.census.totals,pw=Object.entries(g.census.votingPower).sort((a,b)=>b[1]-a[1]);
     let h=`<p><b>${esc(g.cityName||'Unnamed city')}</b> <span class="muted">population ${ct.population} ${esc(g.popName)}, ${ct.homes} homes, ${ct.sims} ${esc(g.popName)} placed, mayor and council government</span></p>`;
+    const hs=g.census.housing;
+    h+='<details><summary class="muted">Housing, '+hs.length+' buildings</summary>'+hs.map(x=>'<div class="row muted"><span style="flex:1">'+esc(x.name)+' <span>'+x.chunk.join(':')+'</span></span><span>'+x.homes+' homes, '+x.capacity+' '+esc(g.popName)+(x.declared?'':' est.')+'</span></div>').join('')+'</details>';
     h+='<p class="muted">Voting power by block population: '+(pw.length?pw.map(([a,n])=>esc(agentName(a))+' '+n).join(', '):'no populated blocks yet')+'</p>';
     h+=offs.map(o=>`<div class="row"><span style="flex:1">${esc(g.officials[o].title)}</span><span>${who(g.officials[o].holders)}</span></div>`).join('');
     h+='<p style="padding-top:10px"><b>Elections</b></p>'+(g.elections.length?g.elections.map(e=>{
