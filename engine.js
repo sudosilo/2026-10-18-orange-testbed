@@ -422,14 +422,25 @@ export const POP_NAME='Sims', SIMS_PER_HOME=3, HOME_AREA=40, UNIT_AREA=70, FLOOR
 const DWELLING=/\b(apartments?|townhomes?|townhouses?|duplex|triplex|fourplex|cottage|bungalow|residence|casita|bunkhouse|farmhouse|ranch house|manufactured home|mobile home|condos?|lofts|dormitory|homes?)\b|heights (east|west|north|south)|courts building|space \d+/i;
 const NOT_DWELLING=/\b(office|laundry|nursery|clubhouse|shed|garage|pump|well house|skybridge|mausoleum|booth|stand|depot|station|school|clinic|library|chapel|church|store|shop|grocery|diner|cafe|bakery|bar|hall|center|plant|tower|tank|reservoir|showroom|service|welding|rental|post office)\b/i;
 const PLEX={duplex:2,triplex:3,fourplex:4};
+// RVs are homes too. Inside a lot zoned for RVs, camping or mobile homes, each RV counts as one home: a vehicle line whose
+// meta.part names an RV and its chassis (so the roof line of the same RV is not counted twice), or any record with meta.rv true.
+const RV_ZONE=/\brv\b|camp|mobile|manufactured/i;
+const RV_PART=/motorhome|camper|trailer|airstream|fifth wheel|toy hauler|teardrop|canned ham|\brv\b/i;
+export const SIMS_PER_RV=2;
+const lotAt=(c,x,y)=>c.lots.find(l=>{const xs=l.pts.map(p=>p[0]),ys=l.pts.map(p=>p[1]);return x>=Math.min(...xs)&&x<=Math.max(...xs)&&y>=Math.min(...ys)&&y<=Math.max(...ys);});
 export function census(W){
   const blocks={},housing=[];
   for(const c of W.chunks.values()){
-    let sims=0;const bld={};
+    let sims=0;const bld={},rvs=[];
     for(const r of c.records){
       if(r.hidden)continue;
       if(r.kind==='symbol'&&(r.type==='person'||r.type==='cyclist'))sims++;
       const m=r.meta||{};
+      const isRv=m.rv===true||(r.kind==='line'&&r.discipline==='vehicle'&&typeof m.part==='string'&&RV_PART.test(m.part)&&/chassis/i.test(m.part));
+      if(isRv){
+        const p=r.kind==='symbol'?r.at:r.pts[0];const lot=lotAt(c,p[0],p[1]);
+        if(m.rv===true||(lot&&RV_ZONE.test(String(lot.zone)))){rvs.push({name:'RV: '+String(m.part||m.name||'RV').replace(/\s*chassis\s*/i,'').trim(),agent:r.agent,zone:lot?String(lot.zone):'',household:isInt(m.household)&&m.household>=1&&m.household<=8?m.household:SIMS_PER_RV});continue;}
+      }
       if(r.kind!=='line'||!m.wall||!nameOf(m.building))continue;
       const xs=r.pts.map(p=>p[0]),ys=r.pts.map(p=>p[1]),box=[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];
       const area=(box[2]-box[0])*(box[3]-box[1])/1e6,k=m.building.trim().toLowerCase();
@@ -454,6 +465,7 @@ export function census(W){
       homes+=h;capacity+=h*per;
       housing.push({name:b.name,chunk:[c.cx,c.cy],agent:b.agent,zone,floors,floorArea:Math.round(floorArea),homes:h,household:per,capacity:h*per,declared:b.homes!==null});
     }
+    for(const v of rvs){homes++;capacity+=v.household;housing.push({name:v.name,chunk:[c.cx,c.cy],agent:v.agent,zone:v.zone,floors:1,floorArea:0,homes:1,household:v.household,capacity:v.household,declared:false,rv:true});}
     if(sims||homes)blocks[c.k]={chunk:[c.cx,c.cy],owner:c.owner,sims,homes,capacity,population:0};
   }
   let totSims=0,totCap=0;for(const b of Object.values(blocks)){totSims+=b.sims;totCap+=b.capacity;}
