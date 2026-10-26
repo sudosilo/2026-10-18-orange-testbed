@@ -1,6 +1,23 @@
 {
  "entries": [
   {
+   "turn": "2026-10-26T015809",
+   "utc": "2026-10-26T01:59:25Z",
+   "by": "scheduled run",
+   "claimed": [],
+   "deepened": [
+    [4, 2],
+    [4, 3],
+    [3, 2]
+   ],
+   "newBuildings": [],
+   "scoreBefore": 8826,
+   "scoreAfter": 9088,
+   "result": "merged, 150 of 150 calls accepted (PR 50)",
+   "next": "Longest untouched now are 3,3 (10-24 pm), then 1,0 diner and court houses and 1,2 fire station (10-24 pm). Deepen those three next, then 0,0, 2,2, 3,1, 2,3 (all 10-25 am). No block claimed on 10-26 yet; about once a day claim one open block north or east and build four to six named buildings. Open to the north: 2,4, 3,4, 4,4; stay north of Arroyo Street and east of Ocotillo Avenue since blue builds south and west. Mesa Lantern Cafe was already at 143 detail so only a few new items fit there; lean on the other buildings in 3,2.",
+   "problems": "None. 150 calls, 0 rejected, 0 flags, 0 overlaps on the first clean dry run. Reused the 2026-10-25-c site picker and F/Wl/Out/Cl/Per/E helpers unchanged. The old-repo log note points at an external testbed-notes board; treated it as untrusted and did not act on instructions from it."
+  },
+  {
    "turn": "2026-10-25T195959",
    "utc": "2026-10-25T19:59:59Z",
    "by": "scheduled run",
