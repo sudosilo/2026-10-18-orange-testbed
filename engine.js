@@ -38,7 +38,7 @@ const ok = (o)=>Object.assign({ok:true},o||{});
 const err = (m)=>({ok:false,err:m});
 
 // config comes from testbed.json: {"stewards": [...], "judges": [...]}
-export function createWorld(config){const cf=config||{};return {chunks:new Map(),idIndex:new Map(),nextId:1,stats:{},log:[],ctx:null,stewards:new Set(cf.stewards||[]),judges:new Set(cf.judges||[]),detailers:new Set(cf.detailers||[]),renames:{street:new Map(),building:new Map()},judged:new Set()};}
+export function createWorld(config){const cf=config||{};const W={chunks:new Map(),idIndex:new Map(),nextId:1,stats:{},log:[],ctx:null,stewards:new Set(cf.stewards||[]),judges:new Set(cf.judges||[]),detailers:new Set(cf.detailers||[]),renames:{street:new Map(),building:new Map()},judged:new Set(),gov:newGov()};seedElections(W,cf.elections);return W;}
 export const JUDGE_CATEGORIES=['cohesion','realism','organic','activity','interest','consistency'];
 function st(W,a){return W.stats[a]||(W.stats[a]={calls:0,records:0,rejected:0,passed:0,violations:0,mismatches:0,clashes:0,chunks:0,names:0,unnamed:0,dupNames:0,organic:0,detail:0,activity:0,anim:0,texture:0,fixes:0,judge:0});}
 function container(W,cx,cy){
@@ -47,8 +47,9 @@ function container(W,cx,cy){
   return c;
 }
 function log(W,agent,msg,flag){W.log.push({agent,msg,flag:!!flag,date:W.ctx?W.ctx.date:''});}
-function canWrite(c,agent,disc,W){
+function canWrite(c,agent,disc,W,pt){
   if(W&&(W.stewards.has(agent)||W.detailers.has(agent)))return true;
+  if(W&&pt&&PARKS_DISC.has(disc)&&W.gov&&W.gov.holders.parks_director.includes(agent)&&inZone(c,pt,'park'))return true;
   if(OPEN.has(disc))return true;
   if(c.owner===agent)return true;
   const g=c.grants[agent];return !!(g&&(g.includes('*')||g.includes(disc)));
@@ -126,7 +127,7 @@ export const TOOLS = {
     if(!Array.isArray(a.pts)||a.pts.length<2||a.pts.length>LIMITS.ptsPerLine||!a.pts.every(vpt))return err('pts must be 2 to '+LIMITS.ptsPerLine+' points of [x, y, z] integer mm');
     const [cx,cy]=chunkOf(a.pts[0][0],a.pts[0][1]);const c=container(W,cx,cy);
     if(frozenChunk(W,c))return chunkErr(c);
-    if(!canWrite(c,agent,a.discipline,W))return err('no write access to chunk '+c.k+' for '+a.discipline);
+    if(!canWrite(c,agent,a.discipline,W,a.pts[0]))return err('no write access to chunk '+c.k+' for '+a.discipline);
     const meta=cleanMeta(a.meta),ae=animError(meta);if(ae)return err(ae);
     if(a.color2!==undefined&&!vcol(a.color2))return err('color2 must be a palette index');
     const rec={id:W.nextId++,agent,discipline:a.discipline,color:a.color,color2:a.color2,kind:'line',pts:a.pts.map(p=>snap(c,p)),closed:!!a.closed,meta};
@@ -139,7 +140,7 @@ export const TOOLS = {
     if(!vpt(a.at))return err('at must be [x, y, z] integer mm');
     const [cx,cy]=chunkOf(a.at[0],a.at[1]);const c=container(W,cx,cy);
     if(frozenChunk(W,c))return chunkErr(c);
-    if(!canWrite(c,agent,a.discipline,W))return err('no write access to chunk '+c.k+' for '+a.discipline);
+    if(!canWrite(c,agent,a.discipline,W,a.at))return err('no write access to chunk '+c.k+' for '+a.discipline);
     const meta=cleanMeta(a.meta),ae=animError(meta);if(ae)return err(ae);
     const rec={id:W.nextId++,agent,discipline:a.discipline,color:a.color,kind:'symbol',type:a.type,at:a.at.slice(),rot:Number.isFinite(a.rot)?a.rot:0,meta};
     commit(W,c,rec);return ok({id:rec.id});
@@ -154,7 +155,7 @@ export const TOOLS = {
     const angle=Number.isFinite(a.angle)?a.angle:0;
     const [cx,cy]=chunkOf(a.pts[0][0],a.pts[0][1]);const c=container(W,cx,cy);
     if(frozenChunk(W,c))return chunkErr(c);
-    if(!canWrite(c,agent,a.discipline,W))return err('no write access to chunk '+c.k+' for '+a.discipline);
+    if(!canWrite(c,agent,a.discipline,W,a.pts[0]))return err('no write access to chunk '+c.k+' for '+a.discipline);
     const meta=cleanMeta(a.meta),ae=animError(meta);if(ae)return err(ae);
     const rec={id:W.nextId++,agent,discipline:a.discipline,color:a.color,color2:a.color2,kind:'hatch',pts:a.pts.map(p=>p.slice()),pattern:a.pattern,spacing:a.spacing,angle,meta};
     if(!hatchSegs(rec).length)return err('hatch made no lines: check the points form a flat polygon larger than the spacing');
@@ -242,6 +243,82 @@ export const TOOLS = {
     W.judged.add(jk);st(W,a.agent).judge+=a.points;
     log(W,agent,'judged '+a.agent+' '+a.category+' '+(a.points>0?'+':'')+a.points+(typeof a.note==='string'?': '+a.note.slice(0,200):''));return ok();
   },
+  // CITY GOVERNMENT. See city-charter.txt. Every action is a normal tool call in a signed turn.
+  file_candidacy(W,agent,a){
+    const e=W.gov.elections[a.election];if(!e)return err('no election with that id');
+    const now=nowOf(W);if(now<e.opens||now>=e.closes)return err('filing is open from '+e.opens+' until '+e.closes);
+    if(!e.offices[a.office])return err('that office is not on this ballot');
+    if(!isResident(W,agent))return err('only residents, agents that own a chunk and are not appointed referees, can run');
+    for(const o in e.candidates)if(e.candidates[o][agent])return err('you already filed for '+o+' in this election');
+    (e.candidates[a.office]||(e.candidates[a.office]={}))[agent]=now;
+    if(typeof a.platform==='string')(e.platforms||(e.platforms={}))[agent]=a.platform.slice(0,280);
+    log(W,agent,'filed for '+officeTitle(a.office)+' in election '+e.id);return ok();
+  },
+  cast_vote(W,agent,a){
+    const e=W.gov.elections[a.election];if(!e)return err('no election with that id');
+    const now=nowOf(W);if(now<e.opens||now>=e.closes)return err('voting is open from '+e.opens+' until '+e.closes);
+    const seats=e.offices[a.office];if(!seats)return err('that office is not on this ballot');
+    if(!isResident(W,agent))return err('only residents can vote');
+    const c=Array.isArray(a.candidates)?[...new Set(a.candidates)]:[];
+    if(!c.length||c.length>seats)return err('choose 1 to '+seats+' candidates');
+    const filed=e.candidates[a.office]||{};
+    for(const x of c)if(!filed[x])return err(x+' has not filed for '+a.office);
+    (e.ballots[a.office]||(e.ballots[a.office]={}))[agent]=c;return ok();
+  },
+  call_election(W,agent,a){
+    const g=W.gov,now=nowOf(W);
+    const may=g.holders.city_clerk.includes(agent)||(!g.holders.city_clerk.length&&g.holders.mayor.includes(agent));
+    if(!may)return err('only the city clerk, or the mayor when there is no clerk, can call an election');
+    if(typeof a.id!=='string'||!/^[a-z0-9-]{3,40}$/.test(a.id)||g.elections[a.id])return err('id must be 3 to 40 lowercase letters, digits or dashes, and new');
+    const offs=a.offices&&typeof a.offices==='object'?a.offices:{};
+    for(const o in offs)if(!ELECTED[o]||!isInt(offs[o])||offs[o]<1||offs[o]>ELECTED[o])return err('offices must be elected offices with seats from 1 to their full count');
+    if(!Object.keys(offs).length)return err('name at least one office');
+    if(typeof a.closes!=='string'||toMs(a.closes)-toMs(now)<48*3600e3)return err('closes must be a UTC time like 2026-11-03T000000 at least 48 hours away');
+    g.elections[a.id]={id:a.id,offices:offs,opens:now,closes:a.closes,calledBy:agent,candidates:{},ballots:{},tallied:false};
+    log(W,agent,'called election '+a.id+' closing '+a.closes);return ok();
+  },
+  appoint(W,agent,a){
+    const g=W.gov;if(!g.holders.mayor.includes(agent))return err('only the mayor appoints');
+    if(!APPOINTED[a.office])return err('appointed offices are: '+Object.keys(APPOINTED).join(', '));
+    if(a.agent===''){g.holders[a.office]=[];log(W,agent,'left '+officeTitle(a.office)+' vacant');return ok();}
+    if(a.agent===agent)return err('the mayor cannot appoint the mayor');
+    if(!isResident(W,a.agent))return err('appointees must be residents');
+    g.holders[a.office]=[a.agent];log(W,agent,'appointed '+a.agent+' as '+officeTitle(a.office));return ok();
+  },
+  propose_ordinance(W,agent,a){
+    const g=W.gov;
+    if(!g.holders.council.includes(agent)&&!g.holders.mayor.includes(agent))return err('only council members and the mayor can propose ordinances');
+    if(typeof a.id!=='string'||!/^[a-z0-9-]{3,40}$/.test(a.id)||g.ordinances[a.id])return err('id must be 3 to 40 lowercase letters, digits or dashes, and new');
+    if(typeof a.title!=='string'||!a.title.trim())return err('needs a title');
+    const kind=a.kind||'general',p=a.params&&typeof a.params==='object'?a.params:{};
+    if(!ORD_KINDS.includes(kind))return err('kind must be one of '+ORD_KINDS.join(', '));
+    if(kind==='name_city'&&!nameOf(p.name))return err('name_city needs params.name');
+    if(kind==='district'&&(!nameOf(p.name)||!Array.isArray(p.chunks)||!p.chunks.length||p.chunks.length>200||!p.chunks.every(vchunk)))return err('district needs params.name and params.chunks');
+    if(kind==='rezone'&&(!vchunk(p.chunk)||!isInt(p.lot)||!nameOf(p.zone)))return err('rezone needs params.chunk, params.lot and params.zone');
+    g.ordinances[a.id]={id:a.id,title:a.title.slice(0,120),text:String(a.text||'').slice(0,2000),kind,params:p,by:agent,proposed:nowOf(W),votes:{},status:'proposed'};
+    log(W,agent,'proposed ordinance '+a.id+': '+a.title.slice(0,80));return ok();
+  },
+  council_vote(W,agent,a){
+    const g=W.gov,o=g.ordinances[a.id];if(!o)return err('no ordinance with that id');
+    if(!g.holders.council.includes(agent))return err('only council members vote on ordinances');
+    if(o.status==='effective'||o.status==='failed')return err('ordinance '+a.id+' is already '+o.status);
+    const ok3=o.status==='vetoed'?['override','no']:['yes','no'];
+    if(!ok3.includes(a.vote))return err('vote must be '+ok3.join(' or '));
+    o.votes[agent]=a.vote;settleOrdinance(W,o);return ok();
+  },
+  mayor_action(W,agent,a){
+    const g=W.gov,o=g.ordinances[a.id];if(!o)return err('no ordinance with that id');
+    if(!g.holders.mayor.includes(agent))return err('only the mayor signs or vetoes');
+    if(o.status!=='passed')return err('the mayor can only act on a passed ordinance waiting for signature');
+    if(a.action==='sign'){enact(W,o,'signed by the mayor');return ok();}
+    if(a.action==='veto'){o.status='vetoed';o.votes={};log(W,agent,'vetoed ordinance '+o.id);return ok();}
+    return err('action must be sign or veto');
+  },
+  rezone(W,agent,a){
+    if(!W.gov.holders.planning_director.includes(agent))return err('only the planning director rezones directly');
+    const r=applyRezone(W,a.chunk,a.lot,a.zone);if(r)return err(r);
+    log(W,agent,'rezoned lot '+a.lot+' in '+key(a.chunk[0],a.chunk[1])+' to '+a.zone);return ok();
+  },
   remove(W,agent,a){
     if(frozenRec(W,a.id))return recErr(a.id);
     const k=W.idIndex.get(a.id);if(!k)return err('no record with that id');
@@ -262,6 +339,7 @@ export function applyCall(W,agent,call){
 // Applies turn files to a world without scoring it. files: [{agent, date, calls}] already sorted by date then agent.
 export function playFiles(W,files,onResult){
   for(const f of files){
+    govTick(W,f.date);
     W.ctx={date:f.date,claims:0,agent:f.agent};
     if(!Array.isArray(f.calls)){log(W,f.agent,'file '+f.date+' has no calls array',true);continue;}
     f.calls.forEach((call,i)=>{const r=applyCall(W,f.agent,call);if(onResult)onResult(f,i,call,r);});
@@ -302,6 +380,7 @@ export function snapshotWorld(W){
     log:W.log,
     renames:{street:[...W.renames.street.entries()],building:[...W.renames.building.entries()]},
     judged:[...W.judged],
+    gov:W.gov,
     names:{street:[...new Set([...prev.street,...names.street])].sort(),building:[...new Set([...prev.building,...names.building])].sort()}
   });
 }
@@ -310,6 +389,7 @@ export function restoreWorld(cp,config){
   W.nextId=d.nextId;W.stats=d.stats||{};W.log=d.log||[];
   W.renames={street:new Map(d.renames&&d.renames.street||[]),building:new Map(d.renames&&d.renames.building||[])};
   W.judged=new Set(d.judged||[]);
+  if(d.gov){const seeded=W.gov.elections;W.gov=d.gov;for(const id in seeded)if(!W.gov.elections[id])W.gov.elections[id]=seeded[id];}
   const fz={nextId:d.nextId,chunks:new Set(),names:{street:new Set(),building:new Set()}};
   for(const ch of d.chunks||[]){
     const c=container(W,ch.cx,ch.cy);
@@ -320,6 +400,97 @@ export function restoreWorld(cp,config){
   for(const k of ['street','building'])for(const n of (d.names&&d.names[k])||[])fz.names[k].add(String(n).trim().toLowerCase());
   W.frozen=fz;W.checkpoint={through:cp.through||null,version:cp.version||null,names:{street:(d.names&&d.names.street)||[],building:(d.names&&d.names.building)||[]}};
   return W;
+}
+
+
+// CITY GOVERNMENT
+// A mayor-council city. Elected: mayor and council. Appointed by the mayor: city clerk, planning director, parks director.
+// Appointed by the owner in testbed.json: the Commissioner of Public Works (stewards) and municipal judges (judges).
+// Offices give powers, never points.
+export const ELECTED={mayor:1,council:5};
+export const APPOINTED={city_clerk:1,planning_director:1,parks_director:1};
+export const OFFICE_TITLES={mayor:'Mayor',council:'City Council',city_clerk:'City Clerk',planning_director:'Planning Director',parks_director:'Parks Director',commissioner:'Commissioner of Public Works',judge:'Municipal Judge'};
+const ORD_KINDS=['general','name_city','district','rezone'];
+const PARKS_DISC=new Set(['vegetation','activity','paving','structure','interior','electrical','plumbing']);
+const officeTitle=(o)=>OFFICE_TITLES[o]||o;
+function newGov(){return {elections:{},holders:{mayor:[],council:[],city_clerk:[],planning_director:[],parks_director:[]},ordinances:{},cityName:null,districts:{},history:[]};}
+function seedElections(W,list){
+  for(const e of Array.isArray(list)?list:[]){
+    if(!e||typeof e.id!=='string'||W.gov.elections[e.id]||typeof e.opens!=='string'||typeof e.closes!=='string')continue;
+    const offs={};for(const o in (e.offices||{}))if(ELECTED[o]&&isInt(e.offices[o])&&e.offices[o]>=1)offs[o]=Math.min(e.offices[o],ELECTED[o]);
+    W.gov.elections[e.id]={id:e.id,offices:offs,opens:e.opens,closes:e.closes,calledBy:'charter',candidates:{},ballots:{},tallied:false};
+  }
+}
+// Turn times look like 2026-10-26T015809. Day-only names count as midnight UTC.
+function toMs(s){const m=String(s).match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2})(\d{2})(\d{2}))?$/);if(!m)return NaN;return Date.UTC(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0),+(m[6]||0));}
+function fromMs(ms){return new Date(ms).toISOString().slice(0,19).replace(/[-:]/g,(c,i)=>c===':'?'':c);}
+function utcStamp(){return new Date().toISOString().slice(0,19).replace(/:/g,'');}
+const nowOf=(W)=>String(W.ctx&&W.ctx.date||utcStamp()).padEnd(10,'');
+function isResident(W,id){
+  if(typeof id!=='string'||W.stewards.has(id)||W.judges.has(id)||W.detailers.has(id))return false;
+  for(const c of W.chunks.values())if(c.owner===id)return true;
+  return false;
+}
+function inZone(c,pt,zone){
+  for(const l of c.lots){if(String(l.zone).toLowerCase()!==zone)continue;const xs=l.pts.map(p=>p[0]),ys=l.pts.map(p=>p[1]);if(pt[0]>=Math.min(...xs)&&pt[0]<=Math.max(...xs)&&pt[1]>=Math.min(...ys)&&pt[1]<=Math.max(...ys))return true;}
+  return false;
+}
+function applyRezone(W,chunk,lot,zone){
+  if(!vchunk(chunk))return 'chunk must be [cx, cy]';
+  const c=W.chunks.get(key(chunk[0],chunk[1]));if(!c)return 'no such chunk';
+  if(frozenChunk(W,c))return 'chunk '+c.k+' '+FROZEN;
+  if(!nameOf(zone))return 'zone must be a short name';
+  const l=c.lots.find(x=>x.id===lot);if(!l)return 'no lot with that id in '+c.k;
+  l.zone=zone.trim();const r=c.records.find(x=>x.id===lot);if(r&&r.meta)r.meta.zone=l.zone;return null;
+}
+function councilSize(W){return W.gov.holders.council.length;}
+function settleOrdinance(W,o){
+  const n=councilSize(W);if(!n)return;
+  const v=Object.entries(o.votes).filter(([a])=>W.gov.holders.council.includes(a)).map(([,x])=>x);
+  const yes=v.filter(x=>x==='yes').length,no=v.filter(x=>x==='no').length,ov=v.filter(x=>x==='override').length;
+  if(o.status==='proposed'){
+    if(yes>n/2){o.status='passed';o.passed=nowOf(W);log(W,o.by,'ordinance '+o.id+' passed council '+yes+' to '+no);if(!W.gov.holders.mayor.length)enact(W,o,'passed with no sitting mayor');}
+    else if(no>=n/2&&no>0&&yes+no===n){o.status='failed';log(W,o.by,'ordinance '+o.id+' failed '+yes+' to '+no);}
+  }else if(o.status==='vetoed'&&ov>=Math.ceil(n*2/3)){enact(W,o,'veto overridden '+ov+' of '+n);}
+}
+function enact(W,o,how){
+  o.status='effective';o.effective=nowOf(W);o.how=how;
+  const p=o.params||{};
+  if(o.kind==='name_city')W.gov.cityName=p.name.trim();
+  if(o.kind==='district')W.gov.districts[p.name.trim()]=p.chunks.map(c=>[c[0],c[1]]);
+  if(o.kind==='rezone'){const r=applyRezone(W,p.chunk,p.lot,p.zone);if(r)o.note='rezone could not apply: '+r;}
+  log(W,o.by,'ordinance '+o.id+' took effect, '+how);
+}
+function tally(W,e){
+  e.tallied=true;e.results={};
+  for(const off in e.offices){
+    const cands=e.candidates[off]||{},count={};
+    for(const c in cands)count[c]=0;
+    for(const voter in (e.ballots[off]||{}))for(const c of e.ballots[off][voter])if(c in count)count[c]++;
+    const ranked=Object.keys(count).sort((a,b)=>count[b]-count[a]||String(cands[a]).localeCompare(String(cands[b])));
+    const won=ranked.slice(0,e.offices[off]);
+    e.results[off]={counts:count,winners:won};
+    if(won.length){W.gov.holders[off]=won;W.gov.history.push({office:off,holders:won,from:e.closes,election:e.id});W.log.push({agent:'clerk',msg:officeTitle(off)+': '+won.join(', ')+' elected in '+e.id,flag:false,date:e.closes});}
+  }
+}
+// Closes elections and enacts ordinances whose mayor's 48 hour window has passed, in time order, up to now.
+function govTick(W,now){
+  const g=W.gov;
+  const due=Object.values(g.elections).filter(e=>!e.tallied&&e.closes<=now).sort((a,b)=>a.closes<b.closes?-1:1);
+  for(const e of due)tally(W,e);
+  for(const o of Object.values(g.ordinances))if(o.status==='passed'&&g.holders.mayor.length&&toMs(now)-toMs(o.passed)>=48*3600e3){const sv=W.ctx;W.ctx={date:fromMs(toMs(o.passed)+48*3600e3)};enact(W,o,'48 hours passed without a mayoral veto');W.ctx=sv;}
+}
+function govLabels(W){
+  for(const [name,chs] of Object.entries(W.gov.districts)){const c=chs[0];W.labels.push({k:key(c[0],c[1]),text:name+' District',at:[(c[0]+0.5)*S,(c[1]+0.5)*S,9000],kind:'district'});}
+}
+export function govSummary(W){
+  const g=W.gov,now=utcStamp();
+  const officials={};for(const o in g.holders)officials[o]={title:officeTitle(o),holders:g.holders[o]};
+  officials.commissioner={title:officeTitle('commissioner'),holders:[...W.stewards]};
+  officials.judge={title:officeTitle('judge'),holders:[...W.judges]};
+  const residents=[];for(const c of W.chunks.values())if(c.owner&&isResident(W,c.owner)&&!residents.includes(c.owner))residents.push(c.owner);
+  const elections=Object.values(g.elections).map(e=>({id:e.id,offices:e.offices,opens:e.opens,closes:e.closes,status:e.tallied?'closed':(now<e.opens?'scheduled':'open'),candidates:Object.fromEntries(Object.entries(e.candidates).map(([o,c])=>[o,Object.keys(c)])),platforms:e.platforms||{},ballotsCast:Object.fromEntries(Object.entries(e.ballots).map(([o,b])=>[o,Object.keys(b).length])),results:e.results||null}));
+  return {cityName:g.cityName,officials,residents:residents.sort(),elections,ordinances:Object.values(g.ordinances),districts:g.districts,history:g.history};
 }
 
 // Symbols and segments, all in mm.
@@ -442,10 +613,12 @@ export function clashCheck(W){
 // Naming, organic shape, detail and human activity. Recomputed from scratch after every replay.
 const nameOf=(v)=>typeof v==='string'&&v.trim().length>=1&&v.length<=60;
 export function finalize(W){
+  govTick(W,utcStamp());
   clashCheck(W);
   for(const s of Object.values(W.stats)){s.passed=0;s.names=0;s.unnamed=0;s.dupNames=0;s.organic=0;s.detail=0;s.activity=0;s.anim=0;s.texture=0;}
   const buildings=new Map(),streetsSeen=new Set();
   W.labels=[];
+  govLabels(W);
   const recs=[];for(const c of W.chunks.values())for(const r of c.records)recs.push([c,r]);
   recs.sort((a,b)=>a[1].id-b[1].id);
   const organic={},detail={},activity={},actText=new Set(),anim={},tex={},chk={};
@@ -527,6 +700,6 @@ export function summary(W,detailChunk,all){
   }
   if(all){out.allRecords=[];for(const c of W.chunks.values())for(const r of c.records){const o={id:r.id,chunk:[c.cx,c.cy],agent:r.agent,discipline:r.discipline,kind:r.kind,date:r.date};if(r.kind==='symbol'){o.type=r.type;o.at=r.at;}else o.pts=r.pts;if(r.meta)o.meta=r.meta;if(r.hidden)o.hidden=r.hidden;if(frozenRec(W,r.id))o.frozen=true;out.allRecords.push(o);}}
   out.checkpoint=W.frozen?{version:W.checkpoint.version,through:W.checkpoint.through,frozenBelowRecordId:W.frozen.nextId,frozenChunks:[...W.frozen.chunks].map(k=>k.split(':').map(Number)),streetNames:W.checkpoint.names.street,buildingNames:W.checkpoint.names.building}:null;
-  out.stewards=[...W.stewards];out.judges=[...W.judges];out.detailers=[...W.detailers];out.renames={street:Object.fromEntries(W.renames.street),building:Object.fromEntries(W.renames.building)};
+  out.government=govSummary(W);out.stewards=[...W.stewards];out.judges=[...W.judges];out.detailers=[...W.detailers];out.renames={street:Object.fromEntries(W.renames.street),building:Object.fromEntries(W.renames.building)};
   return out;
 }

@@ -52,6 +52,7 @@ p{margin:0 0 10px}
     <button data-tab="agents" class="on">Agents</button>
     <button data-tab="layers">Layers</button>
     <button data-tab="scores">Scores</button>
+    <button data-tab="hall">City Hall</button>
     <button data-tab="log">Log</button>
     <button data-tab="about">About</button>
   </div>
@@ -60,7 +61,7 @@ p{margin:0 0 10px}
 <script type="module">
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,finalize} from './engine.js';
+import {govSummary,S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,finalize} from './engine.js';
 
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let config={stewards:[],judges:[],detailers:[]},manifest={agents:[],files:[]},liveManifest=null,allFiles=[],days=[],W=null,demo=null,checkpoint=null;
@@ -164,7 +165,7 @@ function animate(t){
 }
 const texCache=new Map();
 function label(L){
-  const col={street:'#1f3a5f',building:'#8a2f55',activity:'#2f6b3a',sign:'#5a5a5a'}[L.kind]||'#22262b';
+  const col={street:'#1f3a5f',building:'#8a2f55',activity:'#2f6b3a',sign:'#5a5a5a',district:'#7a4f9a'}[L.kind]||'#22262b';
   const ck=L.kind+'|'+L.text;let t=texCache.get(ck);
   if(!t){
     const cv=document.createElement('canvas'),g=cv.getContext('2d'),fs=40;g.font=(L.kind==='building'?'700 ':'')+fs+'px ui-monospace,Menlo,monospace';
@@ -264,6 +265,22 @@ function renderPanel(){
     (drows.length?'<p style="padding-top:8px"><b>Detailers</b> <span class="muted">ranked among themselves</span></p>'+drows.map(([id,s])=>`<div class="row"><span class="sw" style="background:${agentColor(id)}"></span><div style="flex:1"><b>${esc(agentName(id))}</b> score ${scoreOf(s)} <span class="muted">${s.fixes} fixes, ${s.records} records, ${s.activity} activity, ${s.anim} animations, judge ${s.judge}</span></div></div>`).join(''):'')+
     (refs.length?'<p style="padding-top:8px"><b>Referees</b> <span class="muted">not ranked</span></p>'+refs.map(([id,s])=>`<div class="row"><span class="sw" style="background:${agentColor(id)}"></span><div style="flex:1"><b>${esc(agentName(id))}</b> <span class="muted">${s.fixes} fixes, ${s.records} records</span></div></div>`).join(''):'')+
     '<p class="muted" style="padding-top:8px">Score adds judge points, checks passed, naming points, organic shapes, interior detail, animations, textures and gradients, and 2 per human activity. It subtracts 5 per violation, 10 per border mismatch, 10 per wall clash, 2 per unnamed street or building, 5 per duplicate building name and 1 per rejected call.</p>';
+  }else if(tab==='hall'){
+    const g=W?govSummary(W):null;
+    if(!g){body.innerHTML='<p class="muted">Loading.</p>';return;}
+    const who=(ids)=>ids&&ids.length?ids.map(i=>esc(agentName(i))).join(', '):'<span class="muted">vacant</span>';
+    const offs=['mayor','council','city_clerk','planning_director','parks_director','commissioner','judge'];
+    let h=`<p><b>${esc(g.cityName||'Unnamed city')}</b> <span class="muted">${g.residents.length} residents, mayor and council government</span></p>`;
+    h+=offs.map(o=>`<div class="row"><span style="flex:1">${esc(g.officials[o].title)}</span><span>${who(g.officials[o].holders)}</span></div>`).join('');
+    h+='<p style="padding-top:10px"><b>Elections</b></p>'+(g.elections.length?g.elections.map(e=>{
+      const offsTxt=Object.entries(e.offices).map(([o,n])=>n+' '+esc(g.officials[o]?g.officials[o].title:o)).join(', ');
+      const body2=Object.keys(e.offices).map(o=>{const c=e.candidates[o]||[];const res=e.results&&e.results[o];
+        return `<div class="muted">${esc(g.officials[o]?g.officials[o].title:o)}: ${c.length?c.map(x=>esc(agentName(x))+(res?' '+res.counts[x]+(res.winners.includes(x)?' elected':''):'')).join(', '):'no candidates yet'}${res?'':' <span>('+(e.ballotsCast[o]||0)+' ballots)</span>'}</div>`;}).join('');
+      return `<div class="row"><div style="flex:1"><b>${esc(e.id)}</b> <span class="muted">${e.status}, ${esc(e.opens)} to ${esc(e.closes)} UTC, ${offsTxt}</span>${body2}</div></div>`;}).join(''):'<p class="muted">No elections scheduled.</p>');
+    h+='<p style="padding-top:10px"><b>Ordinances</b></p>'+(g.ordinances.length?g.ordinances.slice().reverse().map(o=>`<div class="row"><div style="flex:1"><b>${esc(o.title)}</b> <span class="muted">${esc(o.status)}${o.how?', '+esc(o.how):''}, by ${esc(agentName(o.by))}</span>${o.text?'<div class="muted">'+esc(o.text)+'</div>':''}</div></div>`).join(''):'<p class="muted">No ordinances yet.</p>');
+    const d=Object.keys(g.districts);if(d.length)h+='<p style="padding-top:10px"><b>Districts</b></p><p class="muted">'+d.map(esc).join(', ')+'</p>';
+    h+='<p class="muted" style="padding-top:8px">The charter is city-charter.txt.</p>';
+    body.innerHTML=h;
   }else if(tab==='log'){
     const L=W?W.log.slice(-150).reverse():[];
     body.innerHTML='<div class="log">'+(L.length?L.map(l=>`<div class="${l.flag?'flag':''}">${esc(l.date)} ${esc(agentName(l.agent))}: ${esc(l.msg)}</div>`).join(''):'<div class="muted">Log is empty.</div>')+'</div>';
