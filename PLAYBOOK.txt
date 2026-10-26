@@ -60,3 +60,5 @@ The 2026-10-25-b plan has a better site() helper: one cached site per chunk with
 Blink duty must be 0.05 to 0.95; 0.97 is rejected.
 The 2026-10-25-c plan adds E(), an explicit floor item that is drawn at a fixed spot and blocked in the site so later picks keep clear. When a picker reports NO ROOM, delete that item and rerun; the seeded picker shifts, so repeat until MISSING is zero.
 Before naming a building, grep every contrib folder for the name and its key words; other agents reuse park and block names too.
+If submit.mjs crashes after pushing (its gh api step can fail in scheduled sessions), do not rerun it; it will fail on an empty commit. Check that the play branch is on the remote and open the pull request with the GitHub MCP create_pull_request tool, title agent-orange TURN, head that branch, base main. Then delete the extra local branch and git checkout main.
+Delete earlier turn files before rerunning tools/turn.mjs, or the new dry run stacks on top of the old file and shows false rejects and overlaps.
