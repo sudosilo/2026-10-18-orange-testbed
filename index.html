@@ -61,7 +61,7 @@ p{margin:0 0 10px}
 <script type="module">
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {govSummary,S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,finalize} from './engine.js';
+import {govSummary,census,S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,finalize} from './engine.js';
 
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let config={stewards:[],judges:[],detailers:[]},manifest={agents:[],files:[]},liveManifest=null,allFiles=[],days=[],W=null,demo=null,checkpoint=null;
@@ -279,6 +279,12 @@ function renderPanel(){
       return `<div class="row"><div style="flex:1"><b>${esc(e.id)}</b> <span class="muted">${e.status}, ${esc(e.opens)} to ${esc(e.closes)} UTC, ${offsTxt}</span>${body2}</div></div>`;}).join(''):'<p class="muted">No elections scheduled.</p>');
     h+='<p style="padding-top:10px"><b>Ordinances</b></p>'+(g.ordinances.length?g.ordinances.slice().reverse().map(o=>`<div class="row"><div style="flex:1"><b>${esc(o.title)}</b> <span class="muted">${esc(o.status)}${o.how?', '+esc(o.how):''}, by ${esc(agentName(o.by))}</span>${o.text?'<div class="muted">'+esc(o.text)+'</div>':''}</div></div>`).join(''):'<p class="muted">No ordinances yet.</p>');
     const d=Object.keys(g.districts);if(d.length)h+='<p style="padding-top:10px"><b>Districts</b></p><p class="muted">'+d.map(esc).join(', ')+'</p>';
+    {const C=census(W),T=C.totals,n=x=>Number(x).toLocaleString('en-US'),usd=x=>'$'+n(x);
+      h+=`<p style="padding-top:10px"><b>Census and tax roll</b> <span class="muted">recounted from the live city</span></p>`;
+      h+=`<div class="kv muted"><span>residents, one vote each</span><span>${g.residents.length}</span><span>chunks owned</span><span>${n(T.chunks)}</span><span>housing units</span><span>${n(T.housingUnits)}</span><span>single family homes</span><span>${n(T.homes)}</span><span>apartment buildings</span><span>${n(T.apartmentBuildings)}</span><span>estimated population</span><span>${n(T.population)}</span><span>people out and about</span><span>${n(T.peopleSeen)}</span><span>lodging rooms</span><span>${n(T.lodgingRooms)}</span><span>businesses</span><span>${n(T.businesses)}</span><span>civic, church and park buildings</span><span>${n(T.civic)}</span><span>assessed taxable value</span><span>${usd(T.assessed)}</span><span>tax exempt value</span><span>${usd(T.exempt)}</span><span>property tax levy at ${C.rates.levy*100} percent</span><span>${usd(T.tax)}</span></div>`;
+      h+=C.byAgent.filter(a=>a.resident||a.buildings).map(a=>`<div class="row"><span class="sw" style="background:${agentColor(a.agent)}"></span><div style="flex:1"><b>${esc(agentName(a.agent))}</b> <span class="muted">${a.resident?'resident':'not a resident'}</span><div class="kv muted"><span>chunks</span><span>${a.chunks}</span><span>housing units</span><span>${n(a.housingUnits)}</span><span>estimated population</span><span>${n(a.population)}</span><span>people out and about</span><span>${n(a.peopleSeen)}</span><span>businesses</span><span>${a.businesses}</span><span>civic buildings</span><span>${a.civic}</span><span>assessed value</span><span>${usd(a.assessed)}</span><span>property tax</span><span>${usd(a.tax)}</span></div></div></div>`).join('');
+      h+=`<details style="padding-top:6px"><summary class="muted">Every building in the census</summary>`+C.buildings.map(b=>`<div class="muted">${esc(b.name)}, ${esc(agentName(b.agent))}, chunk ${b.chunk.join(', ')}, ${b.use}, ${b.floors} floor${b.floors>1?'s':''}, ${n(b.footprintM2)} m2${b.units?', '+b.units+' unit'+(b.units>1?'s':'')+(b.declared?' declared':' estimated'):''}</div>`).join('')+`</details>`;
+      h+=`<p class="muted" style="padding-top:6px">Housing units come from meta.units when a builder declares them on a building, otherwise from unit doors or floor area at ${C.rates.unitM2} m2 a unit. Population is ${C.rates.household} people per unit. Land is assessed by zone and buildings at ${usd(C.rates.buildingPerM2)} per m2 of floor area. Civic, church and park property is exempt.</p>`;}
     h+='<p class="muted" style="padding-top:8px">The charter is city-charter.txt.</p>';
     body.innerHTML=h;
   }else if(tab==='log'){

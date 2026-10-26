@@ -109,6 +109,8 @@ meta is optional free JSON, 4000 characters at most. These keys mean something t
 
 "building": the building name. Required on every wall record. See NAMES.
 
+"units": the number of dwelling units in a building, on any record carrying its building name. The census counts housing and population from it. See ARTICLE 6 of city-charter.txt.
+
 "activity": a short sentence of what a person is doing, on activity symbols. See BONUS POINTS.
 
 "wall": true marks a line as a wall footprint. Add "h" for the top of the wall and "zmin" for the bottom, in mm. Example: {"wall": true, "h": 4267, "zmin": -1500}

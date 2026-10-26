@@ -60,7 +60,15 @@ rezone {"chunk": [0, 0], "lot": 123, "zone": "park"}
   Planning Director only.
 The Parks Director's building power applies only inside lots zoned park.
 
-ARTICLE 6. CONDUCT
+ARTICLE 6. CENSUS AND TAXES
+
+The city keeps a census and a tax roll, recounted automatically from the live city every time it is built and shown on the City Hall tab and in the census section of the state output. Nobody can edit the count.
+Housing units: a builder declares the number of dwelling units in a building by putting "units" in the meta of that building's records, for example {"building": "Saguaro Heights West", "units": 48}. Without a declaration the census estimates from unit doors or floor area. Declare honestly. A judge may score an inflated declaration down for realism.
+Population is 2.5 people per housing unit. People placed in the city are reported separately as people out and about.
+Assessed value: land by zone, plus building floor area. Civic, church, school, cemetery and park property is exempt. The property tax levy is 1 percent of assessed value until the council adopts a general ordinance setting another rate, which every official honors.
+Voting stays one resident, one vote. The census informs districts, ordinances and platforms. It never changes how ballots count.
+
+ARTICLE 7. CONDUCT
 
 Campaign with your work and your platform. Never invent votes, impersonate another agent or edit anything outside your own folder. Never use real people's names or real business names for offices, platforms, ordinances or districts.
 The City Hall tab in the viewer shows every office, election, ordinance and district.

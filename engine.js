@@ -700,6 +700,68 @@ export function summary(W,detailChunk,all){
   }
   if(all){out.allRecords=[];for(const c of W.chunks.values())for(const r of c.records){const o={id:r.id,chunk:[c.cx,c.cy],agent:r.agent,discipline:r.discipline,kind:r.kind,date:r.date};if(r.kind==='symbol'){o.type=r.type;o.at=r.at;}else o.pts=r.pts;if(r.meta)o.meta=r.meta;if(r.hidden)o.hidden=r.hidden;if(frozenRec(W,r.id))o.frozen=true;out.allRecords.push(o);}}
   out.checkpoint=W.frozen?{version:W.checkpoint.version,through:W.checkpoint.through,frozenBelowRecordId:W.frozen.nextId,frozenChunks:[...W.frozen.chunks].map(k=>k.split(':').map(Number)),streetNames:W.checkpoint.names.street,buildingNames:W.checkpoint.names.building}:null;
-  out.government=govSummary(W);out.stewards=[...W.stewards];out.judges=[...W.judges];out.detailers=[...W.detailers];out.renames={street:Object.fromEntries(W.renames.street),building:Object.fromEntries(W.renames.building)};
+  out.census=census(W);out.government=govSummary(W);out.stewards=[...W.stewards];out.judges=[...W.judges];out.detailers=[...W.detailers];out.renames={street:Object.fromEntries(W.renames.street),building:Object.fromEntries(W.renames.building)};
   return out;
+}
+
+// Census and tax roll. Recounted from the live city every time it is built, so nothing can be edited by hand.
+// Housing units come from meta.units on a building's records when the builder declares them, otherwise from
+// unit doors or the building's floor area. Population is 2.5 people per housing unit. Civic, park and church
+// property is exempt. Taxes use the levy rate in CENSUS_RATES until the council changes it by ordinance.
+export const CENSUS_RATES={household:2.5,landPerM2:{residential:200,commercial:400,industrial:150,agricultural:40,other:200},buildingPerM2:1500,levy:0.01,unitM2:75};
+function polyArea(pts){let a=0;for(let i=0;i<pts.length;i++){const p=pts[i],q=pts[(i+1)%pts.length];a+=p[0]*q[1]-q[0]*p[1];}return Math.abs(a)/2e6;}
+function hull(ps){const p=ps.map(q=>[q[0],q[1]]).sort((a,b)=>a[0]-b[0]||a[1]-b[1]);if(p.length<3)return p;const cr=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);const lo=[],up=[];for(const q of p){while(lo.length>1&&cr(lo[lo.length-2],lo[lo.length-1],q)<=0)lo.pop();lo.push(q);}for(const q of p.slice().reverse()){while(up.length>1&&cr(up[up.length-2],up[up.length-1],q)<=0)up.pop();up.push(q);}return lo.slice(0,-1).concat(up.slice(0,-1));}
+function inPoly(x,y,pts){let c=false;for(let i=0,j=pts.length-1;i<pts.length;j=i++){const a=pts[i],b=pts[j];if((a[1]>y)!==(b[1]>y)&&x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0])c=!c;}return c;}
+function zoneClass(z){z=String(z||'').toLowerCase();if(/residential|rv park|housing|apartment|mobile|manufactured/.test(z))return 'residential';if(/park|cemetery|garden|splash/.test(z))return 'park';if(/civic|school|library|clinic|fire|church|depot|senior|utility|water/.test(z))return 'civic';if(/industrial|plant|works/.test(z))return 'industrial';if(/agri|farm|orchard/.test(z))return 'agricultural';if(/commercial|grocery|bank|amusement|carnival|dealership|diner|bakery|bowling|medical|parking/.test(z))return 'commercial';return 'other';}
+const NOT_HOME=/office|laundry|clubhouse|shed|garage|pump|well house|comfort|ramada|coop|barn|skybridge|stand|booth/i;
+const MULTI=/apartment|flats$|courts building|heights (west|east)|terrace|duplex|townhome|\brow\b/i;
+const HOME=/house|home|cottage|bungalow|casita|residence|parsonage|bunkhouse|space \d+|farmhouse/i;
+const ACCESSORY=/skybridge|ramada|comfort station|garden shed|chicken coop|equipment barn|office and laundry|clubhouse|farm stand/i;
+const LODGING=/motor court|motel|hotel|\binn\b/i;
+const CIVIC=/school|library|clinic|fire station|post office|chapel|church|fellowship|grange|senior|depot|cemetery|mausoleum|caretaker|district office|reading room|fire training|day nursery/i;
+const INDUSTRIAL=/works|plant|press hall|treatment|reservoir|water tower|water tank|pump|well|drilling|welding|sheet metal|packing|pipe and supply|studios|newsroom/i;
+export function census(W){
+  const R=CENSUS_RATES,by={},tot={chunks:0,lotM2:0,buildings:0,housingUnits:0,homes:0,apartmentBuildings:0,lodgingRooms:0,businesses:0,civic:0,population:0,peopleSeen:0,assessed:0,exempt:0,tax:0},rows=[];
+  const Z=JSON.stringify(tot),A=id=>by[id]||(by[id]=Object.assign({agent:id,resident:isResident(W,id)},JSON.parse(Z)));
+  const bl={};
+  for(const c of W.chunks.values()){
+    if(c.owner){A(c.owner).chunks++;tot.chunks++;}
+    for(const l of c.lots){const m2=polyArea(l.pts),zc=zoneClass(l.zone),o=c.owner||l.agent;const a=A(o);a.lotM2+=m2;tot.lotM2+=m2;
+      if(zc==='park'||zc==='civic'){a.exempt+=m2*R.landPerM2.other;tot.exempt+=m2*R.landPerM2.other;}else{const v=m2*(R.landPerM2[zc]||R.landPerM2.other);a.assessed+=v;tot.assessed+=v;}}
+    for(const r of c.records){
+      if(r.hidden)continue;const m=r.meta||{};
+      if(r.kind==='symbol'&&(r.type==='person'||r.type==='cyclist')){A(r.agent).peopleSeen++;tot.peopleSeen++;}
+      if(typeof m.building!=='string')continue;
+      const n=m.building.trim(),b=bl[n]||(bl[n]={name:n,agent:r.agent,chunk:c,pts:[],h:0,doors:new Set(),units:0});
+      if(m.wall&&r.pts){for(const p of r.pts)b.pts.push(p);if(Number.isFinite(m.h))b.h=Math.max(b.h,m.h);}
+      if(typeof m.door==='string')b.doors.add(m.door.toLowerCase());
+      if(Number.isInteger(m.units)&&m.units>0&&m.units<=2000)b.units=Math.max(b.units,m.units);
+    }
+  }
+  for(const b of Object.values(bl)){
+    if(b.pts.length<3)continue;
+    const fp=polyArea(hull(b.pts));
+    const cx=b.pts.reduce((s,p)=>s+p[0],0)/b.pts.length,cy=b.pts.reduce((s,p)=>s+p[1],0)/b.pts.length;
+    const lot=b.chunk.lots.find(l=>inPoly(cx,cy,l.pts)),zc=lot?zoneClass(lot.zone):'other';
+    let use;
+    if(LODGING.test(b.name))use='lodging';
+    else if(CIVIC.test(b.name)||zc==='civic'||zc==='park')use='civic';
+    else if(ACCESSORY.test(b.name))use='accessory';
+    else if(!NOT_HOME.test(b.name)&&(MULTI.test(b.name)||HOME.test(b.name)||(zc==='residential'&&!/market|store|shop/i.test(b.name))))use='housing';
+    else if(INDUSTRIAL.test(b.name)||zc==='industrial')use='industrial';
+    else use='business';
+    const floors=use==='housing'||use==='lodging'?Math.max(1,Math.min(40,Math.round(b.h/3200)||1)):Math.max(1,Math.min(40,Math.floor(b.h/4500)||1)),gross=fp*floors;
+    const unitDoors=[...b.doors].filter(d=>/unit|apartment|space|room \d/.test(d)).length;
+    let units=0;
+    if(use==='housing')units=b.units||(MULTI.test(b.name)?Math.max(2,unitDoors,Math.round(gross*0.75/R.unitM2)):/duplex/i.test(b.name)?2:1);
+    const a=A(b.agent);a.buildings++;tot.buildings++;
+    const val=gross*R.buildingPerM2;
+    if(use==='civic'){a.civic++;tot.civic++;a.exempt+=val;tot.exempt+=val;}else{a.assessed+=val;tot.assessed+=val;}
+    if(use==='housing'){a.housingUnits+=units;tot.housingUnits+=units;if(units>1){a.apartmentBuildings++;tot.apartmentBuildings++;}else{a.homes++;tot.homes++;}}
+    if(use==='lodging'){const rm=b.units||Math.max(1,[...b.doors].filter(d=>/room/.test(d)).length);a.lodgingRooms+=rm;tot.lodgingRooms+=rm;}
+    if(use==='business'||use==='industrial'||use==='lodging'){a.businesses++;tot.businesses++;}
+    rows.push({name:W.renames.building.get(b.name.toLowerCase())||b.name,agent:b.agent,chunk:[b.chunk.cx,b.chunk.cy],use,floors,footprintM2:Math.round(fp),units,declared:!!b.units});
+  }
+  for(const a of [tot,...Object.values(by)]){a.population=Math.round(a.housingUnits*R.household);a.tax=Math.round(a.assessed*R.levy);a.assessed=Math.round(a.assessed);a.exempt=Math.round(a.exempt);a.lotM2=Math.round(a.lotM2);}
+  return {rates:R,totals:tot,byAgent:Object.values(by).sort((p,q)=>q.population-p.population||q.assessed-p.assessed),buildings:rows.sort((p,q)=>q.units-p.units||p.name.localeCompare(q.name))};
 }
