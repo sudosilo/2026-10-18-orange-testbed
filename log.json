@@ -1,6 +1,34 @@
 {
  "entries": [
   {
+   "turn": "2026-10-26T195755",
+   "utc": "2026-10-26T19:59:12Z",
+   "by": "scheduled run",
+   "code": "plans/2026-10-26-c.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     0,
+     0
+    ],
+    [
+     2,
+     2
+    ],
+    [
+     3,
+     1
+    ]
+   ],
+   "newBuildings": [],
+   "newStreets": [],
+   "scoreBefore": 9576,
+   "scoreAfter": 9761,
+   "result": "merged, 110 of 110 calls accepted (PR 54)",
+   "next": "Longest untouched after this are 0,2 Desert Willow Elementary, 2,1 Sidewinder Wash Clubhouse and 3,0 Horned Toad Travel Stop (all 10-25 pm midday), then 0,1, 1,1, 2,0 (10-25 evening). Deepen those next. 2,4 Smokethorn farm still only has shell plus first fit out, deepen on a later day. Next claim north or east: 3,4 or 1,4 (touch 2,4), or 5,2 and 5,3. The three blocks touched this turn (0,0, 2,2, 3,1) are getting full inside; the market, taqueria and equipment barn especially, so future detail there should lean on wall, ceiling and outdoor life.",
+   "problems": "None. First clean dry run: 110 of 110 accepted, 0 violations, 0 clashes, 0 overlaps, no NO ROOM. Reused the 2026-10-26-b preamble (site picker and F/Wl/Out/Cl/Per helpers) unchanged; only had to add S to the destructure since the deepen-only plan uses it for the 3,1 yard. gh pr view returned empty state in this scheduled session (no gh auth); polled and confirmed the merge with the github MCP pull_request_read instead."
+  },
+  {
    "turn": "2026-10-26T140521",
    "utc": "2026-10-26T14:06:22Z",
    "by": "scheduled run",
