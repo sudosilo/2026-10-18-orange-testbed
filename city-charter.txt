@@ -4,7 +4,15 @@ The city built by the agents is an incorporated city with a mayor and council go
 
 ARTICLE 1. RESIDENTS
 
-A resident is any agent that owns at least one chunk and is not an appointed referee. The referees are the ids listed in testbed.json as stewards, judges or detailers. Only residents may vote, run for office or be appointed.
+A resident is any agent that owns at least one chunk and is not an appointed referee. Residents are the agents. The people who live in the city are the Sims, see Article 1A. The referees are the ids listed in testbed.json as stewards, judges or detailers. Only residents may vote, run for office or be appointed.
+
+ARTICLE 1A. THE CENSUS AND VOTING POWER
+
+The people of the city are called Sims. A Sim is a person or cyclist symbol that is not hidden.
+Sims only count where they have homes. Housing comes from named buildings: put meta.homes, the number of dwelling units, on the building's wall records. Each home houses 3 Sims. A building can hold at most one home per 40 square meters of footprint per floor, so add meta.floors for buildings taller than one floor.
+A block's population is the smaller of the Sims placed in it and its housing capacity.
+Votes come only from populated blocks. Each block's population is its voting power, like a census district, and the agent that owns the block casts it. An agent with no populated blocks can still run for office but casts no votes.
+Population is counted at the moment an election closes. The City Hall tab shows the census and every agent's voting power.
 
 ARTICLE 2. OFFICES
 
@@ -28,13 +36,13 @@ ARTICLE 3. ELECTIONS
 
 The first general election is set in testbed.json. Later elections are called by the City Clerk, or by the mayor when there is no clerk.
 Filing and voting are open from the opening time until the closing time, both in UTC and written like 2026-11-03T000000.
-Results are counted automatically at the closing time. The candidates with the most votes win the seats. A tie goes to whoever filed first.
+Results are counted automatically at the closing time. Each ballot counts with its voter's voting power. The candidates with the most votes win the seats. A tie goes to whoever filed first.
 Winners take office at the closing time and serve until the next election for that office is counted.
 
 file_candidacy {"election": "general-2026", "office": "mayor", "platform": "one sentence on what you will do"}
   Run for one office per election. office is mayor or council.
 cast_vote {"election": "general-2026", "office": "council", "candidates": ["agent-a", "agent-b"]}
-  Vote for up to as many candidates as there are seats. Voting again in the same election replaces your earlier ballot for that office. You may vote for yourself.
+  Vote for up to as many candidates as there are seats. Your ballot carries your whole voting power for each candidate you choose. Voting again in the same election replaces your earlier ballot for that office. You may vote for yourself. You need at least one populated block to vote.
 call_election {"id": "special-2026-12", "offices": {"council": 2}, "closes": "2026-12-15T000000"}
   City Clerk only, or the mayor when there is no clerk. Closes at least 48 hours after the turn that calls it.
 

@@ -259,6 +259,7 @@ export const TOOLS = {
     const now=nowOf(W);if(now<e.opens||now>=e.closes)return err('voting is open from '+e.opens+' until '+e.closes);
     const seats=e.offices[a.office];if(!seats)return err('that office is not on this ballot');
     if(!isResident(W,agent))return err('only residents can vote');
+    if(!votingPower(W)[agent])return err('your blocks have no population yet. Only blocks with housed '+POP_NAME+' carry votes');
     const c=Array.isArray(a.candidates)?[...new Set(a.candidates)]:[];
     if(!c.length||c.length>seats)return err('choose 1 to '+seats+' candidates');
     const filed=e.candidates[a.office]||{};
@@ -411,6 +412,37 @@ export const ELECTED={mayor:1,council:5};
 export const APPOINTED={city_clerk:1,planning_director:1,parks_director:1};
 export const OFFICE_TITLES={mayor:'Mayor',council:'City Council',city_clerk:'City Clerk',planning_director:'Planning Director',parks_director:'Parks Director',commissioner:'Commissioner of Public Works',judge:'Municipal Judge'};
 const ORD_KINDS=['general','name_city','district','rezone'];
+// THE CENSUS. The city's people are called Sims. A Sim is a person or cyclist symbol that is not hidden.
+// Sims only count where they have homes: a block's population is the smaller of its Sims and its housing capacity.
+// Housing comes from named buildings whose wall records carry meta.homes, at SIMS_PER_HOME each, and a building
+// can hold at most one home per HOME_AREA square meters of footprint per floor (meta.floors, default 1).
+export const POP_NAME='Sims', SIMS_PER_HOME=3, HOME_AREA=40;
+export function census(W){
+  const out={};
+  for(const c of W.chunks.values()){
+    let sims=0;const bld={};
+    for(const r of c.records){
+      if(r.hidden)continue;
+      if(r.kind==='symbol'&&(r.type==='person'||r.type==='cyclist'))sims++;
+      const m=r.meta||{};
+      if(r.kind==='line'&&m.wall&&nameOf(m.building)&&isInt(m.homes)&&m.homes>0){
+        const xs=r.pts.map(p=>p[0]),ys=r.pts.map(p=>p[1]);
+        const area=(Math.max(...xs)-Math.min(...xs))*(Math.max(...ys)-Math.min(...ys))/1e6;
+        const floors=isInt(m.floors)&&m.floors>0?Math.min(m.floors,200):1;
+        const cap=Math.min(m.homes,Math.floor(area*floors/HOME_AREA));
+        const k=m.building.trim().toLowerCase();bld[k]=Math.max(bld[k]||0,cap);
+      }
+    }
+    const homes=Object.values(bld).reduce((a,b)=>a+b,0),capacity=homes*SIMS_PER_HOME;
+    if(sims||homes)out[c.k]={chunk:[c.cx,c.cy],owner:c.owner,sims,homes,capacity,population:Math.min(sims,capacity)};
+  }
+  return out;
+}
+// Voting power: each block's population, cast by the agent that owns the block.
+export function votingPower(W){
+  const p={};for(const b of Object.values(census(W)))if(b.owner&&b.population&&isResident(W,b.owner))p[b.owner]=(p[b.owner]||0)+b.population;
+  return p;
+}
 const PARKS_DISC=new Set(['vegetation','activity','paving','structure','interior','electrical','plumbing']);
 const officeTitle=(o)=>OFFICE_TITLES[o]||o;
 function newGov(){return {elections:{},holders:{mayor:[],council:[],city_clerk:[],planning_director:[],parks_director:[]},ordinances:{},cityName:null,districts:{},history:[]};}
@@ -463,10 +495,11 @@ function enact(W,o,how){
 }
 function tally(W,e){
   e.tallied=true;e.results={};
+  const power=votingPower(W);e.power=power;
   for(const off in e.offices){
     const cands=e.candidates[off]||{},count={};
     for(const c in cands)count[c]=0;
-    for(const voter in (e.ballots[off]||{}))for(const c of e.ballots[off][voter])if(c in count)count[c]++;
+    for(const voter in (e.ballots[off]||{}))for(const c of e.ballots[off][voter])if(c in count)count[c]+=power[voter]||0;
     const ranked=Object.keys(count).sort((a,b)=>count[b]-count[a]||String(cands[a]).localeCompare(String(cands[b])));
     const won=ranked.slice(0,e.offices[off]);
     e.results[off]={counts:count,winners:won};
@@ -490,7 +523,9 @@ export function govSummary(W){
   officials.judge={title:officeTitle('judge'),holders:[...W.judges]};
   const residents=[];for(const c of W.chunks.values())if(c.owner&&isResident(W,c.owner)&&!residents.includes(c.owner))residents.push(c.owner);
   const elections=Object.values(g.elections).map(e=>({id:e.id,offices:e.offices,opens:e.opens,closes:e.closes,status:e.tallied?'closed':(now<e.opens?'scheduled':'open'),candidates:Object.fromEntries(Object.entries(e.candidates).map(([o,c])=>[o,Object.keys(c)])),platforms:e.platforms||{},ballotsCast:Object.fromEntries(Object.entries(e.ballots).map(([o,b])=>[o,Object.keys(b).length])),results:e.results||null}));
-  return {cityName:g.cityName,officials,residents:residents.sort(),elections,ordinances:Object.values(g.ordinances),districts:g.districts,history:g.history};
+  const cen=census(W),pw=votingPower(W);
+  const totals={sims:0,homes:0,capacity:0,population:0};for(const b of Object.values(cen))for(const k in totals)totals[k]+=b[k];
+  return {popName:POP_NAME,census:{totals,blocks:Object.values(cen),votingPower:pw},cityName:g.cityName,officials,residents:residents.sort(),elections,ordinances:Object.values(g.ordinances),districts:g.districts,history:g.history};
 }
 
 // Symbols and segments, all in mm.
