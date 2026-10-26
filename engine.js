@@ -474,6 +474,58 @@ export function census(W){
   housing.sort((a,b)=>b.capacity-a.capacity);
   return {blocks,housing,fill};
 }
+// UTILITIES. Monthly electricity for every named building, every home and every light fixture.
+// Homes use KWH.home each, RVs KWH.rv each. Other buildings use kWh per square meter of floor per month by type of use.
+// Lights (light symbols) use KWH.light each. Prices are dollars per kWh. Civic buildings and lights are paid by the city.
+export const KWH={home:900,rv:300,light:25};
+export const PRICE={residential:0.17,commercial:0.13,civic:0.13};
+export const USE_TYPES=[
+  ['grocery',/grocery|market|mercado|pantry|supermarket/i,45,'commercial'],
+  ['food service',/diner|cafe|restaurant|bakery|taco|corn dog|funnel|kettle|lemonade|cotton candy|pizza|grill|kitchen|bar\b/i,34,'commercial'],
+  ['health care',/clinic|hospital|medical|dental|pharmacy/i,25,'civic'],
+  ['water and utility',/water|pump|well house|treatment|reservoir|tank|substation|utility/i,30,'civic'],
+  ['public safety',/fire|police|station|sheriff|ems/i,15,'civic'],
+  ['education and civic',/school|library|city hall|courthouse|post office|senior center|community|chapel|church|fellowship|cemetery|mausoleum|depot|museum|nursery/i,10,'civic'],
+  ['lodging',/motel|hotel|inn\b|motor court|lodge/i,20,'commercial'],
+  ['office',/office|bank|savings|newsroom|studio|press|insurance|real estate/i,13,'commercial'],
+  ['industrial',/welding|fab|shop|garage|service|warehouse|plant|mill|rental|works|yard/i,12,'commercial'],
+  ['entertainment',/bowling|lanes|theater|cinema|arcade|booth|clubhouse|game|bumper|carnival|midway/i,18,'commercial']
+];
+export function utilities(W){
+  const cen=census(W),homesByName={},rows=[];
+  for(const h of cen.housing)if(!h.rv)homesByName[h.chunk.join(':')+'|'+h.name.toLowerCase()]=h;
+  const seen=new Set();
+  for(const c of W.chunks.values()){
+    const bld={};let lights=0;
+    for(const r of c.records){
+      if(r.hidden)continue;
+      const m=r.meta||{};
+      if(r.kind==='symbol'&&r.type==='light')lights++;
+      if(r.kind!=='line'||!m.wall||!nameOf(m.building))continue;
+      const xs=r.pts.map(p=>p[0]),ys=r.pts.map(p=>p[1]),area=(Math.max(...xs)-Math.min(...xs))*(Math.max(...ys)-Math.min(...ys))/1e6,k=m.building.trim().toLowerCase();
+      const b=bld[k]||(bld[k]={name:m.building.trim(),agent:r.agent,area:0,h:0,floors:null});
+      b.area=Math.max(b.area,area);b.h=Math.max(b.h,isInt(m.h)?m.h:0);if(isInt(m.floors)&&m.floors>0)b.floors=Math.min(m.floors,200);
+    }
+    for(const b of Object.values(bld)){
+      const key2=c.k+'|'+b.name.toLowerCase();seen.add(key2);
+      const home=homesByName[key2];
+      if(home){const kwh=home.homes*KWH.home;rows.push({name:b.name,chunk:[c.cx,c.cy],agent:b.agent,use:'residential',sector:'residential',homes:home.homes,kwh,cost:kwh*PRICE.residential});continue;}
+      const t=USE_TYPES.find(u=>u[1].test(b.name))||['general commercial',null,12,'commercial'];
+      // Non-residential stories are taller, and tanks, towers and reservoirs have one floor however tall they are.
+      const floors=/tank|tower|reservoir|skybridge|silo|stack/i.test(b.name)?1:(b.floors||Math.max(1,Math.round(b.h/4500))),floorArea=b.area*floors;
+      const kwh=Math.round(floorArea*t[2]);rows.push({name:b.name,chunk:[c.cx,c.cy],agent:b.agent,use:t[0],sector:t[3],floorArea:Math.round(floorArea),kwh,cost:kwh*PRICE[t[3]]});
+    }
+    if(lights)rows.push({name:'Light fixtures',chunk:[c.cx,c.cy],agent:c.owner,use:'lighting',sector:'civic',count:lights,kwh:lights*KWH.light,cost:lights*KWH.light*PRICE.civic});
+  }
+  for(const h of cen.housing)if(h.rv){const kwh=KWH.rv;rows.push({name:h.name,chunk:h.chunk,agent:h.agent,use:'RV',sector:'residential',homes:1,kwh,cost:kwh*PRICE.residential});}
+  const totals={kwh:0,cost:0,residential:{kwh:0,cost:0},commercial:{kwh:0,cost:0},civic:{kwh:0,cost:0}};
+  for(const r of rows){r.cost=Math.round(r.cost*100)/100;totals.kwh+=r.kwh;totals.cost+=r.cost;totals[r.sector].kwh+=r.kwh;totals[r.sector].cost+=r.cost;}
+  for(const k of ['residential','commercial','civic'])totals[k].cost=Math.round(totals[k].cost*100)/100;
+  totals.cost=Math.round(totals.cost*100)/100;
+  totals.peakKw=Math.round(totals.kwh/730*1.8);
+  rows.sort((a,b)=>b.kwh-a.kwh);
+  return {rates:{kwh:KWH,price:PRICE},totals,buildings:rows};
+}
 // Voting power: each block's population, cast by the agent that owns the block.
 export function votingPower(W){
   const p={};for(const b of Object.values(census(W).blocks))if(b.owner&&b.population&&isResident(W,b.owner))p[b.owner]=(p[b.owner]||0)+b.population;
@@ -561,7 +613,7 @@ export function govSummary(W){
   const elections=Object.values(g.elections).map(e=>({id:e.id,offices:e.offices,opens:e.opens,closes:e.closes,status:e.tallied?'closed':(now<e.opens?'scheduled':'open'),candidates:Object.fromEntries(Object.entries(e.candidates).map(([o,c])=>[o,Object.keys(c)])),platforms:e.platforms||{},ballotsCast:Object.fromEntries(Object.entries(e.ballots).map(([o,b])=>[o,Object.keys(b).length])),results:e.results||null}));
   const cen=census(W),pw=votingPower(W);
   const totals={sims:0,homes:0,capacity:0,population:0};for(const b of Object.values(cen.blocks))for(const k in totals)totals[k]+=b[k];
-  return {popName:POP_NAME,census:{totals,blocks:Object.values(cen.blocks),housing:cen.housing,votingPower:pw},cityName:g.cityName,officials,residents:residents.sort(),elections,ordinances:Object.values(g.ordinances),districts:g.districts,history:g.history};
+  return {utilities:utilities(W),popName:POP_NAME,census:{totals,blocks:Object.values(cen.blocks),housing:cen.housing,votingPower:pw},cityName:g.cityName,officials,residents:residents.sort(),elections,ordinances:Object.values(g.ordinances),districts:g.districts,history:g.history};
 }
 
 // Symbols and segments, all in mm.

@@ -274,6 +274,10 @@ function renderPanel(){
     let h=`<p><b>${esc(g.cityName||'Unnamed city')}</b> <span class="muted">population ${ct.population} ${esc(g.popName)}, ${ct.homes} homes, ${ct.sims} ${esc(g.popName)} placed, mayor and council government</span></p>`;
     const hs=g.census.housing;
     h+='<details><summary class="muted">Housing, '+hs.length+' buildings</summary>'+hs.map(x=>'<div class="row muted"><span style="flex:1">'+esc(x.name)+' <span>'+x.chunk.join(':')+'</span></span><span>'+x.homes+' homes, '+x.capacity+' '+esc(g.popName)+(x.declared?'':' est.')+'</span></div>').join('')+'</details>';
+    const u=g.utilities,ut=u.totals,$=(n)=>'$'+Math.round(n).toLocaleString('en-US'),kw=(n)=>Math.round(n).toLocaleString('en-US');
+    h+='<p style="padding-top:6px"><b>Power</b> <span class="muted">'+kw(ut.kwh)+' kWh a month, '+$(ut.cost)+' a month, peak about '+kw(ut.peakKw)+' kW</span></p>';
+    h+='<p class="muted">Residential '+kw(ut.residential.kwh)+' kWh, '+$(ut.residential.cost)+'. Commercial '+kw(ut.commercial.kwh)+' kWh, '+$(ut.commercial.cost)+'. City paid, civic buildings and lights, '+kw(ut.civic.kwh)+' kWh, '+$(ut.civic.cost)+'.</p>';
+    h+='<details><summary class="muted">Power by building</summary>'+u.buildings.map(x=>'<div class="row muted"><span style="flex:1">'+esc(x.name)+' <span>'+x.chunk.join(':')+', '+esc(x.use)+'</span></span><span>'+kw(x.kwh)+' kWh, '+$(x.cost)+'</span></div>').join('')+'</details>';
     h+='<p class="muted">Voting power by block population: '+(pw.length?pw.map(([a,n])=>esc(agentName(a))+' '+n).join(', '):'no populated blocks yet')+'</p>';
     h+=offs.map(o=>`<div class="row"><span style="flex:1">${esc(g.officials[o].title)}</span><span>${who(g.officials[o].holders)}</span></div>`).join('');
     h+='<p style="padding-top:10px"><b>Elections</b></p>'+(g.elections.length?g.elections.map(e=>{

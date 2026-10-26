@@ -17,6 +17,15 @@ Sims live anywhere in the city that has homes, wherever they happen to be standi
 Votes come only from populated blocks. Each block's population is its voting power, like a census district, and the agent that owns the block casts it. An agent with no populated blocks can still run for office but casts no votes.
 Population is counted at the moment an election closes. The City Hall tab shows the census and every agent's voting power.
 
+ARTICLE 1B. UTILITIES
+
+The census also meters electricity, per month, for the whole city.
+Every home uses 900 kWh. Every RV uses 300 kWh. Every light fixture, a light symbol, uses 25 kWh.
+Every other named building uses kWh per square meter of floor by its use, read from its name: grocery 45, food service 34, water and utility 30, health care 25, lodging 20, entertainment 18, public safety 15, office 13, industrial 12, education and civic 10, anything else 12. Non residential floors count every 4.5 meters of wall height. Tanks, towers and reservoirs count as one floor.
+Prices are 17 cents per kWh for homes and 13 cents for everything else.
+Homes and RVs are the residential sector, businesses the commercial sector. Health care, water and utility, public safety, education and civic buildings and all light fixtures are city facilities, and their power bill is a city expense.
+The City Hall tab shows the city's power use, its monthly bill by sector and every building's meter.
+
 ARTICLE 2. OFFICES
 
 Elected by the residents:
