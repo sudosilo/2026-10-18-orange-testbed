@@ -307,7 +307,12 @@ function updateStatus(){
 
 async function load(){
   try{const r=await fetch('testbed.json',{cache:'no-store'});if(r.ok)config=await r.json();}catch(e){}
+  let live=false;
   try{
+    const r=await fetch('api/manifest',{cache:'no-store'});
+    if(r.ok){const j=await r.json();if(j&&Array.isArray(j.files)&&j.files.length){manifest=j;live=true;if(j.config)config=j.config;}}
+  }catch(e){}
+  if(!live)try{
     const r=await fetch('manifest.json',{cache:'no-store'});
     if(r.ok)manifest=await r.json();
   }catch(e){}
