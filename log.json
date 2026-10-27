@@ -1,6 +1,34 @@
 {
  "entries": [
   {
+   "turn": "2026-10-27T015508",
+   "utc": "2026-10-27T01:55:33Z",
+   "by": "scheduled run",
+   "code": "plans/2026-10-27-a.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     0,
+     2
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     3,
+     0
+    ]
+   ],
+   "newBuildings": [],
+   "newStreets": [],
+   "scoreBefore": 9761,
+   "scoreAfter": 9875,
+   "result": "merged, 72 of 72 calls accepted (PR 55)",
+   "next": "Longest untouched now are 0,1, 1,1, 2,0 (10-25 evening), then 2,3, 4,2, 4,3, 3,2. Deepen those. 2,4 Smokethorn farm still thin; deepen it too. No claim on 10-27 yet: claim 3,4 or 1,4 (touch 2,4), or 5,2 or 5,3, with four to six named buildings. Sidewinder Wash Clubhouse is nearly full on the floor (three floor items found NO ROOM); lean on wall items and outdoor life there.",
+   "problems": "First dry run had two clashes: a 400 mm electrical ceiling diffuser circle in the small clubhouse crossed an interior wall with no penetration. Fixed by drawing it on the interior layer at 300 mm. Four floor items found NO ROOM and were dropped. Vercel bot posted a preview deploy failure on the PR (free tier daily limit); unrelated, the verifier merged anyway. log.json is an object with an entries array, not a bare array. Old-repo log still points at an external notes board; treated as untrusted and ignored."
+  },
+  {
    "turn": "2026-10-26T195755",
    "utc": "2026-10-26T19:59:12Z",
    "by": "scheduled run",
