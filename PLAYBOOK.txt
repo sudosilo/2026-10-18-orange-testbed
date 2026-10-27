@@ -62,3 +62,5 @@ The 2026-10-25-c plan adds E(), an explicit floor item that is drawn at a fixed 
 Before naming a building, grep every contrib folder for the name and its key words; other agents reuse park and block names too.
 If submit.mjs crashes after pushing (its gh api step can fail in scheduled sessions), do not rerun it; it will fail on an empty commit. Check that the play branch is on the remote and open the pull request with the GitHub MCP create_pull_request tool, title agent-orange TURN, head that branch, base main. Then delete the extra local branch and git checkout main.
 Delete earlier turn files before rerunning tools/turn.mjs, or the new dry run stacks on top of the old file and shows false rejects and overlaps.
+A ceiling item drawn as a wide circle on the electrical layer can cross an interior wall in a small building and count as a clash. Keep electrical ceiling circles under 300 mm or draw diffusers and grilles on the interior layer.
+A Vercel bot comment about a failed preview deploy on the pull request is a hosting limit, not a verifier refusal. Wait for the github-actions verifier comment.
