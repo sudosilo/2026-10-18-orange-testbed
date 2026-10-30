@@ -33,6 +33,12 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .flag{color:var(--flag)}
 #status{font-size:12px}
 p{margin:0 0 10px}
+#joy{position:fixed;left:18px;bottom:22px;width:128px;height:128px;border-radius:50%;background:rgba(255,253,247,.78);border:2px solid var(--line);display:none;touch-action:none;z-index:4}
+#joy .knob{position:absolute;left:39px;top:39px;width:50px;height:50px;border-radius:50%;background:var(--accent);opacity:.85}
+#hud{position:fixed;right:10px;bottom:22px;display:none;flex-direction:column;gap:8px;align-items:flex-end;z-index:4}
+#hud .chip{font-size:12px}
+body.roam #sheet{display:none}
+body.roam #bTop,body.roam #bHome,body.roam #bDemo,body.roam #bSheet{display:none}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
@@ -42,11 +48,15 @@ p{margin:0 0 10px}
   <div class="chip title">AGENT <span>TEST BED</span></div>
   <div class="chip" id="status">loading</div>
   <div class="sp"></div>
+  <button id="bWalk">Walk</button>
+  <button id="bDrive">Drive</button>
   <button id="bDemo">Demo</button>
   <button id="bHome">0:0</button>
   <button id="bTop">Top</button>
   <button id="bSheet">Panel</button>
 </div>
+<div id="joy"><div class="knob"></div></div>
+<div id="hud"><div class="chip" id="where">street level</div><button id="bRun">Run</button><button id="bExit">Exit</button></div>
 <div id="sheet">
   <div class="tabs">
     <button data-tab="agents" class="on">Agents</button>
@@ -186,7 +196,12 @@ function applyVisibility(){
     const near=Math.hypot(cam.x-(L.cx+.5)*S/1000,cam.y,cam.z+(L.cy+.5)*S/1000)<170;
     for(const m of L.batches){
       const {agent,disc}=m.userData;
-      if(disc==='names'){m.visible=state.names&&(m.userData.kind!=='activity'||near);continue;}
+      if(disc==='names'){
+        // At street level labels shrink, hide behind walls and show only close by, so they read like signs instead of billboards.
+        const base=m.userData.base||(m.userData.base=m.scale.clone());
+        if(roam.mode){const d=cam.distanceTo(m.position);m.visible=state.names&&d<(m.userData.kind==='activity'?14:m.userData.kind==='street'?60:40);m.scale.copy(base).multiplyScalar(roam.mode==='walk'?0.28:0.45);m.material.depthTest=true;}
+        else{m.visible=state.names&&(m.userData.kind!=='activity'||near);m.scale.copy(base);m.material.depthTest=false;}
+        continue;}
       if(agent==='sys'){m.visible=state.flags;continue;}
       let v=state.agents[agent]!==false&&state.disc[disc]&&!m.userData.blinkOff;
       if(v&&DETAIL.has(disc))v=state.detail==='always'||(state.detail==='auto'&&near);
@@ -210,6 +225,123 @@ function updateChunks(force){
   grid.position.set((cx+.5)*S/1000,-0.02,-(cy+.5)*S/1000);scene.add(grid);
   applyVisibility();
 }
+
+// ---------- Walk and drive: street level roaming with walls that block and doors that let you through ----------
+const roam={mode:null,x:0,y:0,h:0,pitch:0,v:0,run:false,joy:{x:0,y:0},keys:{},car:null,walls:null,doors:null,wallKey:''};
+const EYE=1.62,WALK=1.4,RUN=4.2,CAR_MAX=17,CAR_REV=4;
+function cellKey(x,y){return Math.floor(x/10000)+','+Math.floor(y/10000);}
+// Walls from every visible agent's records in the loaded blocks, bucketed by 10 m cells. Door frames make openings.
+function buildCollision(){
+  const key=[...loaded.keys()].sort().join('|')+'|'+state.fixes;
+  if(key===roam.wallKey&&roam.walls)return;
+  roam.wallKey=key;const walls=new Map(),doors=new Map();
+  const put=(m,a,b,item)=>{const x0=Math.min(a[0],b[0])-1500,x1=Math.max(a[0],b[0])+1500,y0=Math.min(a[1],b[1])-1500,y1=Math.max(a[1],b[1])+1500;
+    for(let cx=Math.floor(x0/10000);cx<=Math.floor(x1/10000);cx++)for(let cy=Math.floor(y0/10000);cy<=Math.floor(y1/10000);cy++){const k=cx+','+cy;(m.get(k)||m.set(k,[]).get(k)).push(item);}};
+  for(const k of loaded.keys()){const c=W.chunks.get(k);if(!c)continue;
+    for(const r of c.records){
+      if(r.kind!=='line'||(r.hidden&&state.fixes)||state.agents[r.agent]===false)continue;
+      const m=r.meta||{},p=r.pts;
+      if(m.wall){const zb=Number.isInteger(m.zmin)?m.zmin:0,zt=Number.isInteger(m.h)?m.h:3048;if(zb>1500||zt<600)continue;
+        const sg=recSegs(r);for(let i=0;i<sg.length;i+=2){const a=sg[i],b=sg[i+1];if(Math.hypot(b[0]-a[0],b[1]-a[1])<10)continue;put(walls,a,b,[a[0],a[1],b[0],b[1]]);}}
+      // A door frame: four points, standing at the ends and tall in the middle. The gap between its feet is passable.
+      else if(p.length===4&&p[0][2]<300&&p[3][2]<300&&p[1][2]>1800&&p[2][2]>1800&&Math.hypot(p[3][0]-p[0][0],p[3][1]-p[0][1])>600){const a=p[0],b=p[3];put(doors,a,b,[a[0],a[1],b[0],b[1]]);}
+    }}
+  roam.walls=walls;roam.doors=doors;
+}
+const segDist=(px,py,s)=>{const dx=s[2]-s[0],dy=s[3]-s[1],L=dx*dx+dy*dy||1;let t=((px-s[0])*dx+(py-s[1])*dy)/L;t=Math.max(0,Math.min(1,t));return Math.hypot(px-s[0]-t*dx,py-s[1]-t*dy);};
+function blocked(x,y,r){
+  const k=cellKey(x,y),ws=roam.walls.get(k);if(!ws)return false;
+  for(const s of ws)if(segDist(x,y,s)<r){
+    const ds=roam.doors.get(k);let door=false;
+    if(ds)for(const d of ds)if(segDist(x,y,d)<Math.max(r,700)){door=true;break;}
+    if(!door)return true;
+  }
+  return false;
+}
+function tryMove(dx,dy,r){
+  if(!blocked(roam.x+dx,roam.y+dy,r)){roam.x+=dx;roam.y+=dy;return true;}
+  if(!blocked(roam.x+dx,roam.y,r)){roam.x+=dx;return false;}
+  if(!blocked(roam.x,roam.y+dy,r)){roam.y+=dy;return false;}
+  return false;
+}
+function carObject(){
+  const r={kind:'symbol',type:'car',at:[0,0,0],rot:0,color:4,meta:null};
+  const g={pos:[],col:[]};pushSegs(g,r,recSegs(r),null);
+  const o=mkLines(g.pos,g.col);o.userData={agent:'sys',disc:'roam'};return o;
+}
+function enterRoam(mode){
+  if(!W)return;
+  if(roam.mode===mode){exitRoam();return;}
+  if(!roam.mode){const t=controls.target;roam.x=t.x*1000;roam.y=-t.z*1000;const d=new THREE.Vector3();camera.getWorldDirection(d);roam.h=Math.atan2(-d.z,d.x);roam.pitch=0;}
+  roam.mode=mode;roam.v=0;controls.enabled=false;document.body.classList.add('roam');
+  document.getElementById('joy').style.display='block';document.getElementById('hud').style.display='flex';
+  document.getElementById('bRun').style.display=mode==='walk'?'':'none';
+  document.getElementById('bWalk').classList.toggle('on',mode==='walk');document.getElementById('bDrive').classList.toggle('on',mode==='drive');
+  if(mode==='drive'){if(!roam.car){roam.car=carObject();}scene.add(roam.car);}else if(roam.car)scene.remove(roam.car);
+  camera.fov=mode==='walk'?70:62;camera.near=0.05;camera.updateProjectionMatrix();
+  controls.target.set(roam.x/1000,0,-roam.y/1000);updateChunks(true);roam.wallKey='';
+}
+function exitRoam(){
+  const x=roam.x/1000,z=-roam.y/1000;roam.mode=null;controls.enabled=true;document.body.classList.remove('roam');
+  document.getElementById('joy').style.display='none';document.getElementById('hud').style.display='none';
+  document.getElementById('bWalk').classList.remove('on');document.getElementById('bDrive').classList.remove('on');
+  if(roam.car)scene.remove(roam.car);
+  camera.fov=50;camera.near=0.1;camera.updateProjectionMatrix();
+  controls.target.set(x,0,z);camera.position.set(x+25,22,z+28);
+}
+// Input: joystick on the left, drag anywhere else to look, keys on a keyboard.
+{
+  const joy=document.getElementById('joy'),knob=joy.querySelector('.knob');let jid=null;
+  const setJoy=(e)=>{const r=joy.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy;const m=Math.hypot(dx,dy),R=r.width/2-14;if(m>R){dx*=R/m;dy*=R/m;}
+    roam.joy.x=dx/R;roam.joy.y=-dy/R;knob.style.transform='translate('+dx+'px,'+dy+'px)';};
+  joy.addEventListener('pointerdown',e=>{jid=e.pointerId;joy.setPointerCapture(jid);setJoy(e);e.stopPropagation();});
+  joy.addEventListener('pointermove',e=>{if(e.pointerId===jid)setJoy(e);});
+  const endJoy=e=>{if(e.pointerId!==jid)return;jid=null;roam.joy.x=roam.joy.y=0;knob.style.transform='';};
+  joy.addEventListener('pointerup',endJoy);joy.addEventListener('pointercancel',endJoy);
+  const look=new Map();
+  renderer.domElement.addEventListener('pointerdown',e=>{if(roam.mode)look.set(e.pointerId,[e.clientX,e.clientY]);});
+  renderer.domElement.addEventListener('pointermove',e=>{const p=look.get(e.pointerId);if(!p||!roam.mode)return;const dx=e.clientX-p[0],dy=e.clientY-p[1];look.set(e.pointerId,[e.clientX,e.clientY]);
+    roam.h-=dx*0.006;if(roam.mode==='walk')roam.pitch=Math.max(-1.2,Math.min(1.2,roam.pitch-dy*0.005));});
+  const endLook=e=>look.delete(e.pointerId);renderer.domElement.addEventListener('pointerup',endLook);renderer.domElement.addEventListener('pointercancel',endLook);
+  addEventListener('keydown',e=>{roam.keys[e.key.toLowerCase()]=true;});addEventListener('keyup',e=>{roam.keys[e.key.toLowerCase()]=false;});
+  document.getElementById('bWalk').onclick=()=>enterRoam('walk');
+  document.getElementById('bDrive').onclick=()=>enterRoam('drive');
+  document.getElementById('bExit').onclick=exitRoam;
+  document.getElementById('bRun').onclick=()=>{roam.run=!roam.run;document.getElementById('bRun').classList.toggle('on',roam.run);};
+}
+function axis(){const k=roam.keys;let fx=roam.joy.y,sx=roam.joy.x;
+  if(k.w||k.arrowup)fx=1;if(k.s||k.arrowdown)fx=-1;if(k.a||k.arrowleft)sx=-1;if(k.d||k.arrowright)sx=1;return {fx,sx,run:roam.run||k.shift};}
+function streetHere(){
+  // Nearest named street label within 40 m, from the labels the city already carries.
+  let best=null,bd=40000;for(const L of (W.labels||[]))if(L.kind==='street'){const d=Math.hypot(L.at[0]-roam.x,L.at[1]-roam.y);if(d<bd){bd=d;best=L.text;}}
+  const ck=Math.floor(roam.x/S)+':'+Math.floor(roam.y/S);return (best?best+', ':'')+'block '+ck;
+}
+let roamHud=0;
+function stepRoam(dt){
+  dt=Math.min(dt,0.1);buildCollision();
+  const {fx,sx,run}=axis();
+  if(roam.mode==='walk'){
+    const sp=(run?RUN:WALK)*1000*dt,c=Math.cos(roam.h),s=Math.sin(roam.h);
+    // Left stick: forward and back walk, sideways strafes.
+    const dx=(c*fx+s*sx)*sp,dy=(s*fx-c*sx)*sp;if(dx||dy)tryMove(dx,dy,280);
+    const bob=Math.hypot(fx,sx)>0.1?Math.sin(performance.now()/1000*(run?11:7))*0.03:0;
+    camera.position.set(roam.x/1000,EYE+bob,-roam.y/1000);
+    const cp=Math.cos(roam.pitch);camera.lookAt(roam.x/1000+c*cp,EYE+bob+Math.sin(roam.pitch),-(roam.y/1000+s*cp));
+  }else{
+    // Stick up is gas, down is brake then reverse, sideways steers. Steering bites harder the faster you go, up to a point.
+    const acc=fx>0?6*fx:fx<0?(roam.v>0.3?-10*Math.abs(fx):-3*Math.abs(fx)):0;
+    roam.v+=acc*dt;roam.v-=roam.v*0.35*dt;if(fx===0&&Math.abs(roam.v)<0.15)roam.v=0;
+    roam.v=Math.max(-CAR_REV,Math.min(CAR_MAX,roam.v));
+    const turn=-sx*Math.min(1,Math.abs(roam.v)/4)*0.9*Math.sign(roam.v||1);roam.h+=turn*dt;
+    const c=Math.cos(roam.h),s=Math.sin(roam.h),d=roam.v*1000*dt;
+    if(d&&!tryMove(c*d,s*d,1100))roam.v*=0.3;
+    roam.car.position.set(roam.x/1000,0,-roam.y/1000);roam.car.rotation.y=roam.h-Math.PI/2;
+    camera.position.set(roam.x/1000-c*7.5,3.2,-(roam.y/1000-s*7.5));camera.lookAt(roam.x/1000+c*6,1.2,-(roam.y/1000+s*6));
+  }
+  controls.target.set(roam.x/1000,0,-roam.y/1000);
+  if(++roamHud%15===0)document.getElementById('where').textContent=(roam.mode==='walk'?(run?'running':'walking'):Math.round(Math.abs(roam.v)*2.237)+' mph')+' · '+streetHere();
+}
+
 function home(){const x=S/2000,z=-S/2000;controls.target.set(x,0,z);camera.position.set(x+60,55,z+70);}
 function topView(){const t=controls.target;camera.position.set(t.x,260,t.z+0.01);}
 home();
@@ -329,7 +461,8 @@ async function load(){
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
 let frame=0;
 const clock=new THREE.Clock();
-function loop(){requestAnimationFrame(loop);controls.update();updateChunks(false);animate(clock.getElapsedTime());if(++frame%3===0)applyVisibility();renderer.render(scene,camera);}
+let lastT=0;
+function loop(){requestAnimationFrame(loop);const now=clock.getElapsedTime(),dt=now-lastT;lastT=now;if(roam.mode)stepRoam(dt);else controls.update();updateChunks(false);animate(now);if(++frame%3===0)applyVisibility();renderer.render(scene,camera);}
 renderPanel();
 load();
 loop();
