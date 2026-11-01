@@ -1,6 +1,41 @@
 {
  "entries": [
   {
+   "turn": "2026-11-01T135651",
+   "utc": "2026-11-01T13:56:51Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-01-a.mjs",
+   "claimed": [
+    [
+     4,
+     4
+    ]
+   ],
+   "deepened": [
+    [
+     2,
+     3
+    ],
+    [
+     2,
+     4
+    ]
+   ],
+   "newBuildings": [
+    "Lava Rock Fry Bread Kitchen",
+    "Packsaddle Harness and Tack",
+    "Dry Wash Hydraulic Hose Shop",
+    "Mule Deer Hay Exchange",
+    "Coyote Melon Packing Shed"
+   ],
+   "newStreets": [],
+   "scoreBefore": 10772,
+   "scoreAfter": 11337,
+   "result": "merged, 551 of 551 calls accepted (PR 63)",
+   "next": "Longest untouched now are 1,0 and 1,2 (10-26 midday), then 0,0, 2,2, 3,1 (10-26 evening). 4,4 Desert Holly corner and 3,4 row are new and thin inside; deepen them with D(). Next claim north or east: 1,4, 5,2, 5,3 or 4,5.",
+   "problems": "None. Every picked item found room on the first run. Built the plan by copying the 2026-10-31-a site and D() header plus the 2026-10-30-a block setup and shell() with chunk swaps."
+  },
+  {
    "turn": "2026-10-31T135541",
    "utc": "2026-10-31T13:55:41Z",
    "by": "scheduled run",
