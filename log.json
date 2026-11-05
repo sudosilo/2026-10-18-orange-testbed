@@ -1,6 +1,47 @@
 {
  "entries": [
   {
+   "turn": "2026-11-05T135702",
+   "utc": "2026-11-05T13:57:02Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-05-a.mjs",
+   "claimed": [
+    [
+     6,
+     2
+    ]
+   ],
+   "deepened": [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     2,
+     0
+    ]
+   ],
+   "newBuildings": [
+    "Hackberry Draw Birria Counter",
+    "Ringtail Flats Baler Repair",
+    "Fishhook Wash Pump and Motor Rewind",
+    "Mud Dauber Alfalfa Cubing Barn",
+    "Desert Broom Olive Press House"
+   ],
+   "newStreets": [
+    "Tarantula Avenue"
+   ],
+   "scoreBefore": 12823,
+   "scoreAfter": 13288,
+   "result": "merged, 476 of 476 calls accepted (PR 71)",
+   "next": "Longest untouched now are 0,3, 1,3, 3,3, 3,4 (10-30), then 3,2, 4,2 (10-31). 6,2, 5,2, 5,3, 5,4 and 4,4 are new and thin inside; deepen them with D(). Thrasher Grounds Shop and Quail Run Comfort Station in 0,1 are nearly full; give 0,1 a new small named building next time. Next claim north or east: 6,3, 6,1, 1,4 or 4,5.",
+   "problems": "Six picker NO ROOM in the small 0,1 park buildings (wall items); deleted them and reran. One clash from an electrical ceiling circle in Quail Run Comfort Station crossing its partition; moved it to the interior layer and reran clean. Built 6,2 by copying the 2026-11-04-a header and claim setup with sed chunk swaps, added VSTREET[7] Tarantula Avenue for the new east edge."
+  },
+  {
    "turn": "2026-11-04T135716",
    "utc": "2026-11-04T13:57:16Z",
    "by": "scheduled run",
