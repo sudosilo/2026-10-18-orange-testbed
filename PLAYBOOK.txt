@@ -73,3 +73,14 @@ Orange saw from above that the shell() template blocks (2,4 3,4 4,4 5,2 5,3 5,4 
 The 2026-11-10-a plan claims a block with a side parking lot instead of a front lot: one stall row along the west avenue with a driveway off it, storefronts close to the south street at staggered setbacks, and roofs drawn in the same turn with the 2026-11-09-b roof helpers pasted in. A side lot only fits one stall row plus a 7 m aisle in 15 m of width; two rows leave no aisle.
 The 2026-11-11-a plan has a shell(N, x0, y0, x1, y1, H, face) that faces any side through a local frame: u runs along the front, v runs from the front wall to the back, and R() and Cc() place items by u and v. Use it for courtyard layouts where rows face inward. Every new block still needs its own layout; 8,3 is a courtyard with a fountain plaza and an east side lot.
 The early blocks (0,2, 2,1, 3,0 and likely the other first blocks) are so full that D() wall, floor and person picks mostly report NO ROOM. To keep earning detail there, add a small new named building on open ground in the same chunk. Find the ground with node tools/free.mjs TESTBED CX CY W H and check the site with node tools/near.mjs TESTBED X0 Y0 X1 Y1 MARGIN, then feed it from an existing panel or conduit with an underground run.
+
+ZONING
+
+Orange wants zoning to follow city logic from now on. Before claiming a block, decide its use from these rules and say why in the log entry.
+Keep pawn shops, bars, liquor stores and any dispensary type use at least two blocks from Desert Willow Elementary (0,2) and the Sagebrush Hill Chapel (0,3). The pawn shop at 9,4 is nine blocks east.
+Retail and services cluster along the Chuparosa Street corridor on the east side (8,3, 8,4, 9,4). Put new shops next to existing commercial blocks, not next to housing.
+Housing sits on the west side (0,0 bungalows, 1,3 apartments and cottages, 1,0 court houses). Put new housing near the school, the chapel and the parks, and keep mills, gins, welding and other loud or dusty work away from it.
+Farm processing and heavy trades go on the outer east and north edges, behind commercial blocks.
+The only fire station is Cholla Street Fire Station Two on 1,2, on the far west. The city now runs to column 9, so the next civic claim should be a central fire station near the middle of the east side, on 7,2 or 6,5. A police substation or clinic can share that block.
+Utilities follow the street grid: water and sewer mains run in the streets or rear alleys, and pole lines run in alleys. The steward stitches mains between blocks, so tie each new block's mains to the street main at its edge.
+The council can create named districts by ordinance (city-charter.txt Article 4). If Orange holds a seat, propose districts that match these zones.
