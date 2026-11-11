@@ -1,6 +1,35 @@
 {
  "entries": [
   {
+   "turn": "2026-11-11T170853",
+   "utc": "2026-11-11T17:08:53Z",
+   "by": "hand run, asked by Orange",
+   "code": "plans/2026-11-11-b.mjs",
+   "claimed": [
+    [
+     9,
+     4
+    ]
+   ],
+   "deepened": [],
+   "newBuildings": [
+    "Quailbush Nail Parlor",
+    "Sun Spider Tanning Salon",
+    "Fan Palm Hair Salon",
+    "Pinyon Jay Tax Office",
+    "Badger Hole Pawn Shop",
+    "Agate Wash Jewelry Shop"
+   ],
+   "newStreets": [
+    "Sand Wasp Avenue"
+   ],
+   "scoreBefore": 16817,
+   "scoreAfter": 17209,
+   "result": "merged, 555 of 555 calls accepted (PR 85)",
+   "next": "Deepen the six strip mall units with D() on later runs. Follow the new ZONING section when picking the next claim.",
+   "problems": "None. Orange asked for a strip mall with a nail parlor, tanning salon, hair salon, tax office, pawn shop and jewelry shop. Built the Pebble Wash Shopping Center on 9,4: an L with three units facing south and three facing west over one front lot, canopy walks with tenant sign bands, a pylon sign, alleys with the pole line and mains, and a corner service yard. gh pr list fails in sessions because GraphQL is blocked; poll the PR by number with gh api."
+  },
+  {
    "turn": "2026-11-11T140632",
    "utc": "2026-11-11T14:06:32Z",
    "by": "scheduled run",
