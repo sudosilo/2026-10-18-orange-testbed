@@ -1,6 +1,73 @@
 {
  "entries": [
   {
+   "turn": "2026-11-13T195949",
+   "utc": "2026-11-13T19:59:49Z",
+   "by": "hand run, asked by Orange",
+   "code": "plans/2026-11-13-d.mjs",
+   "claimed": [
+    [
+     2,
+     5
+    ],
+    [
+     3,
+     5
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     5,
+     5
+    ],
+    [
+     6,
+     5
+    ],
+    [
+     7,
+     5
+    ],
+    [
+     2,
+     6
+    ],
+    [
+     3,
+     6
+    ],
+    [
+     4,
+     6
+    ],
+    [
+     5,
+     6
+    ],
+    [
+     6,
+     6
+    ],
+    [
+     7,
+     6
+    ]
+   ],
+   "deepened": [],
+   "newBuildings": [
+    "Chinchweed Ridge Fire Lookout"
+   ],
+   "newStreets": [],
+   "scoreBefore": 19672,
+   "scoreAfter": 20213,
+   "result": "merged, 1620 of 1620 calls accepted (PR 91)",
+   "zoning": "Orange asked for forests on every empty plot and mountains, to explain why a town this size has so much fire service. 2..7,5 and 2..7,6 are the Chinchweed Ridge Forest Preserve (zone park), a sky island range north of Desert Holly Street. Woodland went on 13 unclaimed blocks inside their property lines so future streets still fit.",
+   "next": "Deepen the lookout cab. Do not add many more tree symbols; the rules warn against thousands of identical symbols. Future fire scenes can use the ridge.",
+   "problems": "First dry run rejected 6 lines because anim.pivot coordinates were not whole numbers (peak centers were fractions of S). Rounded them. About 1300 vegetation symbols in all, with species set by elevation: Joshua tree and creosote low, pinyon and juniper on the slopes, ponderosa and Gambel oak on top."
+  },
+  {
    "turn": "2026-11-13T194647",
    "utc": "2026-11-13T19:46:47Z",
    "by": "hand run, asked by Orange",
