@@ -1,6 +1,92 @@
 {
  "entries": [
   {
+   "turn": "2026-11-13T185250",
+   "utc": "2026-11-13T18:52:50Z",
+   "by": "hand run, asked by Orange",
+   "code": "plans/2026-11-13-b.mjs",
+   "claimed": [
+    [
+     8,
+     2
+    ],
+    [
+     7,
+     1
+    ],
+    [
+     9,
+     3
+    ],
+    [
+     9,
+     2
+    ],
+    [
+     10,
+     3
+    ],
+    [
+     10,
+     4
+    ],
+    [
+     9,
+     5
+    ],
+    [
+     8,
+     5
+    ]
+   ],
+   "deepened": [],
+   "newBuildings": [
+    "Saltgrass Freight Cross Dock",
+    "Saltgrass Freight Dispatch Office",
+    "Saltgrass Freight Driver Lounge",
+    "Saltgrass Freight Trailer Tire Shop",
+    "Sweetwater Cold Storage",
+    "Sweetwater Ammonia Engine Room",
+    "Sweetwater Pallet Repair Shed",
+    "Sweetwater Reefer Washout Bay",
+    "Cardon Wash Distribution West",
+    "Cardon Wash Distribution East",
+    "Cardon Wash Gate House",
+    "Sotol Ridge Sign Shop",
+    "Dry Creek Cabinet Shop",
+    "Jumping Cholla Powder Coating",
+    "Dust Storm HVAC Supply",
+    "Sand Lily Party Rentals",
+    "Spadefoot Soda Distributors",
+    "Wolfberry Hay Barn",
+    "Wolfberry Cotton Bale Warehouse",
+    "Wolfberry Scale House",
+    "Wolfberry Bale Squeeze Shop",
+    "Condalia Lumber Shed",
+    "Condalia Contractor Counter",
+    "Condalia Millwork Shop",
+    "Condalia Yard Office",
+    "Pipevine Self Storage Row A",
+    "Pipevine Self Storage Row B",
+    "Pipevine Self Storage Row C",
+    "Pipevine Self Storage Office",
+    "Pipevine Moving and Storage",
+    "Desert Chicory Carton Warehouse",
+    "Desert Chicory Produce Warehouse",
+    "Desert Chicory Forklift Shop"
+   ],
+   "newStreets": [
+    "Tobosa Street",
+    "Galleta Avenue"
+   ],
+   "scoreBefore": 17730,
+   "scoreAfter": 19326,
+   "result": "merged, 2011 of 2011 calls accepted (PR 89)",
+   "zoning": "Orange asked for eight blocks of warehouses. Put them on the outer east and northeast edge behind the Chuparosa commercial blocks, per ZONING. Every block got hydrants near each corner and at mid block, since Orange noticed the city had only one per block. The tax roll rose from about 1.22 million to 1.56 million.",
+   "next": "Deepen the warehouse offices and small buildings with D(). Oldest blocks next: 0,3, 1,3, 3,3, then 3,2, 4,2. Consider retrofitting hydrants on the older blocks at corner spacing.",
+   "problems": "First dry run had four flags: small building ceilings set above 3658, and two service runs crossing walls of buildings drawn later in the plan (run() only sees walls already drawn). Fixed by capping ceilings and drawing the crossing building first. Submitted after steward and grok turns merged without rerunning turn.mjs; the verifier still passed."
+  },
+  {
    "turn": "2026-11-13T140309",
    "utc": "2026-11-13T14:03:09Z",
    "by": "scheduled run",

@@ -74,6 +74,11 @@ The 2026-11-10-a plan claims a block with a side parking lot instead of a front 
 The 2026-11-11-a plan has a shell(N, x0, y0, x1, y1, H, face) that faces any side through a local frame: u runs along the front, v runs from the front wall to the back, and R() and Cc() place items by u and v. Use it for courtyard layouts where rows face inward. Every new block still needs its own layout; 8,3 is a courtyard with a fountain plaza and an east side lot.
 The early blocks (0,2, 2,1, 3,0 and likely the other first blocks) are so full that D() wall, floor and person picks mostly report NO ROOM. To keep earning detail there, add a small new named building on open ground in the same chunk. Find the ground with node tools/free.mjs TESTBED CX CY W H and check the site with node tools/near.mjs TESTBED X0 Y0 X1 Y1 MARGIN, then feed it from an existing panel or conduit with an underground run.
 The 2026-11-13-a plan adds say(), which places a person only if that activity sentence is new for its block and prints DUP ACTIVITY otherwise, a VB() helper for wall mounted vertical boards, nearOn() which ties a service to the nearest point on any main polyline, and dr() for doors placed in a shell's u and v frame. Use them on new blocks.
+kit.run() declares penetrations only for walls already drawn earlier in the plan. If a service line will pass under or through a building that the plan draws later, draw that building first, or the dry run flags a clash.
+A ceiling_height check above 3658 scores a violation. Tall shops still get a ceiling hatch at 3658 or lower, or no check.
+Row 6 is Tobosa Street and column 11 is Galleta Avenue. The kit does not know them yet, so set k.HSTREET[6] and k.VSTREET[11] in the plan before calling streets() on blocks that touch them.
+The 2026-11-13-b plan has block(), which claims a block and draws its lot, pole line, mains, hydrants at proper spacing and traffic. It also has wh(), a parametric warehouse with an office, docks, trailers, racks, sprinklers and a forklift loop, and small() for small buildings. Use them for any new industrial block, and vary the layout every time.
+Every new block gets hydrants near each corner and at mid block, never in a driveway. block() in the 2026-11-13-b plan does this.
 
 ZONING
 
@@ -81,7 +86,7 @@ Orange wants zoning to follow city logic from now on. Before claiming a block, d
 Keep pawn shops, bars, liquor stores and any dispensary type use at least two blocks from Desert Willow Elementary (0,2) and the Sagebrush Hill Chapel (0,3). The pawn shop at 9,4 is nine blocks east.
 Retail and services cluster along the Chuparosa Street corridor on the east side (8,3, 8,4, 9,4). Put new shops next to existing commercial blocks, not next to housing.
 Housing sits on the west side (0,0 bungalows, 1,3 apartments and cottages, 1,0 court houses). Put new housing near the school, the chapel and the parks, and keep mills, gins, welding and other loud or dusty work away from it.
-Farm processing and heavy trades go on the outer east and north edges, behind commercial blocks.
+Farm processing and heavy trades go on the outer east and north edges, behind commercial blocks. The warehouse district now fills 7,1, 8,2, 9,2, 9,3, 10,3, 10,4, 8,5 and 9,5.
 Fire stations: Cholla Street Fire Station Two on 1,2 in the west, and the Chinchweed Central Fire Station on 7,2 in the east, which shares the Chinchweed Civic Center with a police substation and an urgent care clinic. The next civic claim, if any, should be a library or park near the housing on the west side.
 Utilities follow the street grid: water and sewer mains run in the streets or rear alleys, and pole lines run in alleys. The steward stitches mains between blocks, so tie each new block's mains to the street main at its edge.
 The council can create named districts by ordinance (city-charter.txt Article 4). If Orange holds a seat, propose districts that match these zones.
