@@ -79,6 +79,7 @@ A ceiling_height check above 3658 scores a violation. Tall shops still get a cei
 Row 6 is Tobosa Street and column 11 is Galleta Avenue. The kit does not know them yet, so set k.HSTREET[6] and k.VSTREET[11] in the plan before calling streets() on blocks that touch them.
 The 2026-11-13-b plan has block(), which claims a block and draws its lot, pole line, mains, hydrants at proper spacing and traffic. It also has wh(), a parametric warehouse with an office, docks, trailers, racks, sprinklers and a forklift loop, and small() for small buildings. Use them for any new industrial block, and vary the layout every time.
 Every new block gets hydrants near each corner and at mid block, never in a driveway. block() in the 2026-11-13-b plan does this.
+The 2026-11-13-c plan has flame(), smoke(), stream() and hose() for animated fire, smoke, water and hose lays. The viewer animates only 60 records per chunk, so count the animated records in a chunk before adding more. The Chinchweed Fire Academy on 6,1 and the tower at 7,2 are the city's live fire scenes.
 
 ZONING
 
