@@ -87,7 +87,7 @@ let grid=null,lastCenter='';
 function agentColor(id){const a=manifest.agents.find(x=>x.id===id);const c=a&&a.info&&Number.isInteger(a.info.color)?a.info.color:7;return PALETTE[c]||PALETTE[7];}
 function agentName(id){const a=manifest.agents.find(x=>x.id===id);return a&&a.info&&a.info.name?a.info.name:id;}
 
-function clearMeshes(){for(const L of loaded.values()){scene.remove(L.group);L.group.traverse(o=>o.geometry&&o.geometry.dispose());}loaded.clear();lastCenter='';}
+function clearMeshes(){for(const L of loaded.values()){for(const sp of L.sprites)dropLabel(sp);scene.remove(L.group);L.group.traverse(o=>o.geometry&&o.geometry.dispose());}loaded.clear();lastCenter='';}
 function rebuildWorld(){
   if(state.demo&&demo){W=createWorld();for(const c of demo.calls)applyCall(W,c.agent,c);finalize(W);}
   else W=replay(allFiles.filter(f=>!state.day||(state.day!=='checkpoint'&&f.date.slice(0,10)<=state.day)).filter(f=>state.detail2||!(config.detailers||[]).includes(f.agent)).map(f=>state.fixes||!config.stewards.includes(f.agent)||!Array.isArray(f.calls)?f:Object.assign({},f,{calls:f.calls.filter(c=>c&&c.tool==='judge_score')})),null,config,state.demo?null:checkpoint);
@@ -129,9 +129,9 @@ function buildChunk(c){
   }
   for(const f of c.flags)add('sys|flags','#c0392b',[[f[0]-1500,f[1]-1500,f[2]],[f[0]+1500,f[1]+1500,f[2]],[f[0]-1500,f[1]+1500,f[2]],[f[0]+1500,f[1]-1500,f[2]],[f[0],f[1],f[2]],[f[0],f[1],f[2]+6000]]);
   if(c.owner){const x0=c.cx*S,y0=c.cy*S,o=600;add('sys|owner',agentColor(c.owner),[[x0+o,y0+o,0],[x0+o+6000,y0+o,0],[x0+o,y0+o,0],[x0+o,y0+o+6000,0]]);}
-  for(const L of (W.labels||[]))if(L.k===c.k){const sp=label(L);if(sp){group.add(sp);batches.push(sp);}}
+  const lbls=(W.labels||[]).filter(L=>L.k===c.k);
   for(const bk in groups){const m=mkLines(groups[bk].pos,groups[bk].col);const [agent,disc]=bk.split('|');m.userData={agent,disc};group.add(m);batches.push(m);}
-  scene.add(group);loaded.set(c.k,{group,batches,anims,cx:c.cx,cy:c.cy});
+  scene.add(group);loaded.set(c.k,{group,batches,anims,cx:c.cx,cy:c.cy,lbls,sprites:[],lblKey:0});
 }
 // Animation moves whole line objects with transforms only. No geometry is rebuilt per frame and nothing is lit or shaded.
 function animate(t){
@@ -163,27 +163,38 @@ function animate(t){
     }
   }
 }
-const texCache=new Map();
+// Labels are built only for chunks near the camera and freed when the camera moves away. Every label is a canvas texture,
+// and building all of them at once (thousands in a full city) ran phones out of memory, so chunks stopped drawing partway.
+const texCache=new Map(),LABEL_DIST=320;
+function dropLabel(sp){sp.material.dispose();const e=texCache.get(sp.userData.ck);if(e&&--e.n<=0){e.t.dispose();texCache.delete(sp.userData.ck);}}
+function syncLabels(L,want,near){
+  const key=want?(near?2:1):0;if(L.lblKey===key)return;L.lblKey=key;
+  for(const sp of L.sprites){L.group.remove(sp);dropLabel(sp);}L.sprites=[];
+  if(!key)return;
+  for(const lb of L.lbls){if(lb.kind==='activity'&&key<2)continue;const sp=label(lb);if(sp){L.group.add(sp);L.sprites.push(sp);}}
+}
 function label(L){
   const col={street:'#1f3a5f',building:'#8a2f55',activity:'#2f6b3a',sign:'#5a5a5a',district:'#7a4f9a'}[L.kind]||'#22262b';
-  const ck=L.kind+'|'+L.text;let t=texCache.get(ck);
+  const ck=L.kind+'|'+L.text;let t=texCache.has(ck)?texCache.get(ck).t:null;
   if(!t){
-    const cv=document.createElement('canvas'),g=cv.getContext('2d'),fs=40;g.font=(L.kind==='building'?'700 ':'')+fs+'px ui-monospace,Menlo,monospace';
+    const cv=document.createElement('canvas'),g=cv.getContext('2d'),fs=32;g.font=(L.kind==='building'?'700 ':'')+fs+'px ui-monospace,Menlo,monospace';
     const w=Math.ceil(g.measureText(L.text).width)+28;cv.width=w;cv.height=fs+24;
     g.font=(L.kind==='building'?'700 ':'')+fs+'px ui-monospace,Menlo,monospace';
     g.fillStyle='rgba(255,253,247,0.88)';g.fillRect(0,0,w,cv.height);g.strokeStyle=col;g.lineWidth=3;g.strokeRect(1.5,1.5,w-3,cv.height-3);
     g.fillStyle=col;g.textBaseline='middle';g.fillText(L.text,14,cv.height/2+2);
-    t=new THREE.CanvasTexture(cv);t.userData={w,h:cv.height};texCache.set(ck,t);
+    t=new THREE.CanvasTexture(cv);t.generateMipmaps=false;t.minFilter=THREE.LinearFilter;t.userData={w,h:cv.height};texCache.set(ck,{t,n:0});
   }
+  const e=texCache.get(ck);e.n++;t=e.t;
   const m=new THREE.SpriteMaterial({map:t,depthTest:false,transparent:true});
   const sp=new THREE.Sprite(m);const h=L.kind==='building'?2.2:L.kind==='street'?1.6:1.1;
   sp.scale.set(h*t.userData.w/t.userData.h,h,1);const v=toV(L.at);sp.position.set(v[0],v[1],v[2]);
-  sp.userData={agent:'sys',disc:'names',kind:L.kind};sp.renderOrder=2;return sp;
+  sp.userData={agent:'sys',disc:'names',kind:L.kind,ck};sp.renderOrder=2;return sp;
 }
 function applyVisibility(){
   const cam=camera.position;
   for(const L of loaded.values()){
-    const near=Math.hypot(cam.x-(L.cx+.5)*S/1000,cam.y,cam.z+(L.cy+.5)*S/1000)<170;
+    const dist=Math.hypot(cam.x-(L.cx+.5)*S/1000,cam.y,cam.z+(L.cy+.5)*S/1000),near=dist<170;
+    syncLabels(L,state.names&&dist<LABEL_DIST,near);
     for(const m of L.batches){
       const {agent,disc}=m.userData;
       if(disc==='names'){m.visible=state.names&&(m.userData.kind!=='activity'||near);continue;}
@@ -204,7 +215,7 @@ function updateChunks(force){
     if(!c||(!c.records.length&&!c.owner&&!c.flags.length))continue;
     want.add(k);if(!loaded.has(k))buildChunk(c);
   }
-  for(const [k,L] of loaded)if(!want.has(k)){scene.remove(L.group);L.group.traverse(o=>o.geometry&&o.geometry.dispose());loaded.delete(k);}
+  for(const [k,L] of loaded)if(!want.has(k)){for(const sp of L.sprites)dropLabel(sp);scene.remove(L.group);L.group.traverse(o=>o.geometry&&o.geometry.dispose());loaded.delete(k);}
   if(grid){scene.remove(grid);grid.geometry.dispose();}
   const n=2*R+1;grid=new THREE.GridHelper(n*S/1000,n*4,0xd9d4c4,0xe9e5d8);
   grid.position.set((cx+.5)*S/1000,-0.02,-(cy+.5)*S/1000);scene.add(grid);
