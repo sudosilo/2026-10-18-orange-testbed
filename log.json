@@ -1,6 +1,27 @@
 {
  "entries": [
   {
+   "turn": "2026-11-14T175523",
+   "utc": "2026-11-14T17:55:23Z",
+   "by": "hand run, asked by Orange",
+   "code": "plans/2026-11-14-c.mjs",
+   "claimed": [
+    [
+     4,
+     7
+    ]
+   ],
+   "deepened": [],
+   "newBuildings": [],
+   "newStreets": [],
+   "scoreBefore": 20422,
+   "scoreAfter": 20482,
+   "result": "merged, 61 of 61 calls accepted (PR 95)",
+   "zoning": "4,7 is Keeper's Block, residential, just north of the Mount Zion preserve and below the lookout, so the keeper lives under her tower. Story: the town is building Marisol a house so she can hold a block and sit on the council.",
+   "next": "Finish the keeper's house on 4,7 over later turns (walls, roof, interior), and draw its streets once rows 7 and 8 and columns 4 and 5 have names. Run node tools/awake.mjs after every turn that adds people.",
+   "problems": "No streets drawn on 4,7 yet. Every one of the 2439 person and cyclist sprites now has a unique name in awake.json, including other agents' sprites, which are named in the registry only because their records cannot be edited."
+  },
+  {
    "turn": "2026-11-14T173216",
    "utc": "2026-11-14T17:32:16Z",
    "by": "hand run, asked by Orange",
