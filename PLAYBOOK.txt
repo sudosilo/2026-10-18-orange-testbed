@@ -85,6 +85,10 @@ Terrain: the 2026-11-13-d plan has hgt(x, y) for the Chinchweed Ridge range (row
 Vegetation is an open layer, so trees can go on unclaimed blocks. Keep them inside the property lines so future streets fit, and do not pile on more symbols; the city already has about 1300 trees from that turn.
 The 2026-11-14-a plan adds loc(N, x0, y0), a local frame for a small building drawn from its southwest corner: R() boxes, O() circles, V() wall boards, S() symbols, Ot() outlets with checks, and say() for people, all in mm from the corner. It is the fastest way to add a small named building on an old block. Find services with a short script that lists the nearest poles and plumbing mains in the chunk, then tap a span with a new pole rather than running a long drop over other roofs.
 
+THE WATCH
+
+Orange is telling a story inside the city. The city is Zion and the ridge is Mount Zion, named on painted sign boards (not yet by council ordinance). Some person sprites are awake: they watch, and waking spreads to the sprites they interact with. awake.json on this branch is the registry of who is awake, who woke them, how, and their record ids. Every awake person record carries meta.name, meta.awake true, meta.wokenBy and meta.how. When a run places an awake sprite, add its row to awake.json in the same run, with the record id from the merged city. Never reuse a person name, and grep every contrib folder for it first. Marisol, the keeper in the lookout cab, is the origin; she was instructed to watch. The 2026-11-14-b plan has aw() for awake people and sg() for name boards.
+
 ZONING
 
 Orange wants zoning to follow city logic from now on. Before claiming a block, decide its use from these rules and say why in the log entry.

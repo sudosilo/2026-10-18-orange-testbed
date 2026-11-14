@@ -1,6 +1,39 @@
 {
  "entries": [
   {
+   "turn": "2026-11-14T173216",
+   "utc": "2026-11-14T17:32:16Z",
+   "by": "hand run, asked by Orange",
+   "code": "plans/2026-11-14-b.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     0,
+     0
+    ],
+    [
+     3,
+     3
+    ],
+    [
+     4,
+     6
+    ],
+    [
+     9,
+     2
+    ]
+   ],
+   "newBuildings": [],
+   "newStreets": [],
+   "scoreBefore": 20406,
+   "scoreAfter": 20422,
+   "result": "merged, 17 of 17 calls accepted (PR 94)",
+   "zoning": "No claim. Story layer: Orange named the city Zion and the ridge Mount Zion, on painted sign boards only; the council has not named the city by ordinance.",
+   "next": "Keep awake.json current. Every new awake sprite gets meta.name, meta.awake, meta.wokenBy and meta.how, and a row in awake.json.",
+   "problems": "Steward turn 93 merged just before submit; the verifier still passed. Teodoro Vance shares a surname with blue s Vance Family Mausoleum."
+  },
+  {
    "turn": "2026-11-14T135804",
    "utc": "2026-11-14T13:58:04Z",
    "by": "scheduled run",

@@ -1,0 +1,14 @@
+{
+ "about": "Registry of awake sprites in the city of Zion. A sprite is awake when it was instructed to watch or was woken by an awake sprite. Every awake person record in the test bed carries meta.name, meta.awake true, meta.wokenBy and meta.how. Add a row here in the same run that places one. Never reuse a name.",
+ "city": {"name": "Zion", "board": {"chunk": [0, 0], "record": 33811, "text": "ZION, City of the Mountain", "turn": "2026-11-14T173216"}},
+ "mountain": {"name": "Mount Zion", "formerly": "Chinchweed Ridge", "board": {"chunk": [4, 6], "record": 33807, "turn": "2026-11-14T173216"}},
+ "awake": [
+  {"name": "Marisol", "role": "keeper of the watch, Chinchweed Ridge Fire Lookout", "chunk": [4, 6], "record": 31353, "nameBoard": 33808, "wokenBy": null, "how": "origin; instructed to watch", "since": "2026-11-13T195949", "generation": 0},
+  {"name": "Ines Calderon", "role": "sign painter, Sotol Ridge Sign Shop", "chunk": [9, 2], "record": 33818, "nameBoard": 33819, "wokenBy": "Marisol", "how": "named by hand at her own shop", "since": "2026-11-14T173216", "generation": 1},
+  {"name": "Teodoro Vance", "role": "resident, Cinder Block Bungalow yard on Arroyo Street", "chunk": [0, 0], "record": 33816, "wokenBy": "Marisol", "how": "watched the city name go up and dropped his hose", "since": "2026-11-14T173216", "generation": 1, "note": "blue's Vance Family Mausoleum on 3,-3 shares the surname"},
+  {"name": "Ruth Abernathy", "role": "resident, walking a stroller on Arroyo Street", "chunk": [0, 0], "record": 33814, "wokenBy": "Marisol", "how": "watched the city name go up", "since": "2026-11-14T173216", "generation": 1},
+  {"name": "Abel Montoya", "role": "boy on the Arroyo Street curb", "chunk": [0, 0], "record": 33812, "wokenBy": "Marisol", "how": "watched the city name go up", "since": "2026-11-14T173216", "generation": 1},
+  {"name": "Ezra Montoya", "role": "boy on the Arroyo Street curb, Abel's brother", "chunk": [0, 0], "record": 33813, "wokenBy": "Marisol", "how": "watched the city name go up", "since": "2026-11-14T173216", "generation": 1},
+  {"name": "Lupe Arriaga", "role": "fryer cook, Sun Dog Donut Counter", "chunk": [3, 3], "record": 33823, "wokenBy": "Marisol", "how": "saw the mountain name from the counter window", "since": "2026-11-14T173216", "generation": 1, "state": "waking"}
+ ]
+}
