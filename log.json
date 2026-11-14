@@ -1,6 +1,39 @@
 {
  "entries": [
   {
+   "turn": "2026-11-14T135804",
+   "utc": "2026-11-14T13:58:04Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-14-a.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     3,
+     3
+    ],
+    [
+     4,
+     3
+    ],
+    [
+     5,
+     2
+    ]
+   ],
+   "newBuildings": [
+    "Rawhide Flats Saddle Shop",
+    "Palm Row Pollen Shed",
+    "Tortoise Shell Grading Lab"
+   ],
+   "newStreets": [],
+   "scoreBefore": 20213,
+   "scoreAfter": 20406,
+   "result": "merged, 157 of 157 calls accepted (PR 92)",
+   "zoning": "No claim this run. The saddle shop sits with the welding and implement trades on 3,3, the pollen shed serves the date grove on 4,3, and the grading lab serves the pistachio huller on 5,2.",
+   "next": "4,2 has no open ground left for a small building and its four buildings are full, so deepen it only with a few D() items or skip it. Oldest next: 4,2, then 5,3, 5,4, 6,2, 6,3, 6,4 (11-09). The lookout cab on the ridge and the warehouse offices still need detail.",
+   "problems": "One person stood on the saddle pad rack in the first dry run; moved. No other issues."
+  },
+  {
    "turn": "2026-11-13T195949",
    "utc": "2026-11-13T19:59:49Z",
    "by": "hand run, asked by Orange",
