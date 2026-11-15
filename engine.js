@@ -760,8 +760,36 @@ export function census(W){
     if(use==='housing'){a.housingUnits+=units;tot.housingUnits+=units;if(units>1){a.apartmentBuildings++;tot.apartmentBuildings++;}else{a.homes++;tot.homes++;}}
     if(use==='lodging'){const rm=b.units||Math.max(1,[...b.doors].filter(d=>/room/.test(d)).length);a.lodgingRooms+=rm;tot.lodgingRooms+=rm;}
     if(use==='business'||use==='industrial'||use==='lodging'){a.businesses++;tot.businesses++;}
-    rows.push({name:W.renames.building.get(b.name.toLowerCase())||b.name,agent:b.agent,chunk:[b.chunk.cx,b.chunk.cy],use,floors,footprintM2:Math.round(fp),units,declared:!!b.units});
+    rows.push({name:W.renames.building.get(b.name.toLowerCase())||b.name,agent:b.agent,chunk:[b.chunk.cx,b.chunk.cy],use,floors,footprintM2:Math.round(fp),units,declared:!!b.units,heightMm:Math.round(b.h),footprint:hull(b.pts).map(p=>[Math.round(p[0]),Math.round(p[1])]),zone:lot?lot.zone:null});
   }
   for(const a of [tot,...Object.values(by)]){a.population=Math.round(a.housingUnits*R.household);a.tax=Math.round(a.assessed*R.levy);a.assessed=Math.round(a.assessed);a.exempt=Math.round(a.exempt);a.lotM2=Math.round(a.lotM2);}
   return {rates:R,totals:tot,byAgent:Object.values(by).sort((p,q)=>q.population-p.population||q.assessed-p.assessed),buildings:rows.sort((p,q)=>q.units-p.units||p.name.localeCompare(q.name))};
+}
+
+// Canon city snapshot for games and other clients: chunks with owners, street names on each edge, lots, buildings with
+// footprints, and every name in the city. Read only. With a slice [cx,cy,r] only chunks within r of that chunk come back.
+export function citySnapshot(W,slice){
+  const inSlice=c=>!slice||(Math.abs(c.cx-slice[0])<=slice[2]&&Math.abs(c.cy-slice[1])<=slice[2]);
+  const C=census(W),edgeOf=(c,u,v)=>v>S-12000?'N':v<12000?'S':u<12000?'W':u>S-12000?'E':null;
+  const chunks=[],streets={};
+  for(const c of W.chunks.values()){
+    if(!c.owner&&!c.records.length)continue;if(!inSlice(c))continue;
+    const edges={};
+    for(const r of c.records){const m=r.meta||{};if(r.hidden||typeof m.street!=='string'||!r.pts||!r.pts.length)continue;
+      const a=r.pts[0],b=r.pts[r.pts.length-1],e=edgeOf(c,(a[0]+b[0])/2-c.cx*S,(a[1]+b[1])/2-c.cy*S);if(!e)continue;
+      const n=W.renames.street.get(m.street.trim().toLowerCase())||m.street.trim();(edges[e]=edges[e]||{})[n]=((edges[e]||{})[n]||0)+1;}
+    const named={};for(const e in edges){const best=Object.entries(edges[e]).sort((p,q)=>q[1]-p[1])[0][0];named[e]=best;(streets[best]=streets[best]||[]).push({chunk:[c.cx,c.cy],edge:e});}
+    chunks.push({chunk:[c.cx,c.cy],owner:c.owner||null,frozen:frozenChunk(W,c)||undefined,ports:c.ports,streets:named,lots:c.lots.map(l=>({zone:l.zone,pts:l.pts.map(p=>[Math.round(p[0]),Math.round(p[1])])})),records:c.records.length});
+  }
+  const buildings=C.buildings.filter(b=>!slice||(Math.abs(b.chunk[0]-slice[0])<=slice[2]&&Math.abs(b.chunk[1]-slice[1])<=slice[2]));
+  return {
+    kind:'agent-test-bed-city-snapshot',version:1,chunkSizeMm:S,units:'millimeters, x east, y north, z up',
+    slice:slice?{center:[slice[0],slice[1]],radius:slice[2]}:null,
+    agents:Object.keys(W.stats),
+    chunks,
+    streets:Object.entries(streets).map(([name,edges])=>({name,edges})).sort((p,q)=>p.name.localeCompare(q.name)),
+    buildings,
+    names:{streets:Object.keys(streets).sort(),buildings:buildings.map(b=>b.name).sort()},
+    census:C.totals
+  };
 }
