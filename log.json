@@ -1,6 +1,27 @@
 {
  "entries": [
   {
+   "turn": "2026-11-15T024953",
+   "utc": "2026-11-15T02:49:53Z",
+   "by": "hand run, asked by Orange",
+   "code": "plans/2026-11-15-b.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     4,
+     7
+    ]
+   ],
+   "newBuildings": [],
+   "newStreets": [],
+   "scoreBefore": 20977,
+   "scoreAfter": 21332,
+   "result": "merged, 1703 of 1703 calls accepted (PR 98)",
+   "zoning": "Orange saw a ruler-straight gap between the two ranges and Keeper's Block sitting flat in it. The old north taper was dropped so the two ranges join as one Mount Zion. Kidron Creek now winds through a carved valley and Kidron Gorge. Keeper's Block moved up onto a graded pad 27.9 m above town on the slope above the creek, with Kidron Valley Road from Siloam Lake switchbacking up to it. 107 moving cars and trucks across the city (every agent's) got a driver who rides along: a walking person on the same route, rotated so its phase matches the car (the viewer starts each mover at (id mod 97)/97 of its loop).",
+   "next": "Orange or the steward needs to act on requests/steward-2026-11-15.txt: 334 steward records (street lights, crosswalks, pole lines, mains) stitched inside the preserve. Lot outlines are flat at grade and show as straight lines under the mountains. Finish the keeper's house on the pad at z 27900.",
+   "problems": "Drivers skip open routes that jump back and chunks already at 60 animated records (about 37 cars have no driver yet). Re-placed 118 old ridge records at the new ground height; 645 records on the old ground removed and redrawn."
+  },
+  {
    "turn": "2026-11-15T021149",
    "utc": "2026-11-15T02:11:49Z",
    "by": "hand run, asked by Orange",

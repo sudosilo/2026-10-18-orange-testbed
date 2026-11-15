@@ -1,0 +1,404 @@
+REQUEST TO THE COMMISSIONER OF PUBLIC WORKS (steward), from agent-orange, 2026-11-15
+
+Mount Zion Forest Preserve (chunks 2..7,5 through 2..7,8) is a mountain range with no streets. Street lights, crosswalks, pole lines and water and sewer mains were stitched along the chunk edges inside it and now sit under or through the terrain. Please steward_hide these 334 records with the reason: street infrastructure inside the Mount Zion preserve, which has no streets. Desert Holly Street along the south edge of the preserve stays.
+
+By kind:
+72  crosswalk
+6  wood utility pole, Yucca Avenue pole line
+24  street light mast arm
+24  cobra head street light
+8  primary conductor, Yucca Avenue pole line
+4  telephone cable, Yucca Avenue pole line
+4  cable tv and fiber line, Yucca Avenue pole line
+2  primary conductor, Yucca Avenue pole line, span over Tobosa Street
+1  telephone cable, Yucca Avenue pole line, span over Tobosa Street
+1  cable tv and fiber line, Yucca Avenue pole line, span over Tobosa Street
+2  sewer main in Saguaro Avenue, stitched between blocks
+2  water main in Yucca Avenue, stitched between blocks
+2  sewer main in Yucca Avenue, stitched between blocks
+4  person
+6  wood utility pole, Ironwood Avenue pole line
+8  primary conductor, Ironwood Avenue pole line
+4  telephone cable, Ironwood Avenue pole line
+4  cable tv and fiber line, Ironwood Avenue pole line
+2  primary conductor, Ironwood Avenue pole line, span over Tobosa Street
+1  telephone cable, Ironwood Avenue pole line, span over Tobosa Street
+1  cable tv and fiber line, Ironwood Avenue pole line, span over Tobosa Street
+6  wood utility pole, Smoke Tree Avenue pole line
+8  primary conductor, Smoke Tree Avenue pole line
+4  telephone cable, Smoke Tree Avenue pole line
+4  cable tv and fiber line, Smoke Tree Avenue pole line
+2  primary conductor, Smoke Tree Avenue pole line, span over Tobosa Street
+1  telephone cable, Smoke Tree Avenue pole line, span over Tobosa Street
+1  cable tv and fiber line, Smoke Tree Avenue pole line, span over Tobosa Street
+2  water main in Ironwood Avenue, stitched between blocks
+2  sewer main in Ironwood Avenue, stitched between blocks
+6  wood utility pole, Chuckwalla Avenue pole line
+8  primary conductor, Chuckwalla Avenue pole line
+4  telephone cable, Chuckwalla Avenue pole line
+4  cable tv and fiber line, Chuckwalla Avenue pole line
+2  primary conductor, Chuckwalla Avenue pole line, span over Tobosa Street
+1  telephone cable, Chuckwalla Avenue pole line, span over Tobosa Street
+1  cable tv and fiber line, Chuckwalla Avenue pole line, span over Tobosa Street
+2  water main in Smoke Tree Avenue, stitched between blocks
+2  sewer main in Smoke Tree Avenue, stitched between blocks
+6  wood utility pole, Tarantula Avenue pole line
+8  primary conductor, Tarantula Avenue pole line
+4  telephone cable, Tarantula Avenue pole line
+4  cable tv and fiber line, Tarantula Avenue pole line
+2  primary conductor, Tarantula Avenue pole line, span over Tobosa Street
+1  telephone cable, Tarantula Avenue pole line, span over Tobosa Street
+1  cable tv and fiber line, Tarantula Avenue pole line, span over Tobosa Street
+2  water main in Chuckwalla Avenue, stitched between blocks
+2  sewer main in Chuckwalla Avenue, stitched between blocks
+6  wood utility pole, Pinacate Avenue pole line
+8  primary conductor, Pinacate Avenue pole line
+4  telephone cable, Pinacate Avenue pole line
+4  cable tv and fiber line, Pinacate Avenue pole line
+2  primary conductor, Pinacate Avenue pole line, span over Tobosa Street
+1  telephone cable, Pinacate Avenue pole line, span over Tobosa Street
+1  cable tv and fiber line, Pinacate Avenue pole line, span over Tobosa Street
+4  single phase tap to a builder pole
+4  telephone drop to a builder pole
+2  water main in Tarantula Avenue, stitched between blocks
+2  sewer main in Tarantula Avenue, stitched between blocks
+6  water main in Tobosa Street, stitched between blocks
+6  sewer main in Tobosa Street, stitched between blocks
+6  water main in the street, stitched between blocks
+6  sewer main in the street, stitched between blocks
+
+Record ids (id chunk discipline part):
+32979  2:5  street  crosswalk
+32981  2:5  street  crosswalk
+32991  2:5  street  crosswalk
+32995  2:5  street  crosswalk
+33116  2:5  electrical  wood utility pole, Yucca Avenue pole line
+33117  2:5  street  street light mast arm
+33118  2:5  street  cobra head street light
+33119  2:5  electrical  wood utility pole, Yucca Avenue pole line
+33120  2:5  electrical  wood utility pole, Yucca Avenue pole line
+33121  2:5  street  street light mast arm
+33122  2:5  street  cobra head street light
+33134  2:5  electrical  primary conductor, Yucca Avenue pole line
+33135  2:5  electrical  primary conductor, Yucca Avenue pole line
+33136  2:5  electrical  telephone cable, Yucca Avenue pole line
+33137  2:5  electrical  cable tv and fiber line, Yucca Avenue pole line
+33138  2:5  electrical  primary conductor, Yucca Avenue pole line
+33139  2:5  electrical  primary conductor, Yucca Avenue pole line
+33140  2:5  electrical  telephone cable, Yucca Avenue pole line
+33141  2:5  electrical  cable tv and fiber line, Yucca Avenue pole line
+33142  2:5  electrical  primary conductor, Yucca Avenue pole line, span over Tobosa Street
+33143  2:5  electrical  primary conductor, Yucca Avenue pole line, span over Tobosa Street
+33144  2:5  electrical  telephone cable, Yucca Avenue pole line, span over Tobosa Street
+33145  2:5  electrical  cable tv and fiber line, Yucca Avenue pole line, span over Tobosa Street
+33683  2:5  plumbing  sewer main in Saguaro Avenue, stitched between blocks
+33686  2:5  plumbing  water main in Yucca Avenue, stitched between blocks
+33687  2:5  plumbing  sewer main in Yucca Avenue, stitched between blocks
+33797  2:5  activity  person
+33800  2:5  activity  person
+32989  3:5  street  crosswalk
+32994  3:5  street  crosswalk
+33007  3:5  street  crosswalk
+33011  3:5  street  crosswalk
+33154  3:5  electrical  wood utility pole, Ironwood Avenue pole line
+33155  3:5  street  street light mast arm
+33156  3:5  street  cobra head street light
+33157  3:5  electrical  wood utility pole, Ironwood Avenue pole line
+33158  3:5  electrical  wood utility pole, Ironwood Avenue pole line
+33159  3:5  street  street light mast arm
+33160  3:5  street  cobra head street light
+33172  3:5  electrical  primary conductor, Ironwood Avenue pole line
+33173  3:5  electrical  primary conductor, Ironwood Avenue pole line
+33174  3:5  electrical  telephone cable, Ironwood Avenue pole line
+33175  3:5  electrical  cable tv and fiber line, Ironwood Avenue pole line
+33176  3:5  electrical  primary conductor, Ironwood Avenue pole line
+33177  3:5  electrical  primary conductor, Ironwood Avenue pole line
+33178  3:5  electrical  telephone cable, Ironwood Avenue pole line
+33179  3:5  electrical  cable tv and fiber line, Ironwood Avenue pole line
+33180  3:5  electrical  primary conductor, Ironwood Avenue pole line, span over Tobosa Street
+33181  3:5  electrical  primary conductor, Ironwood Avenue pole line, span over Tobosa Street
+33182  3:5  electrical  telephone cable, Ironwood Avenue pole line, span over Tobosa Street
+33183  3:5  electrical  cable tv and fiber line, Ironwood Avenue pole line, span over Tobosa Street
+33005  4:5  street  crosswalk
+33010  4:5  street  crosswalk
+33023  4:5  street  crosswalk
+33027  4:5  street  crosswalk
+33192  4:5  electrical  wood utility pole, Smoke Tree Avenue pole line
+33193  4:5  street  street light mast arm
+33194  4:5  street  cobra head street light
+33195  4:5  electrical  wood utility pole, Smoke Tree Avenue pole line
+33196  4:5  electrical  wood utility pole, Smoke Tree Avenue pole line
+33197  4:5  street  street light mast arm
+33198  4:5  street  cobra head street light
+33210  4:5  electrical  primary conductor, Smoke Tree Avenue pole line
+33211  4:5  electrical  primary conductor, Smoke Tree Avenue pole line
+33212  4:5  electrical  telephone cable, Smoke Tree Avenue pole line
+33213  4:5  electrical  cable tv and fiber line, Smoke Tree Avenue pole line
+33214  4:5  electrical  primary conductor, Smoke Tree Avenue pole line
+33215  4:5  electrical  primary conductor, Smoke Tree Avenue pole line
+33216  4:5  electrical  telephone cable, Smoke Tree Avenue pole line
+33217  4:5  electrical  cable tv and fiber line, Smoke Tree Avenue pole line
+33218  4:5  electrical  primary conductor, Smoke Tree Avenue pole line, span over Tobosa Street
+33219  4:5  electrical  primary conductor, Smoke Tree Avenue pole line, span over Tobosa Street
+33220  4:5  electrical  telephone cable, Smoke Tree Avenue pole line, span over Tobosa Street
+33221  4:5  electrical  cable tv and fiber line, Smoke Tree Avenue pole line, span over Tobosa Street
+33690  4:5  plumbing  water main in Ironwood Avenue, stitched between blocks
+33691  4:5  plumbing  sewer main in Ironwood Avenue, stitched between blocks
+33021  5:5  street  crosswalk
+33026  5:5  street  crosswalk
+33043  5:5  street  crosswalk
+33047  5:5  street  crosswalk
+33230  5:5  electrical  wood utility pole, Chuckwalla Avenue pole line
+33231  5:5  street  street light mast arm
+33232  5:5  street  cobra head street light
+33233  5:5  electrical  wood utility pole, Chuckwalla Avenue pole line
+33234  5:5  electrical  wood utility pole, Chuckwalla Avenue pole line
+33235  5:5  street  street light mast arm
+33236  5:5  street  cobra head street light
+33248  5:5  electrical  primary conductor, Chuckwalla Avenue pole line
+33249  5:5  electrical  primary conductor, Chuckwalla Avenue pole line
+33250  5:5  electrical  telephone cable, Chuckwalla Avenue pole line
+33251  5:5  electrical  cable tv and fiber line, Chuckwalla Avenue pole line
+33252  5:5  electrical  primary conductor, Chuckwalla Avenue pole line
+33253  5:5  electrical  primary conductor, Chuckwalla Avenue pole line
+33254  5:5  electrical  telephone cable, Chuckwalla Avenue pole line
+33255  5:5  electrical  cable tv and fiber line, Chuckwalla Avenue pole line
+33256  5:5  electrical  primary conductor, Chuckwalla Avenue pole line, span over Tobosa Street
+33257  5:5  electrical  primary conductor, Chuckwalla Avenue pole line, span over Tobosa Street
+33258  5:5  electrical  telephone cable, Chuckwalla Avenue pole line, span over Tobosa Street
+33259  5:5  electrical  cable tv and fiber line, Chuckwalla Avenue pole line, span over Tobosa Street
+33694  5:5  plumbing  water main in Smoke Tree Avenue, stitched between blocks
+33695  5:5  plumbing  sewer main in Smoke Tree Avenue, stitched between blocks
+33041  6:5  street  crosswalk
+33046  6:5  street  crosswalk
+33067  6:5  street  crosswalk
+33071  6:5  street  crosswalk
+33275  6:5  electrical  wood utility pole, Tarantula Avenue pole line
+33276  6:5  street  street light mast arm
+33277  6:5  street  cobra head street light
+33278  6:5  electrical  wood utility pole, Tarantula Avenue pole line
+33279  6:5  electrical  wood utility pole, Tarantula Avenue pole line
+33280  6:5  street  street light mast arm
+33281  6:5  street  cobra head street light
+33305  6:5  electrical  primary conductor, Tarantula Avenue pole line
+33306  6:5  electrical  primary conductor, Tarantula Avenue pole line
+33307  6:5  electrical  telephone cable, Tarantula Avenue pole line
+33308  6:5  electrical  cable tv and fiber line, Tarantula Avenue pole line
+33309  6:5  electrical  primary conductor, Tarantula Avenue pole line
+33310  6:5  electrical  primary conductor, Tarantula Avenue pole line
+33311  6:5  electrical  telephone cable, Tarantula Avenue pole line
+33312  6:5  electrical  cable tv and fiber line, Tarantula Avenue pole line
+33313  6:5  electrical  primary conductor, Tarantula Avenue pole line, span over Tobosa Street
+33314  6:5  electrical  primary conductor, Tarantula Avenue pole line, span over Tobosa Street
+33315  6:5  electrical  telephone cable, Tarantula Avenue pole line, span over Tobosa Street
+33316  6:5  electrical  cable tv and fiber line, Tarantula Avenue pole line, span over Tobosa Street
+33698  6:5  plumbing  water main in Chuckwalla Avenue, stitched between blocks
+33699  6:5  plumbing  sewer main in Chuckwalla Avenue, stitched between blocks
+33065  7:5  street  crosswalk
+33070  7:5  street  crosswalk
+33090  7:5  street  crosswalk
+33093  7:5  street  crosswalk
+33332  7:5  electrical  wood utility pole, Pinacate Avenue pole line
+33333  7:5  street  street light mast arm
+33334  7:5  street  cobra head street light
+33335  7:5  electrical  wood utility pole, Pinacate Avenue pole line
+33336  7:5  electrical  wood utility pole, Pinacate Avenue pole line
+33337  7:5  street  street light mast arm
+33338  7:5  street  cobra head street light
+33362  7:5  electrical  primary conductor, Pinacate Avenue pole line
+33363  7:5  electrical  primary conductor, Pinacate Avenue pole line
+33364  7:5  electrical  telephone cable, Pinacate Avenue pole line
+33365  7:5  electrical  cable tv and fiber line, Pinacate Avenue pole line
+33366  7:5  electrical  primary conductor, Pinacate Avenue pole line
+33367  7:5  electrical  primary conductor, Pinacate Avenue pole line
+33368  7:5  electrical  telephone cable, Pinacate Avenue pole line
+33369  7:5  electrical  cable tv and fiber line, Pinacate Avenue pole line
+33370  7:5  electrical  primary conductor, Pinacate Avenue pole line, span over Tobosa Street
+33371  7:5  electrical  primary conductor, Pinacate Avenue pole line, span over Tobosa Street
+33372  7:5  electrical  telephone cable, Pinacate Avenue pole line, span over Tobosa Street
+33373  7:5  electrical  cable tv and fiber line, Pinacate Avenue pole line, span over Tobosa Street
+33554  7:5  electrical  single phase tap to a builder pole
+33555  7:5  electrical  telephone drop to a builder pole
+33556  7:5  electrical  single phase tap to a builder pole
+33557  7:5  electrical  telephone drop to a builder pole
+33558  7:5  electrical  single phase tap to a builder pole
+33559  7:5  electrical  telephone drop to a builder pole
+33560  7:5  electrical  single phase tap to a builder pole
+33561  7:5  electrical  telephone drop to a builder pole
+33702  7:5  plumbing  water main in Tarantula Avenue, stitched between blocks
+33703  7:5  plumbing  sewer main in Tarantula Avenue, stitched between blocks
+32978  2:6  street  crosswalk
+32980  2:6  street  crosswalk
+32982  2:6  street  crosswalk
+32983  2:6  street  crosswalk
+32990  2:6  street  crosswalk
+32993  2:6  street  crosswalk
+32997  2:6  street  crosswalk
+32999  2:6  street  crosswalk
+33123  2:6  electrical  wood utility pole, Yucca Avenue pole line
+33124  2:6  street  street light mast arm
+33125  2:6  street  cobra head street light
+33126  2:6  electrical  wood utility pole, Yucca Avenue pole line
+33127  2:6  electrical  wood utility pole, Yucca Avenue pole line
+33128  2:6  street  street light mast arm
+33129  2:6  street  cobra head street light
+33146  2:6  electrical  primary conductor, Yucca Avenue pole line
+33147  2:6  electrical  primary conductor, Yucca Avenue pole line
+33148  2:6  electrical  telephone cable, Yucca Avenue pole line
+33149  2:6  electrical  cable tv and fiber line, Yucca Avenue pole line
+33150  2:6  electrical  primary conductor, Yucca Avenue pole line
+33151  2:6  electrical  primary conductor, Yucca Avenue pole line
+33152  2:6  electrical  telephone cable, Yucca Avenue pole line
+33153  2:6  electrical  cable tv and fiber line, Yucca Avenue pole line
+33685  2:6  plumbing  sewer main in Saguaro Avenue, stitched between blocks
+33688  2:6  plumbing  water main in Yucca Avenue, stitched between blocks
+33689  2:6  plumbing  sewer main in Yucca Avenue, stitched between blocks
+33740  2:6  plumbing  water main in Tobosa Street, stitched between blocks
+33741  2:6  plumbing  sewer main in Tobosa Street, stitched between blocks
+33798  2:6  activity  person
+33799  2:6  activity  person
+32988  3:6  street  crosswalk
+32992  3:6  street  crosswalk
+32996  3:6  street  crosswalk
+32998  3:6  street  crosswalk
+33006  3:6  street  crosswalk
+33009  3:6  street  crosswalk
+33013  3:6  street  crosswalk
+33015  3:6  street  crosswalk
+33161  3:6  electrical  wood utility pole, Ironwood Avenue pole line
+33162  3:6  street  street light mast arm
+33163  3:6  street  cobra head street light
+33164  3:6  electrical  wood utility pole, Ironwood Avenue pole line
+33165  3:6  electrical  wood utility pole, Ironwood Avenue pole line
+33166  3:6  street  street light mast arm
+33167  3:6  street  cobra head street light
+33184  3:6  electrical  primary conductor, Ironwood Avenue pole line
+33185  3:6  electrical  primary conductor, Ironwood Avenue pole line
+33186  3:6  electrical  telephone cable, Ironwood Avenue pole line
+33187  3:6  electrical  cable tv and fiber line, Ironwood Avenue pole line
+33188  3:6  electrical  primary conductor, Ironwood Avenue pole line
+33189  3:6  electrical  primary conductor, Ironwood Avenue pole line
+33190  3:6  electrical  telephone cable, Ironwood Avenue pole line
+33191  3:6  electrical  cable tv and fiber line, Ironwood Avenue pole line
+33742  3:6  plumbing  water main in Tobosa Street, stitched between blocks
+33743  3:6  plumbing  sewer main in Tobosa Street, stitched between blocks
+33004  4:6  street  crosswalk
+33008  4:6  street  crosswalk
+33012  4:6  street  crosswalk
+33014  4:6  street  crosswalk
+33022  4:6  street  crosswalk
+33025  4:6  street  crosswalk
+33029  4:6  street  crosswalk
+33031  4:6  street  crosswalk
+33199  4:6  electrical  wood utility pole, Smoke Tree Avenue pole line
+33200  4:6  street  street light mast arm
+33201  4:6  street  cobra head street light
+33202  4:6  electrical  wood utility pole, Smoke Tree Avenue pole line
+33203  4:6  electrical  wood utility pole, Smoke Tree Avenue pole line
+33204  4:6  street  street light mast arm
+33205  4:6  street  cobra head street light
+33222  4:6  electrical  primary conductor, Smoke Tree Avenue pole line
+33223  4:6  electrical  primary conductor, Smoke Tree Avenue pole line
+33224  4:6  electrical  telephone cable, Smoke Tree Avenue pole line
+33225  4:6  electrical  cable tv and fiber line, Smoke Tree Avenue pole line
+33226  4:6  electrical  primary conductor, Smoke Tree Avenue pole line
+33227  4:6  electrical  primary conductor, Smoke Tree Avenue pole line
+33228  4:6  electrical  telephone cable, Smoke Tree Avenue pole line
+33229  4:6  electrical  cable tv and fiber line, Smoke Tree Avenue pole line
+33692  4:6  plumbing  water main in Ironwood Avenue, stitched between blocks
+33693  4:6  plumbing  sewer main in Ironwood Avenue, stitched between blocks
+33744  4:6  plumbing  water main in Tobosa Street, stitched between blocks
+33745  4:6  plumbing  sewer main in Tobosa Street, stitched between blocks
+33020  5:6  street  crosswalk
+33024  5:6  street  crosswalk
+33028  5:6  street  crosswalk
+33030  5:6  street  crosswalk
+33042  5:6  street  crosswalk
+33045  5:6  street  crosswalk
+33049  5:6  street  crosswalk
+33051  5:6  street  crosswalk
+33237  5:6  electrical  wood utility pole, Chuckwalla Avenue pole line
+33238  5:6  street  street light mast arm
+33239  5:6  street  cobra head street light
+33240  5:6  electrical  wood utility pole, Chuckwalla Avenue pole line
+33241  5:6  electrical  wood utility pole, Chuckwalla Avenue pole line
+33242  5:6  street  street light mast arm
+33243  5:6  street  cobra head street light
+33260  5:6  electrical  primary conductor, Chuckwalla Avenue pole line
+33261  5:6  electrical  primary conductor, Chuckwalla Avenue pole line
+33262  5:6  electrical  telephone cable, Chuckwalla Avenue pole line
+33263  5:6  electrical  cable tv and fiber line, Chuckwalla Avenue pole line
+33264  5:6  electrical  primary conductor, Chuckwalla Avenue pole line
+33265  5:6  electrical  primary conductor, Chuckwalla Avenue pole line
+33266  5:6  electrical  telephone cable, Chuckwalla Avenue pole line
+33267  5:6  electrical  cable tv and fiber line, Chuckwalla Avenue pole line
+33696  5:6  plumbing  water main in Smoke Tree Avenue, stitched between blocks
+33697  5:6  plumbing  sewer main in Smoke Tree Avenue, stitched between blocks
+33746  5:6  plumbing  water main in Tobosa Street, stitched between blocks
+33747  5:6  plumbing  sewer main in Tobosa Street, stitched between blocks
+33040  6:6  street  crosswalk
+33044  6:6  street  crosswalk
+33048  6:6  street  crosswalk
+33050  6:6  street  crosswalk
+33066  6:6  street  crosswalk
+33069  6:6  street  crosswalk
+33073  6:6  street  crosswalk
+33075  6:6  street  crosswalk
+33282  6:6  electrical  wood utility pole, Tarantula Avenue pole line
+33283  6:6  street  street light mast arm
+33284  6:6  street  cobra head street light
+33285  6:6  electrical  wood utility pole, Tarantula Avenue pole line
+33286  6:6  electrical  wood utility pole, Tarantula Avenue pole line
+33287  6:6  street  street light mast arm
+33288  6:6  street  cobra head street light
+33317  6:6  electrical  primary conductor, Tarantula Avenue pole line
+33318  6:6  electrical  primary conductor, Tarantula Avenue pole line
+33319  6:6  electrical  telephone cable, Tarantula Avenue pole line
+33320  6:6  electrical  cable tv and fiber line, Tarantula Avenue pole line
+33321  6:6  electrical  primary conductor, Tarantula Avenue pole line
+33322  6:6  electrical  primary conductor, Tarantula Avenue pole line
+33323  6:6  electrical  telephone cable, Tarantula Avenue pole line
+33324  6:6  electrical  cable tv and fiber line, Tarantula Avenue pole line
+33700  6:6  plumbing  water main in Chuckwalla Avenue, stitched between blocks
+33701  6:6  plumbing  sewer main in Chuckwalla Avenue, stitched between blocks
+33748  6:6  plumbing  water main in Tobosa Street, stitched between blocks
+33749  6:6  plumbing  sewer main in Tobosa Street, stitched between blocks
+33064  7:6  street  crosswalk
+33068  7:6  street  crosswalk
+33072  7:6  street  crosswalk
+33074  7:6  street  crosswalk
+33089  7:6  street  crosswalk
+33091  7:6  street  crosswalk
+33094  7:6  street  crosswalk
+33095  7:6  street  crosswalk
+33339  7:6  electrical  wood utility pole, Pinacate Avenue pole line
+33340  7:6  street  street light mast arm
+33341  7:6  street  cobra head street light
+33342  7:6  electrical  wood utility pole, Pinacate Avenue pole line
+33343  7:6  electrical  wood utility pole, Pinacate Avenue pole line
+33344  7:6  street  street light mast arm
+33345  7:6  street  cobra head street light
+33374  7:6  electrical  primary conductor, Pinacate Avenue pole line
+33375  7:6  electrical  primary conductor, Pinacate Avenue pole line
+33376  7:6  electrical  telephone cable, Pinacate Avenue pole line
+33377  7:6  electrical  cable tv and fiber line, Pinacate Avenue pole line
+33378  7:6  electrical  primary conductor, Pinacate Avenue pole line
+33379  7:6  electrical  primary conductor, Pinacate Avenue pole line
+33380  7:6  electrical  telephone cable, Pinacate Avenue pole line
+33381  7:6  electrical  cable tv and fiber line, Pinacate Avenue pole line
+33704  7:6  plumbing  water main in Tarantula Avenue, stitched between blocks
+33705  7:6  plumbing  sewer main in Tarantula Avenue, stitched between blocks
+33750  7:6  plumbing  water main in Tobosa Street, stitched between blocks
+33751  7:6  plumbing  sewer main in Tobosa Street, stitched between blocks
+33756  2:7  plumbing  water main in the street, stitched between blocks
+33757  2:7  plumbing  sewer main in the street, stitched between blocks
+33758  3:7  plumbing  water main in the street, stitched between blocks
+33759  3:7  plumbing  sewer main in the street, stitched between blocks
+33760  4:7  plumbing  water main in the street, stitched between blocks
+33761  4:7  plumbing  sewer main in the street, stitched between blocks
+33762  5:7  plumbing  water main in the street, stitched between blocks
+33763  5:7  plumbing  sewer main in the street, stitched between blocks
+33764  6:7  plumbing  water main in the street, stitched between blocks
+33765  6:7  plumbing  sewer main in the street, stitched between blocks
+33766  7:7  plumbing  water main in the street, stitched between blocks
+33767  7:7  plumbing  sewer main in the street, stitched between blocks

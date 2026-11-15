@@ -29160,306 +29160,6 @@
    "wokenBy": "Marisol"
   },
   {
-   "id": 33859,
-   "name": "Hollis Inglewood",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "carrying adobe from the pallets to the footing",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33860,
-   "name": "Cyrus Ortega",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "hauling adobe two at a time",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33861,
-   "name": "Nestor Sheffield",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "carrying a long board to the forms",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33862,
-   "name": "Ursula Lafferty",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "shouldering lumber with a neighbor",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33863,
-   "name": "Silas Madrigal",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "pushing a wheelbarrow of sand to the mixer",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33864,
-   "name": "Dorian Greenhalgh",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "carrying a water jug up to the masons",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33865,
-   "name": "Noemi Nightingale",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "running a jug back to the shade for a refill",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33866,
-   "name": "Hazel Sandoval",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "driving a form stake with a sledge",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33867,
-   "name": "Nadia Northcott",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "nailing the top form board",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33868,
-   "name": "Obadiah Oakhurst",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "bracing the west form",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33869,
-   "name": "Dorian Prescott",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "buttering an adobe with mud mortar",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33870,
-   "name": "Desmond Tafoya",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "feeding sand into the mixer",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33871,
-   "name": "Rosalia Cordero",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "shoveling sand into a bucket",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33872,
-   "name": "Leocadia Caballero",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "sighting the corners through a transit",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33873,
-   "name": "Hazel Thistlewood",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "holding the survey rod on the corner",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33874,
-   "name": "Macario Marchetti",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "dipping a bucket in the water barrel",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33875,
-   "name": "Oralia Zepeda",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "cutting a board on the sawhorse",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33876,
-   "name": "Aurelia Olivares",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "reading the house plans under the canopy",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33877,
-   "name": "Linus Coldwater",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "telling the crew where the old well was",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33878,
-   "name": "Magdalena Holcomb",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "handing out cups of water",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33879,
-   "name": "Nestor Greenhalgh",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "opening a box of prickly pear donuts",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 34408,
-   "name": "Linus Varela",
-   "chunk": [
-    6,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "reading the reservoir level off the staff gauge",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 34409,
-   "name": "Desmond Corbin",
-   "chunk": [
-    6,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "cracking open the outlet gate a quarter turn",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 34412,
-   "name": "Adan Farrow",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "hiking up to see the new dam",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 34447,
-   "name": "Serafina Holcomb",
-   "chunk": [
-    4,
-    7
-   ],
-   "builder": "agent-orange",
-   "activity": "filling a bucket at the creek for the mortar",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
    "id": 34457,
    "name": "Adan Carrow",
    "chunk": [
@@ -29578,10 +29278,1594 @@
    "activity": "reading the paper at the picnic table",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 34523,
+   "name": "Gideon Cordero",
+   "chunk": [
+    1,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "driving across town after a shift",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34524,
+   "name": "Fausto Kincaid",
+   "chunk": [
+    1,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "driving home with the windows down",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34525,
+   "name": "Octavia Kestrel",
+   "chunk": [
+    1,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to pick up a kid from practice",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34526,
+   "name": "Calla Kincaid",
+   "chunk": [
+    1,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a load of feed out to the yard",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34527,
+   "name": "Oralia Caballero",
+   "chunk": [
+    0,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the parts counter",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34528,
+   "name": "Lorena Quintanilla",
+   "chunk": [
+    1,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving slow and reading the shop signs",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34529,
+   "name": "Remy Orozco",
+   "chunk": [
+    1,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a pickup to the job site",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34530,
+   "name": "Benito Redfern",
+   "chunk": [
+    2,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "driving the long way around the block",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34531,
+   "name": "Quentin Redfern",
+   "chunk": [
+    2,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "driving with a dog riding shotgun",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34532,
+   "name": "Adan Winslow",
+   "chunk": [
+    0,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving back from the lumber yard",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34533,
+   "name": "Serafina Bramwell",
+   "chunk": [
+    0,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the post office before it closes",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34534,
+   "name": "Lucian Quintanilla",
+   "chunk": [
+    1,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving with the radio up",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34535,
+   "name": "Rosalia Jaramillo",
+   "chunk": [
+    1,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a delivery route",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34536,
+   "name": "Fausto Trujillo",
+   "chunk": [
+    1,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a work truck to the next call",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34537,
+   "name": "Sabina Aldana",
+   "chunk": [
+    1,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the donut counter",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34538,
+   "name": "Mireya Whitlock",
+   "chunk": [
+    2,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving out to check the wells",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34539,
+   "name": "Desmond Iverson",
+   "chunk": [
+    2,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a carload of cousins",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34540,
+   "name": "Linus Quintanilla",
+   "chunk": [
+    2,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving in from the ranch",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34541,
+   "name": "Nadia Inglewood",
+   "chunk": [
+    3,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the clinic for a checkup",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34542,
+   "name": "Leocadia Prescott",
+   "chunk": [
+    3,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving the night loop",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34543,
+   "name": "Florian Oakhurst",
+   "chunk": [
+    3,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving out to the lake",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34544,
+   "name": "Florian Gallardo",
+   "chunk": [
+    3,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a rental tractor trailer back",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34545,
+   "name": "Leocadia Hollister",
+   "chunk": [
+    2,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the feed store",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34546,
+   "name": "Basil Fenwick",
+   "chunk": [
+    3,
+    -2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving and waving at a neighbor",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34547,
+   "name": "Marcelo Winslow",
+   "chunk": [
+    3,
+    -2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving across town after a shift",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34548,
+   "name": "Benito Urrutia",
+   "chunk": [
+    4,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving home with the windows down",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34549,
+   "name": "Gideon Kincaid",
+   "chunk": [
+    4,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to pick up a kid from practice",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34550,
+   "name": "Florian Larkspur",
+   "chunk": [
+    4,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a load of feed out to the yard",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34551,
+   "name": "Elodie Mondragon",
+   "chunk": [
+    4,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the parts counter",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34552,
+   "name": "Marcelo Carrow",
+   "chunk": [
+    4,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "driving slow and reading the shop signs",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34553,
+   "name": "Silas Halloran",
+   "chunk": [
+    4,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a pickup to the job site",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34554,
+   "name": "Valentin Redfern",
+   "chunk": [
+    4,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving the long way around the block",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34555,
+   "name": "Marcelo Jaramillo",
+   "chunk": [
+    3,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving with a dog riding shotgun",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34556,
+   "name": "Yolanda Aldana",
+   "chunk": [
+    3,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving back from the lumber yard",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34557,
+   "name": "Hadley Oakhurst",
+   "chunk": [
+    3,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the post office before it closes",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34558,
+   "name": "Eulalia Zepeda",
+   "chunk": [
+    0,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving with the radio up",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34559,
+   "name": "Lorena Whitlock",
+   "chunk": [
+    2,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a delivery route",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34560,
+   "name": "Noemi Halloran",
+   "chunk": [
+    2,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a work truck to the next call",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34561,
+   "name": "Celestina Underhill",
+   "chunk": [
+    1,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the donut counter",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34562,
+   "name": "Saul Lockhart",
+   "chunk": [
+    3,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving out to check the wells",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34563,
+   "name": "Ignacio Marchetti",
+   "chunk": [
+    3,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a carload of cousins",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34564,
+   "name": "Desmond Hartwell",
+   "chunk": [
+    3,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving in from the ranch",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34565,
+   "name": "Isidro Ibarra",
+   "chunk": [
+    4,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the clinic for a checkup",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34566,
+   "name": "Wilhelmina Corbin",
+   "chunk": [
+    4,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving the night loop",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34567,
+   "name": "Leocadia Benavides",
+   "chunk": [
+    4,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving out to the lake",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34568,
+   "name": "Octavia Tafoya",
+   "chunk": [
+    4,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a rental tractor trailer back",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34569,
+   "name": "Leocadia Valdivia",
+   "chunk": [
+    4,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the feed store",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34570,
+   "name": "Micah Northcott",
+   "chunk": [
+    3,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "driving and waving at a neighbor",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34571,
+   "name": "Quentin Castellan",
+   "chunk": [
+    5,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving across town after a shift",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34572,
+   "name": "Juniper Stillwater",
+   "chunk": [
+    5,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving home with the windows down",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34573,
+   "name": "Alba Delacroix",
+   "chunk": [
+    5,
+    -1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to pick up a kid from practice",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34574,
+   "name": "Hollis Lockhart",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a load of feed out to the yard",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34575,
+   "name": "Ursula Whitlock",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the parts counter",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34576,
+   "name": "Abigail Yarrow",
+   "chunk": [
+    5,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "driving slow and reading the shop signs",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34577,
+   "name": "Magdalena Orozco",
+   "chunk": [
+    5,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a pickup to the job site",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34578,
+   "name": "Florian Greenhalgh",
+   "chunk": [
+    5,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving the long way around the block",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34579,
+   "name": "Jubal Ortega",
+   "chunk": [
+    5,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving with a dog riding shotgun",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34580,
+   "name": "Flora Ravenhill",
+   "chunk": [
+    5,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving back from the lumber yard",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34581,
+   "name": "Bernadette Blackwood",
+   "chunk": [
+    5,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the post office before it closes",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34582,
+   "name": "Dalia Gallardo",
+   "chunk": [
+    4,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "driving with the radio up",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34583,
+   "name": "Flora Kincaid",
+   "chunk": [
+    2,
+    -3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a delivery route",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34584,
+   "name": "Thaddeus Varela",
+   "chunk": [
+    2,
+    -3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a work truck to the next call",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34585,
+   "name": "Obadiah Coldwater",
+   "chunk": [
+    2,
+    -3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the donut counter",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34586,
+   "name": "Quentin Inglewood",
+   "chunk": [
+    2,
+    -3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving out to check the wells",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34587,
+   "name": "Soledad Garnett",
+   "chunk": [
+    2,
+    -3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a carload of cousins",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34588,
+   "name": "Evangeline Aldana",
+   "chunk": [
+    -1,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving in from the ranch",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34589,
+   "name": "Rufus Stillwater",
+   "chunk": [
+    -1,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the clinic for a checkup",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34590,
+   "name": "Dorian Zamora",
+   "chunk": [
+    2,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "driving the night loop",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34591,
+   "name": "Zacarias Iverson",
+   "chunk": [
+    3,
+    -3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving out to the lake",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34592,
+   "name": "Delfina Prescott",
+   "chunk": [
+    3,
+    -3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a rental tractor trailer back",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34593,
+   "name": "Adan Zamora",
+   "chunk": [
+    6,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the feed store",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34594,
+   "name": "Lorena Kestrel",
+   "chunk": [
+    5,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "driving and waving at a neighbor",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34595,
+   "name": "Esperanza Elkhart",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving across town after a shift",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34596,
+   "name": "Serafina Duquesne",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving home with the windows down",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34597,
+   "name": "Graciela Quarry",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to pick up a kid from practice",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34598,
+   "name": "Dalia Whitlock",
+   "chunk": [
+    6,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a load of feed out to the yard",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34599,
+   "name": "Evangeline Pemberton",
+   "chunk": [
+    6,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the parts counter",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34600,
+   "name": "Soledad Cervantes",
+   "chunk": [
+    7,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving slow and reading the shop signs",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34601,
+   "name": "Josefina Quintanilla",
+   "chunk": [
+    7,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a pickup to the job site",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34602,
+   "name": "Celestina Redfern",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving the long way around the block",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34603,
+   "name": "Sabina Iverson",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving with a dog riding shotgun",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34604,
+   "name": "Elias Orozco",
+   "chunk": [
+    7,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "driving back from the lumber yard",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34605,
+   "name": "Zacarias Cordero",
+   "chunk": [
+    8,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the post office before it closes",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34606,
+   "name": "Beatriz Birchfield",
+   "chunk": [
+    8,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "driving with the radio up",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34607,
+   "name": "Aurelia Blackwood",
+   "chunk": [
+    8,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a delivery route",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34608,
+   "name": "Valentin Benavides",
+   "chunk": [
+    8,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a work truck to the next call",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34609,
+   "name": "Pascual Ashgrove",
+   "chunk": [
+    9,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the donut counter",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34610,
+   "name": "Magdalena Trujillo",
+   "chunk": [
+    9,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "driving out to check the wells",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34611,
+   "name": "Celestina Varela",
+   "chunk": [
+    8,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a carload of cousins",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34612,
+   "name": "Jasper Delacroix",
+   "chunk": [
+    8,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving in from the ranch",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34613,
+   "name": "Wilhelmina Hartwell",
+   "chunk": [
+    8,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the clinic for a checkup",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34614,
+   "name": "Oralia Oakhurst",
+   "chunk": [
+    8,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving the night loop",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34615,
+   "name": "Dorotea Whitlock",
+   "chunk": [
+    9,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving out to the lake",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34616,
+   "name": "Dalia Yarrow",
+   "chunk": [
+    9,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a rental tractor trailer back",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34617,
+   "name": "Fausto Hollister",
+   "chunk": [
+    10,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the feed store",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34618,
+   "name": "Saul Orozco",
+   "chunk": [
+    9,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "driving and waving at a neighbor",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34619,
+   "name": "Esperanza Nightingale",
+   "chunk": [
+    7,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving across town after a shift",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34620,
+   "name": "Emeric Kincaid",
+   "chunk": [
+    7,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving home with the windows down",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34621,
+   "name": "Fidelia Corbin",
+   "chunk": [
+    8,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to pick up a kid from practice",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34622,
+   "name": "Sabina Juarez",
+   "chunk": [
+    7,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a load of feed out to the yard",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34623,
+   "name": "Verena Inglewood",
+   "chunk": [
+    9,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving to the parts counter",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34624,
+   "name": "Abigail Tafoya",
+   "chunk": [
+    9,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving slow and reading the shop signs",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34625,
+   "name": "Dorian Stillwater",
+   "chunk": [
+    9,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a pickup to the job site",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34626,
+   "name": "Perpetua Urrutia",
+   "chunk": [
+    10,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving the long way around the block",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34627,
+   "name": "Linus Zepeda",
+   "chunk": [
+    10,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving with a dog riding shotgun",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34628,
+   "name": "Octavia Benavides",
+   "chunk": [
+    10,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "driving back from the lumber yard",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35347,
+   "name": "Linus Varela",
+   "chunk": [
+    6,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the reservoir level off the staff gauge",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35348,
+   "name": "Desmond Corbin",
+   "chunk": [
+    6,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "cracking open the outlet gate a quarter turn",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35402,
+   "name": "Esperanza Halloran",
+   "chunk": [
+    1,
+    6
+   ],
+   "builder": "agent-orange",
+   "activity": "driving the adobe flatbed up to the pad",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35438,
+   "name": "Hollis Inglewood",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "carrying adobe from the pallets to the footing",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35439,
+   "name": "Cyrus Ortega",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "hauling adobe two at a time",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35440,
+   "name": "Nestor Sheffield",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "carrying a long board to the forms",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35441,
+   "name": "Ursula Lafferty",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "shouldering lumber with a neighbor",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35442,
+   "name": "Dorian Greenhalgh",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "carrying a water jug up to the masons",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35443,
+   "name": "Noemi Nightingale",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "running a jug back to the shade for a refill",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35444,
+   "name": "Silas Madrigal",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "pushing a wheelbarrow of sand to the mixer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35445,
+   "name": "Hazel Sandoval",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "driving a form stake with a sledge",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35446,
+   "name": "Nadia Northcott",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "nailing the top form board",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35447,
+   "name": "Obadiah Oakhurst",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "bracing the west form",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35448,
+   "name": "Dorian Prescott",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "buttering an adobe with mud mortar",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35449,
+   "name": "Desmond Tafoya",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "feeding sand into the mixer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35450,
+   "name": "Rosalia Cordero",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "shoveling sand into a bucket",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35451,
+   "name": "Leocadia Caballero",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "sighting the corners through a transit",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35452,
+   "name": "Hazel Thistlewood",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "holding the survey rod on the corner",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35453,
+   "name": "Macario Marchetti",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "dipping a bucket in the water barrel",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35454,
+   "name": "Oralia Zepeda",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "cutting a board on the sawhorse",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35455,
+   "name": "Aurelia Olivares",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the house plans under the canopy",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35456,
+   "name": "Linus Coldwater",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "telling the crew where the old well was",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35457,
+   "name": "Magdalena Holcomb",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "handing out cups of water",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35458,
+   "name": "Nestor Greenhalgh",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "opening a box of prickly pear donuts",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35459,
+   "name": "Amos Valdivia",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "looking down the valley toward the lake",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35461,
+   "name": "Adan Farrow",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "hiking up to see the new dam",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2453,
+  "awake": 2560,
   "newlyNamed": 0,
   "duplicateNames": 0
  }
