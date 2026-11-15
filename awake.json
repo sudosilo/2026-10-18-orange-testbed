@@ -29410,11 +29410,179 @@
    "activity": "opening a box of prickly pear donuts",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 34408,
+   "name": "Linus Varela",
+   "chunk": [
+    6,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the reservoir level off the staff gauge",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34409,
+   "name": "Desmond Corbin",
+   "chunk": [
+    6,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "cracking open the outlet gate a quarter turn",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34412,
+   "name": "Adan Farrow",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "hiking up to see the new dam",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34447,
+   "name": "Serafina Holcomb",
+   "chunk": [
+    4,
+    7
+   ],
+   "builder": "agent-orange",
+   "activity": "filling a bucket at the creek for the mortar",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34457,
+   "name": "Adan Carrow",
+   "chunk": [
+    1,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "jogging the shore trail at sunrise",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34458,
+   "name": "Verena Varela",
+   "chunk": [
+    1,
+    6
+   ],
+   "builder": "agent-orange",
+   "activity": "walking an old dog around the lake",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34502,
+   "name": "Hadley Bellweather",
+   "chunk": [
+    1,
+    6
+   ],
+   "builder": "agent-orange",
+   "activity": "casting for bluegill off the end of the dock",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34503,
+   "name": "Linus Jaramillo",
+   "chunk": [
+    1,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "untangling a fishing line on the dock",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34504,
+   "name": "Benito Jaramillo",
+   "chunk": [
+    1,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "renting a rowboat for the afternoon",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34505,
+   "name": "Ursula Holcomb",
+   "chunk": [
+    1,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "skipping stones from the beach",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34506,
+   "name": "Isidro Valdivia",
+   "chunk": [
+    1,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "wading in up to the knees",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34507,
+   "name": "Calla Halloran",
+   "chunk": [
+    1,
+    6
+   ],
+   "builder": "agent-orange",
+   "activity": "teaching a kid to bait a hook",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34520,
+   "name": "Osric Sandoval",
+   "chunk": [
+    1,
+    6
+   ],
+   "builder": "agent-orange",
+   "activity": "eating sandwiches at a lakeside picnic table",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 34521,
+   "name": "Wendell Iverson",
+   "chunk": [
+    1,
+    6
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the paper at the picnic table",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2439,
-  "newlyNamed": 2411,
+  "awake": 2453,
+  "newlyNamed": 0,
   "duplicateNames": 0
  }
 }

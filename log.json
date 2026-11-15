@@ -1,6 +1,83 @@
 {
  "entries": [
   {
+   "turn": "2026-11-15T021149",
+   "utc": "2026-11-15T02:11:49Z",
+   "by": "hand run, asked by Orange",
+   "code": "plans/2026-11-15-a.mjs",
+   "claimed": [
+    [
+     2,
+     7
+    ],
+    [
+     3,
+     7
+    ],
+    [
+     5,
+     7
+    ],
+    [
+     6,
+     7
+    ],
+    [
+     7,
+     7
+    ],
+    [
+     2,
+     8
+    ],
+    [
+     3,
+     8
+    ],
+    [
+     4,
+     8
+    ],
+    [
+     5,
+     8
+    ],
+    [
+     6,
+     8
+    ],
+    [
+     7,
+     8
+    ],
+    [
+     1,
+     5
+    ],
+    [
+     1,
+     6
+    ]
+   ],
+   "deepened": [
+    [
+     4,
+     7
+    ]
+   ],
+   "newBuildings": [
+    "Gihon Dam Gatehouse",
+    "Siloam Lake Boathouse"
+   ],
+   "newStreets": [],
+   "scoreBefore": 20482,
+   "scoreAfter": 20977,
+   "result": "merged, 734 of 734 calls accepted (PR 97)",
+   "zoning": "Orange asked for deeper, more textured mountains and a lake near them. Rows 7 and 8 (columns 2 to 7) are a northern range of the Mount Zion Forest Preserve, with a flat valley along y = 7S where Kidron Creek runs west past Keeper's Block (4,7 kept flat as a basin). Gihon Reservoir sits in a high bench at 48 m on 6,7/6,8 behind Gihon Dam, spilling over Gihon Falls into the creek. Siloam Lake on 1,5 and 1,6 is a terminal lake two blocks north of the west side housing, a park. Names follow the city of Zion: Gihon was the spring that fed the city, Kidron the valley beside it, Siloam the pool the water reached.",
+   "next": "Deepen the boathouse and gatehouse. The valley floor along Kidron Creek between Keeper's Block and the lake is open for a trail or a small farm. Finish the keeper's house. The viewer fix (PR 96, labels only near the camera) needs a vercel --prod from Orange after each run since git deploys are off.",
+   "problems": "First terrain left the reservoir on a thin berm; replaced with a broad bench that falls away into the range. Removed earlier woodland trees from the lake bed on 1,5."
+  },
+  {
    "turn": "2026-11-14T175523",
    "utc": "2026-11-14T17:55:23Z",
    "by": "hand run, asked by Orange",
