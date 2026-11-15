@@ -84,6 +84,7 @@ anim.pivot must be whole millimeters. Round any coordinate built from fractions 
 Terrain: the 2026-11-13-d plan has hgt(x, y) for the Chinchweed Ridge range (rows 5 and 6, columns 2 to 7). Contours are drawn by marching squares on the lot layer, every 8 m. Anything placed on the ridge must sit at z = hgt(x, y). Each closed contour starts at its southernmost point so its first point lands in an owned block.
 Vegetation is an open layer, so trees can go on unclaimed blocks. Keep them inside the property lines so future streets fit, and do not pile on more symbols; the city already has about 1300 trees from that turn.
 The 2026-11-14-a plan adds loc(N, x0, y0), a local frame for a small building drawn from its southwest corner: R() boxes, O() circles, V() wall boards, S() symbols, Ot() outlets with checks, and say() for people, all in mm from the corner. It is the fastest way to add a small named building on an old block. Find services with a short script that lists the nearest poles and plumbing mains in the chunk, then tap a span with a new pole rather than running a long drop over other roofs.
+tools/free.mjs does not know where doors open. Before building on a free box, check that it is not on the apron in front of a roll up or barn door; the first free box on 6,1 sat right in front of the apparatus barn doors. The 2026-11-15-c plan wraps person() so every new person gets meta.name from the pool (taken names read from awake.json) and makes D() people skip duplicate activity sentences.
 
 THE WATCH
 

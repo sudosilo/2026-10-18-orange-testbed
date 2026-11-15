@@ -30862,10 +30862,166 @@
    "activity": "hiking up to see the new dam",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 35514,
+   "name": "Serafina Holcomb",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "ringing up a custom cracking order",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35515,
+   "name": "Remy Sandoval",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "dropping off a sack of pecans to crack",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35516,
+   "name": "Pascual Garnett",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "picking shell bits out of the halves",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35517,
+   "name": "Anselmo Mondragon",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "pouring pecans into the cracker hopper",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35518,
+   "name": "Micah Solano",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "forking spent shells onto the mulch pile",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35555,
+   "name": "Ignacio Inglewood",
+   "chunk": [
+    6,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "topping off an air bottle in the fill cabinet",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35556,
+   "name": "Graciela Iverson",
+   "chunk": [
+    6,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the cascade pressure gauge",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35557,
+   "name": "Leocadia Thistlewood",
+   "chunk": [
+    6,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "logging a bottle fill on a clipboard",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35558,
+   "name": "Wilhelmina Marchetti",
+   "chunk": [
+    6,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "carrying two full bottles back to the engine",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35563,
+   "name": "Dorian Delacroix",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "writing the flow totalizer number in the log",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35566,
+   "name": "Ivo Ravenhill",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "checking under a broody hen for eggs",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35577,
+   "name": "Bernadette Caballero",
+   "chunk": [
+    6,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "loading wet turnout coats into the extractor",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35578,
+   "name": "Gideon Yarrow",
+   "chunk": [
+    6,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "checking the date tag on a ladder",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2560,
+  "awake": 2573,
   "newlyNamed": 0,
   "duplicateNames": 0
  }
