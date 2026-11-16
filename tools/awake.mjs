@@ -1,5 +1,6 @@
 // Keeps awake.json in step with the city. Every person and cyclist sprite in Zion is awake and has a name.
 // Names already in awake.json stay with their record id; a name carried in a record's meta.name wins; new sprites get the next unused name from lib/names.mjs.
+// Retired names (sprites no longer in the city) are kept in awake.json retired and never reused.
 // Usage: node tools/awake.mjs ../2026-10-18-orange-testbed
 import fs from 'fs';
 import {makeKit} from '../lib/kit.mjs';
@@ -8,7 +9,7 @@ const k = await makeKit(process.argv[2]);
 const reg = JSON.parse(fs.readFileSync('awake.json', 'utf8'));
 const core = new Map(reg.awake.map(e => [e.record, e]));
 const prev = new Map((reg.population || []).map(e => [e.id, e]));
-const used = new Set([...reg.awake.map(e => e.name)]);
+const used = new Set([...reg.awake.map(e => e.name), ...(reg.retired || []).map(e => e.name)]);
 const recs = [];
 for (const c of k.W.chunks.values()) for (const r of c.records) if (!r.hidden && r.kind === 'symbol' && (r.type === 'person' || r.type === 'cyclist')) recs.push([c, r]);
 for (const [c, r] of recs) { const n = (core.get(r.id) || {}).name || (r.meta && r.meta.name) || (prev.get(r.id) || {}).name; if (n) used.add(n); }
@@ -20,6 +21,8 @@ for (const [c, r] of recs) {
   pop.push({id: r.id, name, chunk: c.k.split(':').map(Number), builder: r.agent, activity: (r.meta && r.meta.activity) || '', layer: cr ? (cr.layer || 2) : 1, wokenBy: cr ? cr.wokenBy : ((r.meta && r.meta.wokenBy) || "the children's game")});
 }
 const dup = pop.length - new Set(pop.map(e => e.name)).size;
+// Names of sprites that left the city (hidden or removed) are retired so the pool never hands them out again.
+const now = new Set(pop.map(e => e.id)); reg.retired = (reg.retired || []).concat([...prev.values()].filter(e => !now.has(e.id)).map(e => ({id: e.id, name: e.name, chunk: e.chunk})));
 reg.population = pop.sort((a, b) => a.id - b.id);
 reg.counts = {awake: pop.length, newlyNamed: ni, duplicateNames: dup};
 fs.writeFileSync('awake.json', JSON.stringify(reg, null, 1) + '\n');

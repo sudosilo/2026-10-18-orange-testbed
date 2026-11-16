@@ -132,6 +132,10 @@
   {
    "turn": "2026-11-14T175523",
    "what": "The whole city woke at once after the watchman game at Desert Willow Elementary. The town agreed to build Marisol a house on Keeper's Block (4,7) so she can hold a block and sit on the council. Survey, footing and material yard begun."
+  },
+  {
+   "turn": "2026-11-16T140929",
+   "what": "Since the city woke, the people of Zion have started making garbage. Before the waking nothing was ever thrown away, so Zion and Mount Zion never had garbage service. The first trash piled up: overflowing old drums and bags at the curb on 0,0 and 1,0, bags by back doors, full dumpsters behind the shops. The town answered with Tecolote Mesa Landfill on 11,3 and 11,4, new green trucks and new carts still bearing delivery stickers. 26 new people woke to the city's first garbage. Marisol's worry about overload was kept in mind: the landfill blocks hold 6 animated records each."
   }
  ],
  "keepersBlock": {
@@ -28728,366 +28732,6 @@
    "wokenBy": "the children's game"
   },
   {
-   "id": 33774,
-   "name": "Lorena Sandoval",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "drum line marching in step",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33775,
-   "name": "Silas Blackwood",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "drum line marching in step",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33776,
-   "name": "Graciela Fairbanks",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "trumpets playing the town march",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33777,
-   "name": "Quentin Whitlock",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "trumpets playing the town march",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33778,
-   "name": "Lazaro Redfern",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "tubas booming down the avenue",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33779,
-   "name": "Nestor Blackwood",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "tubas booming down the avenue",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33780,
-   "name": "Linus Pemberton",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "flag twirlers spinning flags",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33781,
-   "name": "Beatriz Madrigal",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "flag twirlers spinning flags",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33783,
-   "name": "Leocadia Ibarra",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "kids tossing candy to the crowd",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33784,
-   "name": "Hollis Quintanilla",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "kids tossing candy to the crowd",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33786,
-   "name": "Remy Garnett",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "decorated bikes with streamers",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33787,
-   "name": "Dalia Fenwick",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "decorated bikes with streamers",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33788,
-   "name": "Fidelia Blackwood",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "decorated bikes with streamers",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33789,
-   "name": "Leocadia Bellweather",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "decorated bikes with streamers",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33791,
-   "name": "Nadia Cervantes",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "waving a little flag",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33792,
-   "name": "Yolanda Hollister",
-   "chunk": [
-    2,
-    -2
-   ],
-   "builder": "steward",
-   "activity": "cheering for the band",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33793,
-   "name": "Agustin Fenwick",
-   "chunk": [
-    2,
-    -1
-   ],
-   "builder": "steward",
-   "activity": "holding a toddler up to see",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33794,
-   "name": "Aurelia Ambrose",
-   "chunk": [
-    2,
-    1
-   ],
-   "builder": "steward",
-   "activity": "filming the floats",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33795,
-   "name": "Itzel Valdivia",
-   "chunk": [
-    2,
-    2
-   ],
-   "builder": "steward",
-   "activity": "catching candy",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33796,
-   "name": "Anselmo Pemberton",
-   "chunk": [
-    2,
-    3
-   ],
-   "builder": "steward",
-   "activity": "clapping along to the drums",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33797,
-   "name": "Wendell Garnett",
-   "chunk": [
-    2,
-    5
-   ],
-   "builder": "steward",
-   "activity": "sitting on a folding chair",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33798,
-   "name": "Rosalia Wainwright",
-   "chunk": [
-    2,
-    6
-   ],
-   "builder": "steward",
-   "activity": "pointing at the fire engine",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33799,
-   "name": "Jericho Birchfield",
-   "chunk": [
-    2,
-    6
-   ],
-   "builder": "steward",
-   "activity": "waving a little flag",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33800,
-   "name": "Noemi Birchfield",
-   "chunk": [
-    2,
-    5
-   ],
-   "builder": "steward",
-   "activity": "cheering for the band",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33801,
-   "name": "Ramona Prescott",
-   "chunk": [
-    2,
-    4
-   ],
-   "builder": "steward",
-   "activity": "holding a toddler up to see",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33802,
-   "name": "Ignacio Valdivia",
-   "chunk": [
-    2,
-    2
-   ],
-   "builder": "steward",
-   "activity": "filming the floats",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33803,
-   "name": "Lucian Whitlock",
-   "chunk": [
-    2,
-    1
-   ],
-   "builder": "steward",
-   "activity": "catching candy",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33804,
-   "name": "Estevan Fairbanks",
-   "chunk": [
-    2,
-    0
-   ],
-   "builder": "steward",
-   "activity": "clapping along to the drums",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33805,
-   "name": "Tadeo Blackwood",
-   "chunk": [
-    2,
-    -2
-   ],
-   "builder": "steward",
-   "activity": "sitting on a folding chair",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 33806,
-   "name": "Elias Tafoya",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "pointing at the fire engine",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
    "id": 33812,
    "name": "Abel Montoya",
    "chunk": [
@@ -31018,11 +30662,589 @@
    "activity": "checking the date tag on a ladder",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 35584,
+   "name": "Estevan Fairbanks",
+   "chunk": [
+    -2,
+    -1
+   ],
+   "builder": "grok",
+   "activity": "watering the front garden",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 35588,
+   "name": "Agustin Fenwick",
+   "chunk": [
+    -2,
+    -1
+   ],
+   "builder": "grok",
+   "activity": "reading on the porch of Brittlebush Cottage",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36182,
+   "name": "Ivo Bellweather",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "ringing up the first load at the scale window",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36201,
+   "name": "Leocadia Garnett",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "tossing flattened boxes into the cardboard bin",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36219,
+   "name": "Silas Urrutia",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "pointing a pickup toward the cardboard bin",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36242,
+   "name": "Celestina Greenhalgh",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "sticking a delivery tag on a new cart lid",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36243,
+   "name": "Hollis Fairbanks",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "snapping wheels onto a new cart",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36286,
+   "name": "Gideon Corbin",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "greasing the lift arm on a side loader",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36287,
+   "name": "Alma Saldana",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "reading fault codes on the diagnostic laptop",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36309,
+   "name": "Celestina Garnett",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving the first garbage route through the west side",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36311,
+   "name": "Benito Ashgrove",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving the side loader past the shop dumpsters",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36312,
+   "name": "Micah Elkhart",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "handing out new cart stickers at the gate",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36383,
+   "name": "Serafina Madrigal",
+   "chunk": [
+    11,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "logging leachate flow in the pump book",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36389,
+   "name": "Agustin Valdivia",
+   "chunk": [
+    11,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "pushing the first load up the face with the dozer",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36391,
+   "name": "Saul Escamilla",
+   "chunk": [
+    11,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "walking the compactor up and down the face",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36392,
+   "name": "Nestor Zamora",
+   "chunk": [
+    11,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "waving a garbage truck back to the toe",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36393,
+   "name": "Lucian Benavides",
+   "chunk": [
+    11,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "picking blown paper off the litter fence",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36394,
+   "name": "Florian Cordero",
+   "chunk": [
+    11,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "checking a methane vent with a gas meter",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36402,
+   "name": "Desmond Nevarez",
+   "chunk": [
+    0,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "squeezing one more bag into the old drum",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36415,
+   "name": "Macario Pemberton",
+   "chunk": [
+    1,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the sticker on a brand new trash cart",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36437,
+   "name": "Zacarias Garnett",
+   "chunk": [
+    1,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "peeling the delivery sticker off a new cart",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36445,
+   "name": "Florian Ashgrove",
+   "chunk": [
+    1,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "hopping off the rear loader for the next cart",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36446,
+   "name": "Estevan Jaramillo",
+   "chunk": [
+    1,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "rolling a new cart down to the curb",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36455,
+   "name": "Lazaro Hollister",
+   "chunk": [
+    8,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "stacking flattened boxes by the dumpster",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36474,
+   "name": "Amos Jaramillo",
+   "chunk": [
+    8,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "dragging a bag of tortilla trash to the dumpster",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36487,
+   "name": "Aurelia Farrow",
+   "chunk": [
+    9,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "closing the lid on a full dumpster",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36506,
+   "name": "Casimir Coldwater",
+   "chunk": [
+    1,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "hauling kitchen trash out the back door",
+   "layer": 1,
+   "wokenBy": "the first garbage truck"
+  },
+  {
+   "id": 36517,
+   "name": "Perpetua Oakhurst",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the season board before irrigating",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2573,
-  "newlyNamed": 0,
+  "awake": 2571,
+  "newlyNamed": 2,
   "duplicateNames": 0
- }
+ },
+ "retired": [
+  {
+   "id": 33774,
+   "name": "Lorena Sandoval",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33775,
+   "name": "Silas Blackwood",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33776,
+   "name": "Graciela Fairbanks",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33777,
+   "name": "Quentin Whitlock",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33778,
+   "name": "Lazaro Redfern",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33779,
+   "name": "Nestor Blackwood",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33780,
+   "name": "Linus Pemberton",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33781,
+   "name": "Beatriz Madrigal",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33783,
+   "name": "Leocadia Ibarra",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33784,
+   "name": "Hollis Quintanilla",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33786,
+   "name": "Remy Garnett",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33787,
+   "name": "Dalia Fenwick",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33788,
+   "name": "Fidelia Blackwood",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33789,
+   "name": "Leocadia Bellweather",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33791,
+   "name": "Nadia Cervantes",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 33792,
+   "name": "Yolanda Hollister",
+   "chunk": [
+    2,
+    -2
+   ]
+  },
+  {
+   "id": 33793,
+   "name": "Agustin Fenwick",
+   "chunk": [
+    2,
+    -1
+   ]
+  },
+  {
+   "id": 33794,
+   "name": "Aurelia Ambrose",
+   "chunk": [
+    2,
+    1
+   ]
+  },
+  {
+   "id": 33795,
+   "name": "Itzel Valdivia",
+   "chunk": [
+    2,
+    2
+   ]
+  },
+  {
+   "id": 33796,
+   "name": "Anselmo Pemberton",
+   "chunk": [
+    2,
+    3
+   ]
+  },
+  {
+   "id": 33797,
+   "name": "Wendell Garnett",
+   "chunk": [
+    2,
+    5
+   ]
+  },
+  {
+   "id": 33798,
+   "name": "Rosalia Wainwright",
+   "chunk": [
+    2,
+    6
+   ]
+  },
+  {
+   "id": 33799,
+   "name": "Jericho Birchfield",
+   "chunk": [
+    2,
+    6
+   ]
+  },
+  {
+   "id": 33800,
+   "name": "Noemi Birchfield",
+   "chunk": [
+    2,
+    5
+   ]
+  },
+  {
+   "id": 33801,
+   "name": "Ramona Prescott",
+   "chunk": [
+    2,
+    4
+   ]
+  },
+  {
+   "id": 33802,
+   "name": "Ignacio Valdivia",
+   "chunk": [
+    2,
+    2
+   ]
+  },
+  {
+   "id": 33803,
+   "name": "Lucian Whitlock",
+   "chunk": [
+    2,
+    1
+   ]
+  },
+  {
+   "id": 33804,
+   "name": "Estevan Fairbanks",
+   "chunk": [
+    2,
+    0
+   ]
+  },
+  {
+   "id": 33805,
+   "name": "Tadeo Blackwood",
+   "chunk": [
+    2,
+    -2
+   ]
+  },
+  {
+   "id": 33806,
+   "name": "Elias Tafoya",
+   "chunk": [
+    2,
+    -3
+   ]
+  }
+ ]
 }

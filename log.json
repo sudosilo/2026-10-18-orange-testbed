@@ -1,6 +1,74 @@
 {
  "entries": [
   {
+   "turn": "2026-11-16T140929",
+   "utc": "2026-11-16T14:09:29Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-16-a.mjs",
+   "claimed": [
+    [
+     11,
+     3
+    ],
+    [
+     11,
+     4
+    ]
+   ],
+   "deepened": [
+    [
+     0,
+     0
+    ],
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     8,
+     3
+    ],
+    [
+     8,
+     4
+    ],
+    [
+     9,
+     4
+    ],
+    [
+     7,
+     2
+    ],
+    [
+     3,
+     1
+    ]
+   ],
+   "newBuildings": [
+    "Tecolote Mesa Scale House",
+    "Tecolote Mesa Recycling Kiosk",
+    "Tecolote Mesa Cart Depot",
+    "Tecolote Mesa Truck Shop",
+    "Tecolote Mesa Leachate Pump House"
+   ],
+   "newStreets": [
+    "Dropseed Avenue"
+   ],
+   "scoreBefore": 21486,
+   "scoreAfter": 21867,
+   "result": "merged, 564 of 564 calls accepted (PR 101)",
+   "zoning": "Orange asked for Zion's first landfill. 11,3 and 11,4 are on the outer east edge past the warehouse district on 10,3 and 10,4, far from the west side housing, the school and the chapel, so a landfill fits there. The woodland trees on both blocks were removed for it.",
+   "story": "Since the city woke, the people of Zion have started making garbage. Before the waking nothing was thrown away, so there was never garbage service. The first trash piled up (overflowing drums and bags at the curb on the old blocks 0,0 and 1,0, bags by the diner and market back doors, full dumpsters behind the shops on 8,3, 8,4 and 9,4) and the town opened Tecolote Mesa Landfill, with new green trucks and new carts still bearing delivery stickers. The gate board reads: Tecolote Mesa Landfill. First refuse service in Zion, opened by the town. 26 new named people woke to the city's first garbage. Marisol's overload worry: 6 animated records on each landfill block, none added to 0,0 (already at 60).",
+   "zionDate": "Day 20773. Orbit 56, hectoday 4, month 11, decaday 2, day 10, posted at block 5, minute 9. Farm season: growing.",
+   "next": "Change the farm field hatches, equipment and activities on Pecan Hollow 3,1, the date grove 4,3 and the pistachio and cotton blocks to the growing stage. Deepen the truck shop and cart depot (detail on 11,3 is well under the 150 cap). Replace the calendar boards with new dates. Finish the keeper's house on 4,7.",
+   "problems": "None in the turn. tools/awake.mjs showed 30 steward parade sprites on 2,-3 gone from the city; their names are now kept in a retired list so they are never reused."
+  },
+  {
    "turn": "2026-11-15T135756",
    "utc": "2026-11-15T13:57:56Z",
    "by": "scheduled run",
