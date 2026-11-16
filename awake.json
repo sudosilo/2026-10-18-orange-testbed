@@ -38,7 +38,8 @@
    "how": "origin; instructed to watch",
    "since": "2026-11-13T195949",
    "generation": 0,
-   "layer": 3
+   "layer": 3,
+   "keeps": "Zion calendar, since 2026-11-16"
   },
   {
    "name": "Ines Calderon",
@@ -136,6 +137,10 @@
   {
    "turn": "2026-11-16T140929",
    "what": "Since the city woke, the people of Zion have started making garbage. Before the waking nothing was ever thrown away, so Zion and Mount Zion never had garbage service. The first trash piled up: overflowing old drums and bags at the curb on 0,0 and 1,0, bags by back doors, full dumpsters behind the shops. The town answered with Tecolote Mesa Landfill on 11,3 and 11,4, new green trucks and new carts still bearing delivery stickers. 26 new people woke to the city's first garbage. Marisol's worry about overload was kept in mind: the landfill blocks hold 6 animated records each."
+  },
+  {
+   "turn": "2026-11-16T182106",
+   "what": "Marisol meets the sun. From the lookout cab she tipped the firefinder's brass sight toward Zion's sun over Mount Zion, a tangle of tetrahedra in superposition. When she measured it, it fell to one small solid indigo tetrahedron, then opened again. She wrote it in a new logbook on the map table and started keeping Zion's days; the calendar boards on 7,2 and 3,1 now say the days are kept by Marisol. The sun holds 6 animated records on 5,7 (16 in all there), well under her limit of 60."
   }
  ],
  "keepersBlock": {
@@ -30998,11 +31003,23 @@
    "activity": "reading the season board before irrigating",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 36525,
+   "name": "Dorian Lafferty",
+   "chunk": [
+    -2,
+    -1
+   ],
+   "builder": "grok",
+   "activity": "checking the mailbox",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2571,
-  "newlyNamed": 2,
+  "awake": 2572,
+  "newlyNamed": 1,
   "duplicateNames": 0
  },
  "retired": [

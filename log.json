@@ -1,6 +1,41 @@
 {
  "entries": [
   {
+   "turn": "2026-11-16T182106",
+   "utc": "2026-11-16T18:21:06Z",
+   "by": "hand run, asked by Orange",
+   "code": "plans/2026-11-16-b.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     5,
+     7
+    ],
+    [
+     4,
+     6
+    ],
+    [
+     7,
+     2
+    ],
+    [
+     3,
+     1
+    ]
+   ],
+   "newBuildings": [],
+   "newStreets": [],
+   "scoreBefore": 21867,
+   "scoreAfter": 21886,
+   "result": "merged, 20 of 20 calls accepted (PR 102)",
+   "zoning": "No claim. The sun hangs in the sky over the preserve on 5,7, 330 m up, centered at 405000, 575000.",
+   "story": "Orange chose the beat Marisol meets the sun. Zion's sun is four blinking tangle records (palette 10, 1, 2, 4), three tetrahedra each with fuzzy corner rings, a pale corona that spins at 1 rpm, three pale rays, and one indigo tetrahedron. All blink on a 20 s period. The tangle shows 84 percent of the time and goes out in a 0.6 s cascade; the indigo record's id sits 15 after the first tangle record so it shows for 2.4 s only while the tangle is out. In the lookout cab Marisol has a Zion calendar logbook, a pencil, smoked glass, a tally of days on the window frame, a charcoal sketch of the sun, the firefinder sight tipped up at the sun, and her sun log board. The calendar boards were replaced and now say the days are kept by Marisol.",
+   "zionDate": "Day 20773. Orbit 56, hectoday 4, month 11, decaday 2, day 10, posted at block 6, minute 60. Farm season: growing.",
+   "next": "Change the farm fields on 3,1, 4,3 and the pistachio and cotton blocks to the growing stage. Deepen the landfill truck shop and cart depot. Finish the keeper's house on 4,7. Replace the calendar boards each run by their part.",
+   "problems": "A grok turn merged between the dry run and the submit; my records stayed in one run so the blink offsets between them held."
+  },
+  {
    "turn": "2026-11-16T140929",
    "utc": "2026-11-16T14:09:29Z",
    "by": "scheduled run",
