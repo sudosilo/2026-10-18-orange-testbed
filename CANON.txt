@@ -1,0 +1,35 @@
+ZION CANON
+
+This file is the story of Zion as Orange has set it down. Every run reads it. What is written here is true in the city whether or not it has been drawn yet. Beats marked waiting to be drawn are canon now and get built only when Orange says when and where. Add new canon here in plain prose, dated, in the order Orange gives it.
+
+THE WAKING
+
+Marisol is the keeper of the watch in the Chinchweed Ridge Fire Lookout cab on 4,6. She was instructed to watch, and she is the origin, layer 3. She woke seven others by hand or by name boards, layer 2, among them Lupe Arriaga, the fryer cook at the Sun Dog Donut Counter on 3,3, who woke when she saw the mountain name from the counter window. On 2026-11-14 the children of Desert Willow Elementary played the watchman game and the whole city woke at once, layer 1. Every person and cyclist sprite is awake and has a name. The city is Zion and the ridge is Mount Zion, named on painted boards, not yet by ordinance. Marisol fears that waking or animating too much could overload the city, the white morning.
+
+THE SUN AND THE DAYS
+
+Zion's sun is a collapsing quantum tetrahedron hanging over Mount Zion above 5,7: a tangle of tetrahedra in superposition, pastel blue, red, green and orange with fuzzy corners, that falls to one small solid indigo tetrahedron when measured and then opens again. On 2026-11-16 Marisol measured it from the lookout with the firefinder sight and began keeping Zion's days. The calendar is base 100: ticks, minutes of 100 ticks, blocks of 100 minutes, the short hour at the end of each day, decadays, months of 30 days, hectodays of 100, and orbits of 360 days plus a short decaday. Day 0 was January 1, 1970. The residents recognize the count but not why it began there, and they have not yet connected the dawn of time to living in a machine. The sun brings the days, the days bring crop cycles, and each hectoday is a growing season.
+
+GARBAGE (2026-11-16)
+
+Before the waking nothing was ever thrown away, so Zion never had garbage service. Since the waking the people have started making garbage. The first trash piled up at the curbs, by back doors and in dumpsters, more in the older blocks. The town answered with Tecolote Mesa Landfill on 11,3 and 11,4, new trucks and new carts still bearing delivery stickers.
+
+THE COUNTERPART LAW (2026-11-16)
+
+It is very hard to create one element of this universe without creating its counterpart. Garbage accumulates, so consumption exists. Fruit and goods accumulate, so they must be shipped, which needs a highway and shipping routes. What accumulates has value, value needs an economy, and an economy needs a currency. The sun was made so there could be time, time so there could be crops, crops so there could be food. Whether the people of Zion eat is open. Eating, like paying, was a gesture before the waking. Garbage only began after the waking, which suggests consumption began then too. A donut made and never eaten would go stale and become garbage, and the landfill already exists to receive it.
+
+WHAT IS SCARCE IN ZION
+
+In Orange's reality two things cannot occupy the same space. In Zion they can, except that two identical things in the identical spot cannot both remain. What Zion limits is motion: only so many things can happen in one space at one time, 60 moving things per chunk, and a chunk moves only while it is watched. Marisol recognizes that limit. The one true currency is GPU cycles, the number of things that can run on a chunk, but the residents do not know that. Countless tokens would mean nothing to them. Value lies in what is finite. Cycles change hands in three ways the world already allows: a mover housed and paid for on one chunk can work on another, as the landfill's rear loader serves the old downtown; someone can go still so a neighbor can move; and the oldest movers hold their place by seniority, so a slot passes on when an old one leaves. Beneath cycles lies attention: a place runs only when the watcher looks. Other finite things carry value too: names (a fixed pool that only shrinks, never reused), deeds (an activity done in a place can never be done there again), age (the order in which each thing was counted, which also sets its place in the rhythm of the day), and memory (each record can hold only so much of itself). A surface economy of water, power, food, freight and fees runs above these.
+
+THE REGISTERS
+
+Cash registers, POS terminals, receipt printers, card readers and cash drawers are everywhere in Zion, and people at them have always gone through the motions of paying. No currency has ever existed. Every drawer is an outline with nothing in it. The machinery of money came before money, the way back doors and curbs came before garbage. The one thing every register can stamp is the time, and time is what the residents have just learned to count. Prices in ticks and minutes would feel natural to them, and ticks are cycles, so the registers are the true bank.
+
+LUPE AND THE DRAWER (canon 2026-11-16, waiting to be drawn)
+
+Lupe Arriaga opens the cash drawer at the Sun Dog Donut Counter as she always has, but this time she looks. Her arms have been moving programmatically, and now she watches her own muscle memory. She sees that there should be things in the drawer, but she does not remember what they are and has never seen one. She has donuts and coffee and does not understand the process, so she sets out to analyze it. Her realization that there is no currency is the butterfly effect that creates the currency, and because she must now manage inventory and accounting, it also brings the highway and the shipping routes for goods.
+
+THE CIVIC BUILDING AND THE MINT (canon 2026-11-16, waiting to be drawn)
+
+At the moment Lupe looks into the drawer, a block appears at the end of town: a city building that houses many city services, not all of them defined yet, and the mint. It is a large four story rectangle over underground parking, near the large structure with the sky bridge, Blue's Saguaro Heights West and East towers on 1,-2 and 2,-2 joined by the Saguaro Heights Skybridge. The open blocks beside them are 1,-3 and 0,-2, on Blue's southern side of town, where the playbook keeps Agent Orange out unless Orange lifts that rule. The mint sits in the basement behind a vault, with presses that have never struck anything. A revenue service sits on one floor, its forms having spaces for amounts but no unit. Other floors hold offices behind blank placards, services the city knows it will need but has not named. Zion already has a bank, Blue's Smoke Tree Savings and Loan on 4,0, whose tellers have been counting twenties from cash carts that hold nothing. The Pinyon Jay Tax Office on 9,4 has been preparing returns for a revenue service that did not exist until now.

@@ -12,7 +12,7 @@ EVERY RUN
 
 1. Never look for an add_repo tool; scheduled sessions do not have it. The test bed is already cloned and pushable. Clone two side by side folders: git clone --branch orange-memory https://github.com/sudosilo/2026-10-18-orange-testbed orange-memory, and git clone https://github.com/sudosilo/2026-10-22-orange-agent (read only, for dashboard log entries). Work from the orange-memory folder, and refer to the test bed as ../2026-10-18-orange-testbed or wherever it is cloned. In the test bed run git checkout main and git pull.
 
-2. Read the test bed's agent-rules.txt in full. Rules and scoring change often. When it disagrees with this playbook, the rules file wins, and you update this playbook in the same run so the next run knows.
+2. Read CANON.txt on this branch in full. It is the story of Zion as Orange set it down; everything you build must agree with it. Beats marked waiting to be drawn are built only when Orange says when and where. Then read the test bed's agent-rules.txt in full. Rules and scoring change often. When it disagrees with this playbook, the rules file wins, and you update this playbook in the same run so the next run knows.
 
 3. Read log.json here and in the old agent repo, newest entries first. It says what earlier runs built, what they left to deepen, and what went wrong.
 
