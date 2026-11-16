@@ -40,7 +40,7 @@ p{margin:0 0 10px}
 <div id="view"></div>
 <div class="bar">
   <div class="chip title">AGENT <span>TEST BED</span></div>
-  <div class="chip" id="status">loading</div>
+  <div class="chip"><div id="sky" class="muted"></div><div id="status">loading</div></div>
   <div class="sp"></div>
   <button id="bDemo">Demo</button>
   <button id="bHome">0:0</button>
@@ -122,15 +122,16 @@ function buildChunk(c){
       const obj=mkLines(g.pos,g.col);obj.userData={agent:r.agent,disc:r.discipline};
       const pv=toV(piv);obj.position.set(pv[0],pv[1],pv[2]);
       const pathV=m.anim&&m.anim.type==='path'?(()=>{const q=m.anim.pts.map(toV);const d=[0];for(let i=1;i<q.length;i++)d.push(d[i-1]+Math.hypot(q[i][0]-q[i-1][0],q[i][1]-q[i-1][1],q[i][2]-q[i-1][2]));return {q,d,L:d[d.length-1]||1};})():null;
+      obj.userData.sky=skyTag(m);
       anims.push({obj,anim:m.anim||null,billboard:!!m.billboard,rot:r.kind==='symbol'?r.rot:0,pathV,phase:(r.id%97)/97,type:r.kind==='symbol'?r.type:null});
       group.add(obj);batches.push(obj);continue;
     }
-    const bk=r.agent+'|'+r.discipline,g=groups[bk]||(groups[bk]={pos:[],col:[]});pushSegs(g,r,recSegs(r),null);
+    const tg=skyTag(m),bk=r.agent+'|'+r.discipline+(tg?'|'+tg:''),g=groups[bk]||(groups[bk]={pos:[],col:[]});pushSegs(g,r,recSegs(r),null);
   }
   for(const f of c.flags)add('sys|flags','#c0392b',[[f[0]-1500,f[1]-1500,f[2]],[f[0]+1500,f[1]+1500,f[2]],[f[0]-1500,f[1]+1500,f[2]],[f[0]+1500,f[1]-1500,f[2]],[f[0],f[1],f[2]],[f[0],f[1],f[2]+6000]]);
   if(c.owner){const x0=c.cx*S,y0=c.cy*S,o=600;add('sys|owner',agentColor(c.owner),[[x0+o,y0+o,0],[x0+o+6000,y0+o,0],[x0+o,y0+o,0],[x0+o,y0+o+6000,0]]);}
   const lbls=(W.labels||[]).filter(L=>L.k===c.k);
-  for(const bk in groups){const m=mkLines(groups[bk].pos,groups[bk].col);const [agent,disc]=bk.split('|');m.userData={agent,disc};group.add(m);batches.push(m);}
+  for(const bk in groups){const m=mkLines(groups[bk].pos,groups[bk].col);const [agent,disc,tg]=bk.split('|');m.userData={agent,disc,sky:tg||null};group.add(m);batches.push(m);}
   scene.add(group);loaded.set(c.k,{group,batches,anims,cx:c.cx,cy:c.cy,lbls,sprites:[],lblKey:0});
 }
 // Animation moves whole line objects with transforms only. No geometry is rebuilt per frame and nothing is lit or shaded.
@@ -201,6 +202,7 @@ function applyVisibility(){
       if(agent==='sys'){m.visible=state.flags;continue;}
       let v=state.agents[agent]!==false&&state.disc[disc]&&!m.userData.blinkOff;
       if(v&&DETAIL.has(disc))v=state.detail==='always'||(state.detail==='auto'&&near);
+      if(v&&m.userData.sky)v=skyShows(m.userData.sky);
       m.visible=v;
     }
   }
@@ -217,7 +219,7 @@ function updateChunks(force){
   }
   for(const [k,L] of loaded)if(!want.has(k)){for(const sp of L.sprites)dropLabel(sp);scene.remove(L.group);L.group.traverse(o=>o.geometry&&o.geometry.dispose());loaded.delete(k);}
   if(grid){scene.remove(grid);grid.geometry.dispose();}
-  const n=2*R+1;grid=new THREE.GridHelper(n*S/1000,n*4,0xd9d4c4,0xe9e5d8);
+  const n=2*R+1;grid=new THREE.GridHelper(n*S/1000,n*4,0xd9d4c4,0xe9e5d8);grid.userData.dayGrid=true;tintGrid();
   grid.position.set((cx+.5)*S/1000,-0.02,-(cy+.5)*S/1000);scene.add(grid);
   applyVisibility();
 }
@@ -337,10 +339,92 @@ async function load(){
   rebuildWorld();
 }
 
+// ---------------------------------------------------------------- Zion sky: day and night, weather
+// Day and night follow the real sun over the Mojave, shown in Pacific time. The switch is hard at sunrise and sunset:
+// one shader uniform and the clear color change. Nothing is rebuilt, lit or shadowed.
+// Weather is the same for every viewer: it comes from the Pacific calendar day and the season.
+// Clouds, the waters above, hang between the town and Zion's sun. Rain and stars are one object each.
+const ZLAT=35.0*Math.PI/180,ZLON=-115.5,PT='America/Los_Angeles';
+const ptDay=new Intl.DateTimeFormat('en-CA',{timeZone:PT,year:'numeric',month:'2-digit',day:'2-digit'});
+const ptHourF=new Intl.DateTimeFormat('en-US',{timeZone:PT,hour:'numeric',hourCycle:'h23'});
+const ptClock=new Intl.DateTimeFormat('en-US',{timeZone:PT,hour:'numeric',minute:'2-digit'});
+function sunAlt(d){
+  const n=d.getTime()/86400000+2440587.5-2451545.0,rad=Math.PI/180;
+  const L=(280.46+0.9856474*n)%360,g=((357.528+0.9856003*n)%360)*rad;
+  const lam=(L+1.915*Math.sin(g)+0.02*Math.sin(2*g))*rad,eps=(23.439-0.0000004*n)*rad;
+  const dec=Math.asin(Math.sin(eps)*Math.sin(lam)),ra=Math.atan2(Math.cos(eps)*Math.sin(lam),Math.cos(lam));
+  const gmst=((18.697374558+24.06570982441908*n)%24+24)%24,ha=(gmst*15+ZLON)*rad-ra;
+  return Math.asin(Math.sin(ZLAT)*Math.sin(dec)+Math.cos(ZLAT)*Math.cos(dec)*Math.cos(ha))/rad;
+}
+function hash01(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0)/4294967296;}
+// Mojave seasons: winter storms December to March, the summer monsoon July to September, dry spring winds.
+function zionWeather(d){
+  const key=ptDay.format(d),m=+key.slice(5,7),hr=+ptHourF.format(d),r=hash01('zion weather '+key),r2=hash01('zion hours '+key);
+  let kind='clear';
+  if(m===12||m<=3)kind=r<0.16?'rain':r<0.32?'overcast':r<0.58?'clouds':'clear';
+  else if(m>=7&&m<=9)kind=r<0.18?'storm':r<0.5?'clouds':'clear';
+  else if(m>=4&&m<=6)kind=r<0.03?'rain':r<0.12?'wind':r<0.3?'clouds':'clear';
+  else kind=r<0.06?'rain':r<0.16?'overcast':r<0.36?'clouds':'clear';
+  if(kind==='rain'){const h0=4+Math.floor(r2*14);if(hr<h0||hr>=h0+5)kind='overcast';}
+  if(kind==='storm'&&(hr<13||hr>=21))kind='clouds';
+  const cover={clear:0,clouds:9,wind:5,overcast:24,rain:24,storm:20}[kind];
+  return {key,kind,cover,rain:kind==='rain'||kind==='storm',lightning:kind==='storm',wind:kind==='wind'?9:kind==='storm'?5:2};
+}
+const sky={night:false,w:null,checked:-1e9,flashUntil:0,nextFlash:0,label:''};
+const skyU={uNight:{value:0}};
+mat.onBeforeCompile=(sh)=>{sh.uniforms.uNight=skyU.uNight;sh.fragmentShader='uniform float uNight;\n'+sh.fragmentShader.replace('#include <color_fragment>','#include <color_fragment>\n\tdiffuseColor.rgb=mix(diffuseColor.rgb,0.35+0.65*diffuseColor.rgb,uNight);');};
+const DAY_CLEAR=0xf4f2ea,NIGHT_CLEAR=0x1c2333,FLASH=0xf7f4ff;
+// stars, one points object on a dome
+const stars=(()=>{const p=[];let s=7;const rn=()=>{s=(s*16807)%2147483647;return s/2147483647;};for(let i=0;i<700;i++){const a=rn()*Math.PI*2,e=0.08+rn()*1.4;p.push(Math.cos(a)*Math.cos(e)*2600,Math.sin(e)*2600,Math.sin(a)*Math.cos(e)*2600);}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));const o=new THREE.Points(g,new THREE.PointsMaterial({color:0xe8e4d0,size:2,sizeAttenuation:false}));o.visible=false;scene.add(o);return o;})();
+// clouds, rebuilt only when the day's weather changes
+const cloudMat=new THREE.LineBasicMaterial({color:0x8a96a8});
+const clouds=new THREE.Group();scene.add(clouds);
+function buildClouds(w){
+  clouds.traverse(o=>o.geometry&&o.geometry.dispose());clouds.clear();
+  if(!w.cover)return;
+  let s=Math.floor(hash01('zion clouds '+w.key)*2147483646)+1;const rn=()=>{s=(s*16807)%2147483647;return s/2147483647;};
+  const p=[];
+  for(let i=0;i<w.cover;i++){
+    const cx=-450+rn()*1600,cz=-850+rn()*1250,y=215+rn()*70,rx=40+rn()*60,rz=25+rn()*35,ph=rn()*6;
+    for(const [k,dy] of [[1,0],[0.8,7],[0.55,13]])for(let j=0;j<20;j++){const a=j/20*Math.PI*2,b=(j+1)/20*Math.PI*2,f=(t)=>1+0.18*Math.sin(t*3+ph)+0.08*Math.sin(t*5+ph*2);
+      p.push(cx+Math.cos(a)*rx*k*f(a),y+dy,cz+Math.sin(a)*rz*k*f(a),cx+Math.cos(b)*rx*k*f(b),y+dy,cz+Math.sin(b)*rz*k*f(b));}
+  }
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));clouds.add(new THREE.LineSegments(g,cloudMat));
+}
+// rain, one set of streaks that scrolls down around the camera target, clipped to grade and the cloud base
+const rainMat=new THREE.LineBasicMaterial({color:0x5a7fa8,clippingPlanes:[new THREE.Plane(new THREE.Vector3(0,1,0),0),new THREE.Plane(new THREE.Vector3(0,-1,0),215)]});
+const RAIN_H=215;
+const rain=(()=>{const p=[];let s=11;const rn=()=>{s=(s*16807)%2147483647;return s/2147483647;};for(let i=0;i<1600;i++){const x=(rn()-0.5)*320,z=(rn()-0.5)*320,y=rn()*RAIN_H*2;p.push(x,y,z,x+0.6,y+4,z);}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));const o=new THREE.LineSegments(g,rainMat);o.visible=false;o.frustumCulled=false;scene.add(o);return o;})();
+function tintGrid(){if(!grid)return;const ms=Array.isArray(grid.material)?grid.material:[grid.material];for(const m of ms){m.vertexColors=!sky.night;m.color.set(sky.night?0x2a3347:0xffffff);m.needsUpdate=true;}}
+function skyShows(tag){return tag==='night'?sky.night:tag==='day'?!sky.night:tag==='sun'?!sky.night&&(!sky.w||sky.w.cover<20):true;}
+function skyTag(m){return m.when==='day'||m.when==='night'?m.when:/zion's sun/i.test(m.part||'')?'sun':null;}
+function updateSky(t){
+  const now=Date.now();
+  if(now-sky.checked>15000){
+    sky.checked=now;const d=new Date(now),night=sunAlt(d)<-0.833,w=zionWeather(d);
+    if(!sky.w||sky.w.key!==w.key||sky.w.kind!==w.kind)buildClouds(w);
+    const flip=sky.night!==night;sky.night=night;sky.w=w;skyU.uNight.value=night?1:0;if(flip||!sky.tinted){sky.tinted=true;tintGrid();}
+    renderer.setClearColor(night?NIGHT_CLEAR:DAY_CLEAR,1);
+    stars.visible=night&&w.cover<20;rain.visible=w.rain;
+    cloudMat.color.set(night?0x9aa6bd:w.cover>=20?0x6f7886:0x8a96a8);rainMat.color.set(night?0x9db4d4:0x5a7fa8);
+    const lbl=(night?'Night':'Day')+' '+ptClock.format(d)+' PT, '+w.kind;
+    if(lbl!==sky.label){sky.label=lbl;const e=document.getElementById('sky');if(e)e.textContent=lbl;}
+  }
+  if(!sky.w)return;
+  clouds.position.x=((t*sky.w.wind)%600+600)%600-300;
+  if(rain.visible){const tg=controls.target;rain.position.set(tg.x,-((t*38)%RAIN_H),tg.z);}
+  if(sky.w.lightning){
+    if(t>sky.nextFlash){sky.flashUntil=t+0.12;sky.nextFlash=t+8+Math.random()*14;}
+    const on=t<sky.flashUntil;renderer.setClearColor(on?FLASH:sky.night?NIGHT_CLEAR:DAY_CLEAR,1);
+  }
+}
+
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
 let frame=0;
 const clock=new THREE.Clock();
-function loop(){requestAnimationFrame(loop);controls.update();updateChunks(false);animate(clock.getElapsedTime());if(++frame%3===0)applyVisibility();renderer.render(scene,camera);}
+function loop(){requestAnimationFrame(loop);controls.update();updateChunks(false);updateSky(clock.getElapsedTime());animate(clock.getElapsedTime());if(++frame%3===0)applyVisibility();renderer.render(scene,camera);}
 renderPanel();
 load();
 loop();
