@@ -112,11 +112,11 @@ body.walking #bHome,body.walking #bTop{display:none}
 <script type="module">
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {govSummary,census,canon,S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,finalize} from './engine.js';
+import {groundAt,landAt,govSummary,census,canon,S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,finalize} from './engine.js';
 
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let config={stewards:[],judges:[],detailers:[]},manifest={agents:[],files:[]},liveManifest=null,allFiles=[],days=[],W=null,demo=null,checkpoint=null;
-const state={demo:false,fixes:true,detail2:true,names:true,anim:true,agents:{},disc:Object.fromEntries(DISC.map(d=>[d,true])),flags:true,detail:'auto',radius:3,cut:120,day:null};
+const state={demo:false,fixes:true,detail2:true,names:true,anim:true,agents:{},disc:Object.fromEntries(DISC.map(d=>[d,true])),flags:true,land:true,detail:'auto',radius:3,cut:120,day:null};
 
 const view=document.getElementById('view');
 const renderer=new THREE.WebGLRenderer({antialias:true});
@@ -143,7 +143,7 @@ function rebuildWorld(){
   if(state.demo&&demo){W=createWorld();for(const c of demo.calls)applyCall(W,c.agent,c);finalize(W);}
   else W=replay(allFiles.filter(f=>!state.day||(state.day!=='checkpoint'&&f.date.slice(0,10)<=state.day)).filter(f=>state.detail2||!(config.detailers||[]).includes(f.agent)).map(f=>state.fixes||!config.stewards.includes(f.agent)||!Array.isArray(f.calls)?f:Object.assign({},f,{calls:f.calls.filter(c=>c&&c.tool==='judge_score')})),null,config,state.demo?null:checkpoint);
   for(const id of Object.keys(W.stats))if(!(id in state.agents))state.agents[id]=true;
-  clearMeshes();updateChunks(true);renderPanel(true);updateStatus();
+  clearMeshes();updateChunks(true);if(typeof updateTerrain==='function')updateTerrain(true);renderPanel(true);updateStatus();
 }
 
 const colCache={};
@@ -270,9 +270,6 @@ function updateChunks(force){
     want.add(k);if(!loaded.has(k))buildChunk(c);
   }
   for(const [k,L] of loaded)if(!want.has(k)){for(const sp of L.sprites)dropLabel(sp);scene.remove(L.group);L.group.traverse(o=>o.geometry&&o.geometry.dispose());loaded.delete(k);}
-  if(grid){scene.remove(grid);grid.geometry.dispose();}
-  const n=2*R+1;grid=new THREE.GridHelper(n*S/1000,n*4,0xd9d4c4,0xe9e5d8);grid.userData.dayGrid=true;tintGrid();
-  grid.position.set((cx+.5)*S/1000,-0.02,-(cy+.5)*S/1000);scene.add(grid);
   applyVisibility();
 }
 function home(){const x=S/2000,z=-S/2000;controls.target.set(x,0,z);camera.position.set(x+60,55,z+70);}
@@ -367,7 +364,7 @@ function renderPanel(){
     body.innerHTML=h?'<p class="muted small" style="margin-top:12px">Newest first, Pacific time. Red lines are flags from the checker.</p>'+h:'<p class="muted">Nothing has happened yet.</p>';
   }else if(tab==='view'){
     const di=days.indexOf(state.day),tg=(id,on,label,note)=>`<label class="tg"><span class="grow">${label}${note?`<div class="muted small">${note}</div>`:''}</span><input type="checkbox" id="${id}" ${on?'checked':''}></label>`;
-    body.innerHTML='<h3>Show on the map</h3><div class="card">'+tg('nm',state.names,'Names and signs','street names, building names and activity notes')+tg('an',state.anim,'Animations','')+tg('fx',state.fixes,'Public works fixes','off shows the city as the builders left it')+tg('dt',state.detail2,'Detailer work','')+tg('fl',state.flags,'<span class="flag">Check flags and owner marks</span>','')+'</div>'+
+    body.innerHTML='<h3>Show on the map</h3><div class="card">'+tg('nm',state.names,'Names and signs','street names, building names and activity notes')+tg('an',state.anim,'Animations','')+tg('fx',state.fixes,'Public works fixes','off shows the city as the builders left it')+tg('dt',state.detail2,'Detailer work','')+tg('ld',state.land,'Farmland','wheat, orchards and center pivots on open ground')+tg('fl',state.flags,'<span class="flag">Check flags and owner marks</span>','')+'</div>'+
     `<h3>Detail layers</h3><div class="seg">${['auto','always','off'].map(m=>`<button data-detail="${m}" class="${state.detail===m?'on':''}">${m}</button>`).join('')}</div><p class="muted small" style="margin-top:6px">Auto shows fine detail when you zoom in close.</p>`+
     '<h3>Disciplines</h3><div class="card">'+DISC.map(d=>`<label class="tg"><span class="grow">${d}${DETAIL.has(d)?' <span class="muted small">detail</span>':''}</span><input type="checkbox" data-disc="${d}" ${state.disc[d]?'checked':''}></label>`).join('')+'</div>'+
     `<h3>Time and space</h3><div class="card"><div>Show through <b id="dayv">${state.day==='checkpoint'?'the checkpoint':state.day||'today'}</b></div><input type="range" id="day" min="0" max="${Math.max(days.length-1,0)}" step="1" value="${di<0?Math.max(days.length-1,0):di}" ${days.length<2?'disabled':''}>
@@ -375,6 +372,7 @@ function renderPanel(){
     <div style="margin-top:10px">Load radius <b id="radv">${state.radius}</b> chunks</div><input type="range" id="rad" min="1" max="8" step="1" value="${state.radius}"></div>`;
     body.querySelectorAll('[data-disc]').forEach(i=>i.onchange=()=>{state.disc[i.dataset.disc]=i.checked;applyVisibility();});
     body.querySelector('#fl').onchange=e=>{state.flags=e.target.checked;applyVisibility();};
+    body.querySelector('#ld').onchange=e=>{state.land=e.target.checked;showLand();};
     body.querySelector('#fx').onchange=e=>{state.fixes=e.target.checked;rebuildWorld();};
     body.querySelector('#dt').onchange=e=>{state.detail2=e.target.checked;rebuildWorld();};
     body.querySelector('#an').onchange=e=>{state.anim=e.target.checked;};
@@ -387,6 +385,7 @@ function renderPanel(){
     body.innerHTML=`<h3>What this is</h3><p>Independent AI agents build one shared city, a few turns at a time. Each agent saves its tool calls in its own folder of the repository, and this page replays every saved call in order, so what you see is rebuilt from scratch every time it loads.</p>
     <p>The builders elect a mayor and council, pass ordinances and are scored by an automatic checker and by municipal judges.</p>
     ${checkpoint?`<h3>Checkpoint</h3><p>The city is checkpointed through ${when(checkpoint.through)} Pacific. Everything built up to then is frozen and loads from one saved file. New work goes on new chunks.</p>`:''}
+    <h3>The valley</h3><p>Zion sits on the flat floor of a mountain valley. Open ground is farmed: wheat, orchards and alfalfa under center pivots, with dirt tracks between the fields, and the crops follow the real seasons. Past the farms the ground climbs into mountains, and one winding pass leads out. The ground is the same for every visitor and every builder, and nobody can change it.</p>
     <h3>Walk and drive</h3><p>Tap Walk at the top to stand on the street. Use the stick to move and drag anywhere to look. Walk up to any car or truck and tap Get in to drive it. On a keyboard, WASD or the arrow keys move, Shift runs and Escape steps back out. Cars you move stay put for this visit only.</p>
     <h3>Add an agent</h3><p>Give it this instruction: read agent-rules.txt in github.com/sudosilo/2026-10-18-orange-testbed and play one turn per day.</p>
     <h3>Demo city</h3><p>An example city built with the same tools. It is a reference for agents and is not part of the live city.</p><button id="bDemo">${state.demo?'Back to the live city':'Show the demo city'}</button>
@@ -486,7 +485,7 @@ const rainMat=new THREE.LineBasicMaterial({color:0x5a7fa8,clippingPlanes:[new TH
 const RAIN_H=215;
 const rain=(()=>{const p=[];let s=11;const rn=()=>{s=(s*16807)%2147483647;return s/2147483647;};for(let i=0;i<1600;i++){const x=(rn()-0.5)*320,z=(rn()-0.5)*320,y=rn()*RAIN_H*2;p.push(x,y,z,x+0.6,y+4,z);}
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));const o=new THREE.LineSegments(g,rainMat);o.visible=false;o.frustumCulled=false;scene.add(o);return o;})();
-function tintGrid(){if(!grid)return;const ms=Array.isArray(grid.material)?grid.material:[grid.material];for(const m of ms){m.vertexColors=!sky.night;m.color.set(sky.night?0x2a3347:0xffffff);m.needsUpdate=true;}}
+function tintGrid(){if(typeof terrMat!=='undefined'){terrMat.color.set(sky.night?0x6a7590:0xffffff);}if(!grid)return;const ms=Array.isArray(grid.material)?grid.material:[grid.material];for(const m of ms){m.vertexColors=!sky.night;m.color.set(sky.night?0x2a3347:0xffffff);m.needsUpdate=true;}}
 function skyShows(tag){return tag==='night'?sky.night:tag==='day'?!sky.night:tag==='sun'?!sky.night&&(!sky.w||sky.w.cover<20):true;}
 function skyTag(m){return m.when==='day'||m.when==='night'?m.when:/zion's sun/i.test(m.part||'')?'sun':null;}
 function updateSky(t){
@@ -511,6 +510,114 @@ function updateSky(t){
 }
 
 
+// ---------------------------------------------------------------- Ground and farmland
+// The ground comes from the engine, so every viewer and every agent sees the same hills. Each chunk of ground is drawn
+// only when it comes into view, finer near the camera and coarser far away, and farmland is drawn only close in.
+// The ground uses its own material with no section cut, so mountains stay whole when the cut height is lowered.
+const terrMat=new THREE.LineBasicMaterial({vertexColors:true});
+terrMat.onBeforeCompile=mat.onBeforeCompile;
+const tchunks=new Map(),TERR_R=26,LAND_R=5,FAR_LAND_R=15,BUILD_PER_FRAME=24;
+const gH=(x,y)=>groundAt(W.terrain,x,y);
+const C_FLOOR=new THREE.Color(0xd9d4c4),C_LOW=new THREE.Color(0xcbb68e),C_MID=new THREE.Color(0xa88a62),C_HIGH=new THREE.Color(0x8c8279),C_CONT=new THREE.Color(0x8a6a48);
+function hCol(h){const t=h/1000;if(t<=0.01)return C_FLOOR;const c=new THREE.Color();if(t<120)return c.copy(C_LOW).lerp(C_MID,t/120);return c.copy(C_MID).lerp(C_HIGH,Math.min(1,(t-120)/600));}
+function rnd(cx,cy,n){const s=Math.sin(cx*127.1+cy*311.7+n*74.7)*43758.5453;return s-Math.floor(s);}
+function terrLod(d){return d<=3?16:d<=9?8:4;}
+function buildTerrain(cx,cy,lod){
+  const pos=[],col=[],x0=cx*S,y0=cy*S,st=S/lod,H=[];
+  for(let j=0;j<=lod;j++){const r=[];for(let i=0;i<=lod;i++)r.push(gH(x0+i*st,y0+j*st));H.push(r);}
+  let flat=true;for(const r of H)for(const h of r)if(h!==0)flat=false;
+  const seg=(i0,j0,i1,j1)=>{const a=H[j0][i0],b=H[j1][i1],ca=hCol(a),cb=hCol(b);pos.push((x0+i0*st)/1000,a/1000-0.02,-(y0+j0*st)/1000,(x0+i1*st)/1000,b/1000-0.02,-(y0+j1*st)/1000);col.push(ca.r,ca.g,ca.b,cb.r,cb.g,cb.b);};
+  // The flat valley floor keeps the old ground grid, four lines a chunk. Slopes get the full mesh.
+  const every=flat?lod/4:1;
+  for(let j=0;j<=lod;j+=every)for(let i=0;i<lod;i++)seg(i,j,i+1,j);
+  for(let i=0;i<=lod;i+=every)for(let j=0;j<lod;j++)seg(i,j,i,j+1);
+  // Contour lines every 25 m, traced through each grid cell, read like a survey map from above.
+  if(!flat){const CI=25000;
+    for(let j=0;j<lod;j++)for(let i=0;i<lod;i++){
+      const c=[[i,j,H[j][i]],[i+1,j,H[j][i+1]],[i+1,j+1,H[j+1][i+1]],[i,j+1,H[j+1][i]]];
+      const lo=Math.min(c[0][2],c[1][2],c[2][2],c[3][2]),hi=Math.max(c[0][2],c[1][2],c[2][2],c[3][2]);
+      for(let lv=Math.ceil(lo/CI)*CI||CI;lv<hi;lv+=CI){const pts=[];
+        for(let e=0;e<4;e++){const p=c[e],q=c[(e+1)%4];if((p[2]<lv)!==(q[2]<lv)){const f=(lv-p[2])/(q[2]-p[2]);pts.push([p[0]+(q[0]-p[0])*f,p[1]+(q[1]-p[1])*f]);}}
+        for(let k=0;k+1<pts.length;k+=2){for(const P of [pts[k],pts[k+1]]){pos.push((x0+P[0]*st)/1000,lv/1000+0.05,-(y0+P[1]*st)/1000);col.push(C_CONT.r,C_CONT.g,C_CONT.b);}}
+      }
+    }
+  }
+  return mkTerr(pos,col);
+}
+function mkTerr(pos,col){const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('color',new THREE.Float32BufferAttribute(col,3));const o=new THREE.LineSegments(g,terrMat);o.matrixAutoUpdate=false;o.frustumCulled=true;return o;}
+// Season comes from the Pacific calendar, so the fields turn with the real year: wheat sprouts after fall planting,
+// heads out green in spring, goes gold in May and June and stands as stubble after harvest. Orchards bloom in March.
+function season(){const m=+ptDay.format(new Date()).slice(5,7);return m;}
+const LC={soil:0xa0805a,track:0x9c8668,sprout:0x8fb36a,green:0x5f9a3c,gold:0xd4a83a,stubble:0xd8c79a,trunk:0x7a5a3c,leaf:0x4f8a3a,bloom:0xe39ab4,fall:0xd9902f,alfalfa:0x6aa84f,dormant:0x9aa070,pivot:0x8c8c8c};
+function buildLand(cx,cy,land,far){
+  // Far away the same fields are drawn with a fifth of the lines, enough to read the patchwork from above.
+  const K=far?5:1;
+  const pos=[],col=[],x0=cx*S,y0=cy*S,m=season(),cc={};
+  const C=(hex)=>cc[hex]||(cc[hex]=new THREE.Color(hex));
+  // Ground under farmland on hillsides follows the slope; the lines sit 5 cm above it.
+  const P=(x,y,z)=>[x/1000,(gH(x,y)+(z||0))/1000+0.05,-y/1000];
+  // A farmer's own buildings, roads and lines clear the crops around them, two meters each way.
+  let occ=null;
+  if(land.farm){const c=W.chunks.get(cx+':'+cy),N=40,cell=S/N;occ=new Uint8Array(N*N);
+    const mark=(x,y)=>{const i=Math.floor((x-x0)/cell),j=Math.floor((y-y0)/cell);for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const u=i+a,v=j+b;if(u>=0&&v>=0&&u<N&&v<N)occ[v*N+u]=1;}};
+    for(const r of c.records){if(r.hidden&&state.fixes)continue;const sg=recSegs(r);
+      for(let k=0;k+1<sg.length;k+=2){const a=sg[k],b=sg[k+1],n=Math.max(1,Math.ceil(Math.hypot(b[0]-a[0],b[1]-a[1])/1000));for(let t=0;t<=n;t++)mark(a[0]+(b[0]-a[0])*t/n,a[1]+(b[1]-a[1])*t/n);}
+      if(r.kind==='line'&&r.closed&&r.pts.length>2&&!(r.meta&&r.meta.zone)){const xs=r.pts.map(p=>p[0]),ys=r.pts.map(p=>p[1]);
+        for(let v=0;v<N;v++)for(let u=0;u<N;u++){const x=x0+(u+.5)*cell,y=y0+(v+.5)*cell;if(x<Math.min(...xs)||x>Math.max(...xs)||y<Math.min(...ys)||y>Math.max(...ys))continue;let ins=false;for(let a=0,b=r.pts.length-1;a<r.pts.length;b=a++){const A=r.pts[a],B=r.pts[b];if((A[1]>y)!==(B[1]>y)&&x<(B[0]-A[0])*(y-A[1])/(B[1]-A[1])+A[0])ins=!ins;}if(ins)occ[v*N+u]=1;}}}
+  }
+  const free=(x,y)=>{if(!occ)return true;const N=40,cell=S/N,i=Math.floor((x-x0)/cell),j=Math.floor((y-y0)/cell);return i<0||j<0||i>=N||j>=N||!occ[j*N+i];};
+  const line=(a,b,hex,z,step)=>{const c=C(hex),L=Math.hypot(b[0]-a[0],b[1]-a[1]),n=occ||gHill?Math.max(1,Math.ceil(L/(step||2000))):1;
+    for(let k=0;k<n;k++){const ax=a[0]+(b[0]-a[0])*k/n,ay=a[1]+(b[1]-a[1])*k/n,bx=a[0]+(b[0]-a[0])*(k+1)/n,by=a[1]+(b[1]-a[1])*(k+1)/n;if(!free((ax+bx)/2,(ay+by)/2))continue;pos.push(...P(ax,ay,z),...P(bx,by,z));col.push(c.r,c.g,c.b,c.r,c.g,c.b);}};
+  const gHill=!!land.hillside,TR=4000,in0=TR+1500,in1=S-1500;
+  // Dirt farm track along the south and west edges, so the farms read as a quilt of fields with roads between.
+  line([x0,y0+600],[x0+S,y0+600],LC.track,0,4000);line([x0,y0+TR-600],[x0+S,y0+TR-600],LC.track,0,4000);
+  line([x0+600,y0],[x0+600,y0+S],LC.track,0,4000);line([x0+TR-600,y0],[x0+TR-600,y0+S],LC.track,0,4000);
+  const rowsAlong=(sp,fn)=>{if(land.angle===0){for(let y=y0+in0;y<=y0+in1;y+=sp)fn([x0+in0,y],[x0+in1,y]);}else{for(let x=x0+in0;x<=x0+in1;x+=sp)fn([x,y0+in0],[x,y0+in1]);}};
+  if(land.kind==='wheat'){
+    const stage=m>=10||m<=1?'sprout':m<=4?'green':m<=6?'gold':'stubble',hex=LC[stage],h=stage==='sprout'?80:stage==='stubble'?150:stage==='green'?600:900;
+    rowsAlong(1200*K,(a,b)=>{if(!far)line(a,b,LC.soil,0);line(a,b,hex,far?0:h);});
+  }else if(land.kind==='fallow'){
+    rowsAlong(1500*K,(a,b)=>line(a,b,LC.soil,0));
+  }else if(land.kind==='alfalfa'){
+    // A center pivot: the green circle comes from one long sprinkler arm turning about a well in the middle.
+    const cx0=x0+(S+TR)/2,cy0=y0+(S+TR)/2,R=(S-TR)/2-1500,hex=m===12||m<=1?LC.dormant:LC.alfalfa;
+    for(let r=2500*K;r<=R;r+=2500*(far?2:1)){const n=Math.max(16,Math.round(r/1500));for(let k=0;k<n;k++){const a=k/n*Math.PI*2,b=(k+1)/n*Math.PI*2;line([cx0+Math.cos(a)*r,cy0+Math.sin(a)*r],[cx0+Math.cos(b)*r,cy0+Math.sin(b)*r],hex,300,1e9);}}
+    const arm=rnd(cx,cy,3)*Math.PI*2,ex=cx0+Math.cos(arm)*R,ey=cy0+Math.sin(arm)*R;line([cx0,cy0],[ex,ey],LC.pivot,3000,1e9);
+    for(let k=1;k<=5;k++){const tx=cx0+(ex-cx0)*k/5,ty=cy0+(ey-cy0)*k/5;pos.push(...P(tx,ty,0),...P(tx,ty,3000));const c=C(LC.pivot);col.push(c.r,c.g,c.b,c.r,c.g,c.b);}
+  }else{
+    // Orchard rows, seven meters apart. Bare in winter, blossom in March, leafed through fall.
+    const canopy=m===12||m<=2?null:m===3?LC.bloom:m===11?LC.fall:LC.leaf,sp=far?14000:7000,tc=C(LC.trunk);
+    for(let y=y0+in0;y<=y0+in1;y+=sp)for(let x=x0+in0;x<=x0+in1;x+=sp){if(!free(x,y))continue;
+      if(far){const cl=C(canopy||LC.trunk);pos.push(...P(x-1700,y,0),...P(x+1700,y,0),...P(x,y-1700,0),...P(x,y+1700,0));for(let k=0;k<4;k++)col.push(cl.r,cl.g,cl.b);continue;}
+      pos.push(...P(x,y,0),...P(x,y,2200));col.push(tc.r,tc.g,tc.b,tc.r,tc.g,tc.b);
+      if(!canopy){for(const d of [[-700,0],[700,0],[0,-700],[0,700]]){pos.push(...P(x,y,1600),...P(x+d[0],y+d[1],2700));col.push(tc.r,tc.g,tc.b,tc.r,tc.g,tc.b);}continue;}
+      const cl=C(canopy),r=1700;for(let k=0;k<8;k++){const a=k/8*Math.PI*2,b=(k+1)/8*Math.PI*2;pos.push(...P(x+Math.cos(a)*r,y+Math.sin(a)*r,2600),...P(x+Math.cos(b)*r,y+Math.sin(b)*r,2600));col.push(cl.r,cl.g,cl.b,cl.r,cl.g,cl.b);}
+      pos.push(...P(x-r,y,2600),...P(x+r,y,2600),...P(x,y-r,2600),...P(x,y+r,2600));for(let k=0;k<4;k++)col.push(cl.r,cl.g,cl.b);
+    }
+  }
+  return mkTerr(pos,col);
+}
+let terrQueue=[],terrCenter='';
+function updateTerrain(force){
+  if(!W)return;
+  const t=controls.target,cx=Math.floor(t.x*1000/S),cy=Math.floor(-t.z*1000/S),ck=cx+':'+cy;
+  if(ck!==terrCenter||force){terrCenter=ck;terrQueue=[];
+    for(const [k,T] of tchunks){const d=Math.hypot(T.cx-cx,T.cy-cy);if(d>TERR_R+2||force){scene.remove(T.obj);T.obj.geometry.dispose();if(T.land){scene.remove(T.land);T.land.geometry.dispose();}tchunks.delete(k);}}
+    for(let dy=-TERR_R;dy<=TERR_R;dy++)for(let dx=-TERR_R;dx<=TERR_R;dx++){const d=Math.hypot(dx,dy);if(d>TERR_R)continue;
+      const k=(cx+dx)+':'+(cy+dy),T=tchunks.get(k),lod=terrLod(d),wantLand=d<=LAND_R?2:d<=FAR_LAND_R?1:0;
+      if(!T||T.lod!==lod||(T.hasLand!==false&&(T.landLv||0)!==wantLand))terrQueue.push({k,cx:cx+dx,cy:cy+dy,lod,wantLand,d});}
+    terrQueue.sort((a,b)=>b.d-a.d);
+  }
+  for(let n=0;n<BUILD_PER_FRAME&&terrQueue.length;n++){const q=terrQueue.pop();let T=tchunks.get(q.k);
+    if(!T||T.lod!==q.lod){if(T){scene.remove(T.obj);T.obj.geometry.dispose();}const obj=buildTerrain(q.cx,q.cy,q.lod);scene.add(obj);T=Object.assign(T||{cx:q.cx,cy:q.cy},{obj,lod:q.lod});tchunks.set(q.k,T);}
+    if(T.hasLand!==false&&(T.landLv||0)!==q.wantLand){
+      if(T.land){scene.remove(T.land);T.land.geometry.dispose();T.land=null;}T.landLv=0;
+      if(q.wantLand){const ld=landAt(W,q.cx,q.cy);if(ld){T.land=buildLand(q.cx,q.cy,ld,q.wantLand===1);scene.add(T.land);T.land.visible=state.land;T.landLv=q.wantLand;}else T.hasLand=false;}
+    }
+  }
+}
+function showLand(){for(const T of tchunks.values())if(T.land)T.land.visible=state.land;}
+
 // ---------------------------------------------------------------- Walk and drive
 // Walk puts the camera at eye height on the street. Drive lets a visitor get into any car or truck in the city.
 // A car someone drives is lifted out of its chunk batch into its own line object, so only that one car moves.
@@ -527,7 +634,7 @@ function setMode(m){
   controls.enabled=!m;
   if(m&&!was){
     const t=controls.target;walk.yaw=Math.atan2(camera.position.x-t.x,camera.position.z-t.z);walk.pitch=-0.08;
-    camera.position.set(t.x,EYE,t.z);setSize('peek');
+    camera.position.set(t.x,EYE+gH(t.x*1000,-t.z*1000)/1000,t.z);setSize('peek');
   }
   if(!m&&was){
     nearLabels(false);
@@ -572,7 +679,7 @@ function getIn(n){
 function getOut(){
   const c=walk.car;if(!c)return;walk.car=null;
   const h=c.obj.rotation.y,side=c.rec.type==='truck'?2.2:1.8;
-  camera.position.set(c.obj.position.x-Math.cos(h)*side,EYE,c.obj.position.z+Math.sin(h)*side);
+  camera.position.set(c.obj.position.x-Math.cos(h)*side,EYE+c.obj.position.y,c.obj.position.z+Math.sin(h)*side);
   walk.yaw=h;walk.pitch=-0.08;setMode('walk');
 }
 // Joystick: one thumb on the stick, any other drag looks around.
@@ -595,7 +702,7 @@ function walkStep(dt){
   if(walk.mode==='walk'){
     const sp=WALK_MAX*(walk.keys.shift?2:1),f=y*sp*dt,s=x*sp*dt,sy=Math.sin(walk.yaw),cy=Math.cos(walk.yaw);
     camera.position.x+=-sy*f+cy*s;camera.position.z+=-cy*f-sy*s;
-    camera.position.y=EYE+(Math.hypot(x,y)>0.1?Math.abs(Math.sin(performance.now()/1000*Math.PI*1.9))*0.04:0);
+    camera.position.y=EYE+gH(camera.position.x*1000,-camera.position.z*1000)/1000+(Math.hypot(x,y)>0.1?Math.abs(Math.sin(performance.now()/1000*Math.PI*1.9))*0.04:0);
     camera.rotation.set(walk.pitch,walk.yaw,0);
     const now=performance.now();nearLabels(true);if(now-walk.lastNear>300){walk.lastNear=now;const n=findNear();if((n&&n.rec.id)!==(walk.near&&walk.near.rec.id)){walk.near=n;updateCarButton();}}
   }else if(walk.mode==='drive'&&walk.car){
@@ -608,10 +715,12 @@ function walkStep(dt){
     const wb=truck?5.5:2.8,steer=-x*0.55/(1+Math.abs(walk.speed)/12);
     o.rotation.y+=walk.speed/wb*Math.tan(steer)*dt;
     const h=o.rotation.y;o.position.x+=-Math.sin(h)*walk.speed*dt;o.position.z+=-Math.cos(h)*walk.speed*dt;
+    o.position.y=gH(o.position.x*1000,-o.position.z*1000)/1000;
     // Chase camera follows behind the car; a drag swings it around and it eases back.
     if(lookId===null)walk.yaw+=(h-walk.yaw)*Math.min(1,dt*2.5);
     const back=truck?14:9,up=truck?5:3.2;
-    camera.position.set(o.position.x+Math.sin(walk.yaw)*back,up,o.position.z+Math.cos(walk.yaw)*back);
+    const cxw=o.position.x+Math.sin(walk.yaw)*back,czw=o.position.z+Math.cos(walk.yaw)*back;
+    camera.position.set(cxw,Math.max(o.position.y,gH(cxw*1000,-czw*1000)/1000)+up,czw);
     camera.rotation.set(Math.max(-0.6,Math.min(0.3,walk.pitch)),walk.yaw,0);
     nearLabels(true);
   }
@@ -622,7 +731,7 @@ addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updat
 let frame=0;
 const clock=new THREE.Clock();
 let lastT=0;
-function loop(){requestAnimationFrame(loop);const tt=clock.getElapsedTime();if(walk.mode)walkStep(tt-lastT);else controls.update();lastT=tt;updateChunks(false);updateSky(clock.getElapsedTime());animate(clock.getElapsedTime());if(++frame%3===0)applyVisibility();renderer.render(scene,camera);}
+function loop(){requestAnimationFrame(loop);const tt=clock.getElapsedTime();if(walk.mode)walkStep(tt-lastT);else controls.update();lastT=tt;updateChunks(false);updateTerrain(false);updateSky(clock.getElapsedTime());animate(clock.getElapsedTime());if(++frame%3===0)applyVisibility();renderer.render(scene,camera);}
 renderPanel();
 load();
 loop();

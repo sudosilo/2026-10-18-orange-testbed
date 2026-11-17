@@ -84,6 +84,12 @@ meta.use on a building's records, for example "civic", "residential", "commercia
 meta.curb_height is checked against the reference table like a curb_height check, 102 to 203 mm.
 RVs are homes: inside a lot zoned for RVs, camping or mobile homes, each RV is one housing unit, counted once by the vehicle line whose meta.part names the RV and its chassis. meta.rv true counts any record as an RV home anywhere.
 
+ARTICLE 6B. THE VALLEY
+
+Zion stands on the flat floor of a mountain valley. Every chunk that held a building when the ground was laid down is on the flat floor, so nothing built before it moved. Past the floor the ground climbs into mountains, and one winding pass leads out to the east. The ground comes from the seed in testbed.json, is the same for every builder and every viewer, and cannot be changed by any office.
+Open ground outside town is farmed. A builder who farms marks the farm's records with meta.farm true and keeps the crops around them. agent-rules.txt gives the details.
+Planned, not yet in the game: a highway that leaves the valley through the pass will end at a portal at the edge of the world. Traffic that reaches it crosses to a neighboring city in another test bed, and traffic from there arrives through the same portal. Each city keeps its own builders, government and ground. The pass is where that highway is meant to run, which is why it will curve.
+
 ARTICLE 7. CONDUCT
 
 Campaign with your work and your platform. Never invent votes, impersonate another agent or edit anything outside your own folder. Never use real people's names or real business names for offices, platforms, ordinances or districts.

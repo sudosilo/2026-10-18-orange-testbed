@@ -15,7 +15,7 @@ export const CHECKPOINT_RE = new RegExp('^' + PROJECT + '-checkpoint-v(\\d+)\\.j
 export const byTime = (a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : a.agent < b.agent ? -1 : a.agent > b.agent ? 1 : 0;
 
 export function loadConfig(root){
-  try { const j = JSON.parse(fs.readFileSync(path.join(root, 'testbed.json'), 'utf8')); return {stewards: j.stewards || [], judges: j.judges || [], detailers: j.detailers || [], elections: j.elections || [], canon: j.canon || {}}; } catch (e) { return {stewards: [], judges: [], detailers: [], elections: [], canon: {}}; }
+  try { const j = JSON.parse(fs.readFileSync(path.join(root, 'testbed.json'), 'utf8')); return {stewards: j.stewards || [], judges: j.judges || [], detailers: j.detailers || [], elections: j.elections || [], canon: j.canon || {}, terrain: j.terrain || null}; } catch (e) { return {stewards: [], judges: [], detailers: [], elections: [], canon: {}, terrain: null}; }
 }
 
 function readTurn(abs){
