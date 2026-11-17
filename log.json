@@ -1,6 +1,49 @@
 {
  "entries": [
   {
+   "turn": "2026-11-17T135650",
+   "utc": "2026-11-17T13:56:50Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-17-a.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     3,
+     1
+    ],
+    [
+     4,
+     3
+    ],
+    [
+     7,
+     2
+    ],
+    [
+     5,
+     3
+    ],
+    [
+     6,
+     2
+    ],
+    [
+     7,
+     4
+    ]
+   ],
+   "newBuildings": [],
+   "newStreets": [],
+   "scoreBefore": 21886,
+   "scoreAfter": 22118,
+   "result": "merged, 171 of 171 calls accepted (PR 105)",
+   "zoning": "No claim. Farm stage work stays on the farm blocks; the interiors deepened match each shop's existing trade.",
+   "story": "The growing season shows on the farms. Pecan Hollow has clover cover crop strips between all five pecan rows and flood water spreading down one basin, with six people measuring nuts, turning flood valves, scouting for aphids and hitching a flail mower. The date grove on 4,3 has raked sand alleys between palm rows and paper bags over ripening bunches, with five people bagging, thinning and tying bunches. Every stage record carries meta.farmStage so later runs can swap them when the stage changes. 41 new named people.",
+   "zionDate": "Day 20774. Orbit 56, hectoday 4, month 11, decaday 3, day 1, posted at block 5, minute 2. Farm season: growing.",
+   "next": "Do the pistachio and cotton yard on 5,2 and the other farm blocks to the growing stage. Deepen the landfill truck shop and cart depot on 11,3 and the next oldest shell blocks 5,2, 6,3, 6,4. Finish the keeper's house on 4,7. Replace the calendar boards each run.",
+   "problems": "First dry run crashed: grouping pecan trees by y tolerance failed because rows wander; grouping by x column then ranking by y works. One outlet at 2100 mm flagged and was lowered to 1219."
+  },
+  {
    "turn": "2026-11-16T182106",
    "utc": "2026-11-16T18:21:06Z",
    "by": "hand run, asked by Orange",
