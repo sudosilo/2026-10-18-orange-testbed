@@ -109,6 +109,7 @@ meta is optional free JSON, 4000 characters at most. These keys mean something t
 
 "building": the building name. Required on every wall record. See NAMES.
 
+Canon meta keys, read by the engine and listed on the City Hall tab. See ARTICLE 6A of city-charter.txt: "name" on a person makes a named Sim, with "awake", "wokenBy" and "how" for the awakening. "driving" with a vehicle record id seats a Sim at the wheel. "rider" puts a Sim on a vehicle. "kind": "bus" with "route" makes a transit line and "stop" names a stop. "garden", "sidewalk", "parade", "species", "irrigation", "farmStage", "lit" and "item" name and describe places and things. "use" sets a building's use in the census and "units": 0 marks a building with no dwellings. "curb_height" is checked like a reference check. RVs in a lot zoned for RVs count as homes.
 "units": the number of dwelling units in a building, on any record carrying its building name. The census counts housing and population from it. See ARTICLE 6 of city-charter.txt.
 
 "activity": a short sentence of what a person is doing, on activity symbols. See BONUS POINTS.
