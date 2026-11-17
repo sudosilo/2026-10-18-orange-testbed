@@ -39,7 +39,7 @@ const ok = (o)=>Object.assign({ok:true},o||{});
 const err = (m)=>({ok:false,err:m});
 
 // config comes from testbed.json: {"stewards": [...], "judges": [...]}
-export function createWorld(config){const cf=config||{};const W={canonConfig:(cf.canon&&typeof cf.canon==='object')?cf.canon:{},chunks:new Map(),idIndex:new Map(),nextId:1,stats:{},log:[],ctx:null,stewards:new Set(cf.stewards||[]),judges:new Set(cf.judges||[]),detailers:new Set(cf.detailers||[]),renames:{street:new Map(),building:new Map()},judged:new Set(),gov:newGov()};seedElections(W,cf.elections);return W;}
+export function createWorld(config){const cf=config||{};const W={terrain:terrainOf(cf),canonConfig:(cf.canon&&typeof cf.canon==='object')?cf.canon:{},chunks:new Map(),idIndex:new Map(),nextId:1,stats:{},log:[],ctx:null,stewards:new Set(cf.stewards||[]),judges:new Set(cf.judges||[]),detailers:new Set(cf.detailers||[]),renames:{street:new Map(),building:new Map()},judged:new Set(),gov:newGov()};seedElections(W,cf.elections);return W;}
 export const JUDGE_CATEGORIES=['cohesion','realism','organic','activity','interest','consistency'];
 function st(W,a){return W.stats[a]||(W.stats[a]={calls:0,records:0,rejected:0,passed:0,violations:0,mismatches:0,clashes:0,chunks:0,names:0,unnamed:0,dupNames:0,organic:0,detail:0,activity:0,anim:0,texture:0,fixes:0,judge:0});}
 function container(W,cx,cy){
@@ -351,6 +351,48 @@ export function playFiles(W,files,onResult){
   return W;
 }
 // Rebuilds the world. With a checkpoint, starts from the frozen city in it and plays only the turns after it.
+// TERRAIN AND LAND
+// The world has ground. It is generated from a seed the same way everywhere, so the browser, the scripts and the web API
+// all agree on the height of any point. Nothing can change it. Builders work with the ground they are given.
+// The city sits on a flat valley floor. Past the floor the ground rises through foothills into mountains, and one winding
+// pass leads out of the valley. Every chunk that held a building when terrain arrived is on the flat floor, so nothing built
+// before it moved. Heights are in mm like everything else. Each chunk is generated when someone looks at it.
+export const TERRAIN_DEFAULT={seed:7,center:[356616,277368],floor:1109472,wobble:396240,rise:633984,base:180000,peak:950000,passAngle:0,passWidth:316992};
+export function terrainOf(cf){const t=(cf&&cf.terrain&&typeof cf.terrain==='object')?cf.terrain:{};const o=Object.assign({},TERRAIN_DEFAULT);for(const k in TERRAIN_DEFAULT)if(k==='center'?Array.isArray(t[k])&&t[k].length===2&&t[k].every(Number.isFinite):Number.isFinite(t[k]))o[k]=t[k];return o;}
+function hash2(ix,iy,s){let h=Math.imul(ix|0,374761393)^Math.imul(iy|0,668265263)^Math.imul(s|0,-2048144777);h=Math.imul(h^(h>>>13),1274126177);h^=h>>>16;return (h>>>0)/4294967296;}
+function vnoise(x,y,s){const ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy,u=fx*fx*(3-2*fx),v=fy*fy*(3-2*fy);const a=hash2(ix,iy,s),b=hash2(ix+1,iy,s),c=hash2(ix,iy+1,s),d=hash2(ix+1,iy+1,s);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v;}
+function fbm(x,y,s,o){let t=0,a=0.5,f=1,n=0;for(let i=0;i<o;i++){t+=a*vnoise(x*f,y*f,s+i*101);n+=a;a*=0.5;f*=2.03;}return t/n;}
+function ridged(x,y,s,o){let t=0,a=0.5,f=1,n=0;for(let i=0;i<o;i++){const v=1-Math.abs(2*vnoise(x*f,y*f,s+i*131)-1);t+=a*v*v;n+=a;a*=0.5;f*=2.1;}return t/n;}
+// Ground height in mm at any x, y in mm.
+export function groundAt(T,x,y){
+  const dx=x-T.center[0],dy=y-T.center[1],d=Math.hypot(dx,dy),th=Math.atan2(dy,dx);
+  const rf=T.floor+T.wobble*fbm(Math.cos(th)*1.6+9,Math.sin(th)*1.6+9,T.seed,3);
+  if(d<=rf)return 0;
+  const e=d-rf,t=Math.min(1,e/T.rise),rise=t*t*(3-2*t),k=1/(S*6);
+  let m=T.base*fbm(x*k*2.2,y*k*2.2,T.seed+7,4)+T.peak*ridged(x*k,y*k,T.seed+3,5)*Math.min(1,e/(T.rise*2.5));
+  // The pass: a canyon that winds out of the valley, the natural route for a road over the mountains.
+  const pa=T.passAngle*Math.PI/180+0.35*Math.sin(d/(S*7))+0.15*Math.sin(d/(S*2.3));
+  const off=Math.abs(Math.atan2(Math.sin(th-pa),Math.cos(th-pa)))*d;
+  m*=1-0.97*Math.exp(-((off/T.passWidth)**2));
+  return Math.round(rise*m);
+}
+// Lowest and highest ground in a chunk, sampled every eighth of a chunk.
+export function chunkGround(T,cx,cy){let mn=Infinity,mx=-Infinity;for(let i=0;i<=8;i++)for(let j=0;j<=8;j++){const h=groundAt(T,cx*S+i*S/8,cy*S+j*S/8);if(h<mn)mn=h;if(h>mx)mx=h;}return {min:mn,max:mx};}
+export function groundGrid(T,cx,cy){const rows=[];for(let j=0;j<=8;j++){const r=[];for(let i=0;i<=8;i++)r.push(groundAt(T,cx*S+i*S/8,cy*S+j*S/8));rows.push(r);}return rows;}
+// The land as given. Flat ground outside town is farmed: wheat, orchards, alfalfa under center pivots, and fallow ground,
+// with a dirt farm track along each chunk's south and west edges. Low rolling foothills hold orchards. A chunk with any
+// record that is not tagged meta.farm is town, and town chunks have no generated land. A chunk whose records are all
+// tagged meta.farm keeps its crops, cleared around what the farmer built.
+export const LAND_KINDS=['wheat','orchard','alfalfa','fallow'];
+export function landAt(W,cx,cy){
+  const T=W.terrain||terrainOf(null),g=chunkGround(T,cx,cy),c=W.chunks.get(cx+':'+cy);
+  if(c&&c.records.some(r=>!(r.meta&&r.meta.farm===true)&&!(r.hidden)))return null;
+  const relief=g.max-g.min,r=hash2(cx,cy,T.seed+11),angle=hash2(cx,cy,T.seed+13)<0.5?0:90;
+  if(relief<=3000&&g.max<=3000)return {kind:r<0.4?'wheat':r<0.62?'orchard':r<0.82?'alfalfa':'fallow',angle,farm:!!c&&c.records.length>0};
+  if(relief<=12000&&g.max<=60000)return {kind:'orchard',angle,farm:!!c&&c.records.length>0,hillside:true};
+  return null;
+}
+
 export function replay(files,onResult,config,checkpoint){
   const W=checkpoint?restoreWorld(checkpoint,config):createWorld(config);
   playFiles(W,files,onResult);
@@ -687,6 +729,7 @@ export function summary(W,detailChunk,all){
     const by={};for(const r of c.records)by[r.agent]=(by[r.agent]||0)+1;
     const o={chunk:[c.cx,c.cy],owner:c.owner,grants:c.grants,ports:c.ports,lots:c.lots.map(l=>({id:l.id,zone:l.zone,pts:l.pts})),recordsByAgent:by};
     if(frozenChunk(W,c))o.frozen=true;
+    o.ground=chunkGround(W.terrain,c.cx,c.cy);const ld=landAt(W,c.cx,c.cy);if(ld)o.land=ld.kind;
     owned.push(o);
     if(c.owner)for(const e in NBR){const k=key(c.cx+NBR[e][0],c.cy+NBR[e][1]);const n=W.chunks.get(k);if((!n||!n.owner)&&!(W.frozen&&W.frozen.chunks.has(k)))frontier.add(k);}
   }
@@ -698,9 +741,11 @@ export function summary(W,detailChunk,all){
     scores:Object.fromEntries(Object.entries(W.stats).map(([a,s])=>[a,Object.assign({score:scoreOf(s)},s)])),
     recentFlags:W.log.filter(l=>l.flag).slice(-40)
   };
+  out.terrain={note:'Ground heights in mm. The ground cannot be changed. Build to it. A chunk listed here with min and max 0 is on the flat valley floor.',center:W.terrain.center,claimable:Object.fromEntries(out.claimableChunks.map(([x,y])=>{const g=chunkGround(W.terrain,x,y),ld=landAt(W,x,y);return [x+':'+y,Object.assign(g,ld?{land:ld.kind}:{})];}))};
   if(detailChunk){
     const c=W.chunks.get(key(detailChunk[0],detailChunk[1]));
-    out.detail=c?{chunk:detailChunk,owner:c.owner,ports:c.ports,penetrations:c.pens,records:c.records.map(r=>{const o={id:r.id,agent:r.agent,discipline:r.discipline,color:r.color,kind:r.kind};if(r.kind==='line'||r.kind==='hatch'){o.pts=r.pts;if(r.kind==='line')o.closed=r.closed;else{o.pattern=r.pattern;o.spacing=r.spacing;o.angle=r.angle;}if(r.color2!==undefined)o.color2=r.color2;}else{o.type=r.type;o.at=r.at;o.rot=r.rot;}if(r.meta)o.meta=r.meta;if(r.hidden)o.hidden=r.hidden;if(frozenRec(W,r.id))o.frozen=true;return o;})}:null;
+    out.detail=c?{chunk:detailChunk,ground:{stepMm:S/8,note:'heights from the south edge row to the north edge row, west to east',rows:groundGrid(W.terrain,detailChunk[0],detailChunk[1])},owner:c.owner,ports:c.ports,penetrations:c.pens,records:c.records.map(r=>{const o={id:r.id,agent:r.agent,discipline:r.discipline,color:r.color,kind:r.kind};if(r.kind==='line'||r.kind==='hatch'){o.pts=r.pts;if(r.kind==='line')o.closed=r.closed;else{o.pattern=r.pattern;o.spacing=r.spacing;o.angle=r.angle;}if(r.color2!==undefined)o.color2=r.color2;}else{o.type=r.type;o.at=r.at;o.rot=r.rot;}if(r.meta)o.meta=r.meta;if(r.hidden)o.hidden=r.hidden;if(frozenRec(W,r.id))o.frozen=true;return o;})}:{chunk:detailChunk,ground:{stepMm:S/8,note:'heights from the south edge row to the north edge row, west to east',rows:groundGrid(W.terrain,detailChunk[0],detailChunk[1])},owner:null,records:[]};
+    const ld=landAt(W,detailChunk[0],detailChunk[1]);if(ld)out.detail.land=ld.kind;
   }
   if(all){out.allRecords=[];for(const c of W.chunks.values())for(const r of c.records){const o={id:r.id,chunk:[c.cx,c.cy],agent:r.agent,discipline:r.discipline,kind:r.kind,date:r.date};if(r.kind==='symbol'){o.type=r.type;o.at=r.at;}else o.pts=r.pts;if(r.meta)o.meta=r.meta;if(r.hidden)o.hidden=r.hidden;if(frozenRec(W,r.id))o.frozen=true;out.allRecords.push(o);}}
   out.checkpoint=W.frozen?{version:W.checkpoint.version,through:W.checkpoint.through,frozenBelowRecordId:W.frozen.nextId,frozenChunks:[...W.frozen.chunks].map(k=>k.split(':').map(Number)),streetNames:W.checkpoint.names.street,buildingNames:W.checkpoint.names.building}:null;
