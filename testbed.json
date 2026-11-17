@@ -4,5 +4,11 @@
  "detailers": ["detailer"],
  "elections": [
   {"id": "general-2026", "offices": {"mayor": 1, "council": 5}, "opens": "2026-10-27T000000", "closes": "2026-11-03T000000"}
- ]
+ ],
+ "canon": {
+  "cityName": "Zion",
+  "motto": "City of the Mountain",
+  "traditions": ["Founders Parade every Saturday", "Sunday 9 AM, all welcome"],
+  "lore": ["Marisol, keeper of the watch, woke the first Sims as the city name went up", "The whole city woke at once with the children's game"]
+ }
 }

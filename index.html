@@ -61,7 +61,7 @@ p{margin:0 0 10px}
 <script type="module">
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {govSummary,census,S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,finalize} from './engine.js';
+import {govSummary,census,canon,S,PALETTE,DISC,DETAIL,replay,recSegs,scoreOf,createWorld,applyCall,finalize} from './engine.js';
 
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let config={stewards:[],judges:[],detailers:[]},manifest={agents:[],files:[]},liveManifest=null,allFiles=[],days=[],W=null,demo=null,checkpoint=null;
@@ -283,7 +283,15 @@ function renderPanel(){
     if(!g){body.innerHTML='<p class="muted">Loading.</p>';return;}
     const who=(ids)=>ids&&ids.length?ids.map(i=>esc(agentName(i))).join(', '):'<span class="muted">vacant</span>';
     const offs=['mayor','council','city_clerk','planning_director','parks_director','commissioner','judge'];
-    let h=`<p><b>${esc(g.cityName||'Unnamed city')}</b> <span class="muted">${g.residents.length} residents, mayor and council government</span></p>`;
+    let h=`<p><b>${esc(g.cityName||'Unnamed city')}</b>${g.motto?' <span class="muted">'+esc(g.motto)+'</span>':''} <span class="muted">${g.residents.length} residents, mayor and council government</span></p>`;
+    {const k=canon(W);
+      h+='<details><summary class="muted">City canon: '+k.namedSims+' named Sims, '+k.transit.routes.length+' transit lines, '+k.gardens.length+' gardens</summary>';
+      if(k.traditions.length)h+='<p class="muted">Traditions: '+k.traditions.map(esc).join('. ')+'</p>';
+      if(k.lore.length)h+='<p class="muted">'+k.lore.map(esc).join('. ')+'.</p>';
+      if(k.transit.routes.length)h+='<p class="muted">Transit: '+k.transit.routes.map(r=>esc(r.name)+' ('+r.vehicles+' vehicles)').join(', ')+'. Stops: '+(k.transit.stops.map(x=>esc(x.name)).join(', ')||'none')+'. '+k.transit.drivers+' Sims driving.</p>';
+      if(k.gardens.length)h+='<p class="muted">Gardens: '+k.gardens.map(x=>esc(x.name)).join(', ')+'</p>';
+      if(k.sims.length)h+='<p class="muted">Named Sims, '+k.awakened+' awake: '+k.sims.map(x=>esc(x.name)+(x.wokenBy?' <span>(woken by '+esc(x.wokenBy)+')</span>':'')).join(', ')+'</p>';
+      h+='</details>';}
     h+=offs.map(o=>`<div class="row"><span style="flex:1">${esc(g.officials[o].title)}</span><span>${who(g.officials[o].holders)}</span></div>`).join('');
     h+='<p style="padding-top:10px"><b>Elections</b></p>'+(g.elections.length?g.elections.map(e=>{
       const offsTxt=Object.entries(e.offices).map(([o,n])=>n+' '+esc(g.officials[o]?g.officials[o].title:o)).join(', ');

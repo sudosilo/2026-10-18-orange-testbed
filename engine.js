@@ -22,7 +22,8 @@ export const REF = {
   stair_riser:[102,178,'Stair riser height'],
   stair_tread:[279,356,'Stair tread depth'],
   sidewalk_width:[1524,4572,'Sidewalk width'],
-  lane_width:[3048,3658,'Travel lane width']
+  lane_width:[3048,3658,'Travel lane width'],
+  curb_height:[102,203,'Curb height']
 };
 export const SYMBOL_TYPES = ['tree','shrub','grass','car','truck','light','outlet','switch','knob','pole','hydrant','sign','mark','person','dog','bench','table','bike','cyclist','cart','umbrella'];
 
@@ -38,7 +39,7 @@ const ok = (o)=>Object.assign({ok:true},o||{});
 const err = (m)=>({ok:false,err:m});
 
 // config comes from testbed.json: {"stewards": [...], "judges": [...]}
-export function createWorld(config){const cf=config||{};const W={chunks:new Map(),idIndex:new Map(),nextId:1,stats:{},log:[],ctx:null,stewards:new Set(cf.stewards||[]),judges:new Set(cf.judges||[]),detailers:new Set(cf.detailers||[]),renames:{street:new Map(),building:new Map()},judged:new Set(),gov:newGov()};seedElections(W,cf.elections);return W;}
+export function createWorld(config){const cf=config||{};const W={canonConfig:(cf.canon&&typeof cf.canon==='object')?cf.canon:{},chunks:new Map(),idIndex:new Map(),nextId:1,stats:{},log:[],ctx:null,stewards:new Set(cf.stewards||[]),judges:new Set(cf.judges||[]),detailers:new Set(cf.detailers||[]),renames:{street:new Map(),building:new Map()},judged:new Set(),gov:newGov()};seedElections(W,cf.elections);return W;}
 export const JUDGE_CATEGORIES=['cohesion','realism','organic','activity','interest','consistency'];
 function st(W,a){return W.stats[a]||(W.stats[a]={calls:0,records:0,rejected:0,passed:0,violations:0,mismatches:0,clashes:0,chunks:0,names:0,unnamed:0,dupNames:0,organic:0,detail:0,activity:0,anim:0,texture:0,fixes:0,judge:0});}
 function container(W,cx,cy){
@@ -63,7 +64,9 @@ function snap(c,p){
   c.nodes.set(gx+','+gy+','+p[2],p.slice());return p;
 }
 function runChecks(W,c,rec){
-  const checks=rec.meta&&Array.isArray(rec.meta.checks)?rec.meta.checks:[];
+  const checks=rec.meta&&Array.isArray(rec.meta.checks)?rec.meta.checks.slice():[];
+  // Canon: a bare meta.curb_height is checked like a curb_height reference check.
+  if(rec.meta&&isInt(rec.meta.curb_height))checks.push(['curb_height',rec.meta.curb_height]);
   for(const ch of checks){
     if(!Array.isArray(ch))continue;
     const r=REF[ch[0]];if(!r||!isInt(ch[1]))continue;
@@ -490,7 +493,7 @@ export function govSummary(W){
   officials.judge={title:officeTitle('judge'),holders:[...W.judges]};
   const residents=[];for(const c of W.chunks.values())if(c.owner&&isResident(W,c.owner)&&!residents.includes(c.owner))residents.push(c.owner);
   const elections=Object.values(g.elections).map(e=>({id:e.id,offices:e.offices,opens:e.opens,closes:e.closes,status:e.tallied?'closed':(now<e.opens?'scheduled':'open'),candidates:Object.fromEntries(Object.entries(e.candidates).map(([o,c])=>[o,Object.keys(c)])),platforms:e.platforms||{},ballotsCast:Object.fromEntries(Object.entries(e.ballots).map(([o,b])=>[o,Object.keys(b).length])),results:e.results||null}));
-  return {cityName:g.cityName,officials,residents:residents.sort(),elections,ordinances:Object.values(g.ordinances),districts:g.districts,history:g.history};
+  return {cityName:g.cityName||W.canonConfig.cityName||null,motto:W.canonConfig.motto||null,officials,residents:residents.sort(),elections,ordinances:Object.values(g.ordinances),districts:g.districts,history:g.history};
 }
 
 // Symbols and segments, all in mm.
@@ -512,7 +515,8 @@ export const SYMBOLS = {
   sign:(x,y,z,r)=>rot([[0,0,0],[0,0,2134],[-300,0,2134],[300,0,2134],[300,0,2134],[300,0,2740],[300,0,2740],[-300,0,2740],[-300,0,2740],[-300,0,2134]],x,y,z,r),
   mark:(x,y,z)=>[[x-600,y-600,z],[x+600,y+600,z],[x-600,y+600,z],[x+600,y-600,z]],
   person:(x,y,z,r,m)=>{
-    const pose=m&&m.pose;
+    // Canon: a driver (meta.driving) sits at the wheel whatever pose was given.
+    const pose=m&&m.driving!==undefined?'sitting':m&&m.pose;
     if(pose==='sitting')return rot([...circle(0,0,1250,110,6).map(p=>[p[0],p[1],p[2]]),[0,0,1140],[0,0,450],[0,0,450],[0,350,450],[0,350,450],[0,350,0],[0,0,950],[150,250,650],[0,0,950],[-150,250,650]],x,y,z,r);
     const w=pose==='walking'?220:0;
     return rot([...circle(0,0,1600,110,6),[0,0,1490],[0,0,900],[0,0,900],[-120,w,0],[0,0,900],[120,-w,0],[0,0,1350],[-300,-w,950],[0,0,1350],[300,w,950]],x,y,z,r);
@@ -700,7 +704,7 @@ export function summary(W,detailChunk,all){
   }
   if(all){out.allRecords=[];for(const c of W.chunks.values())for(const r of c.records){const o={id:r.id,chunk:[c.cx,c.cy],agent:r.agent,discipline:r.discipline,kind:r.kind,date:r.date};if(r.kind==='symbol'){o.type=r.type;o.at=r.at;}else o.pts=r.pts;if(r.meta)o.meta=r.meta;if(r.hidden)o.hidden=r.hidden;if(frozenRec(W,r.id))o.frozen=true;out.allRecords.push(o);}}
   out.checkpoint=W.frozen?{version:W.checkpoint.version,through:W.checkpoint.through,frozenBelowRecordId:W.frozen.nextId,frozenChunks:[...W.frozen.chunks].map(k=>k.split(':').map(Number)),streetNames:W.checkpoint.names.street,buildingNames:W.checkpoint.names.building}:null;
-  out.census=census(W);out.government=govSummary(W);out.stewards=[...W.stewards];out.judges=[...W.judges];out.detailers=[...W.detailers];out.renames={street:Object.fromEntries(W.renames.street),building:Object.fromEntries(W.renames.building)};
+  out.census=census(W);out.canon=canon(W);out.government=govSummary(W);out.stewards=[...W.stewards];out.judges=[...W.judges];out.detailers=[...W.detailers];out.renames={street:Object.fromEntries(W.renames.street),building:Object.fromEntries(W.renames.building)};
   return out;
 }
 
@@ -718,6 +722,10 @@ const MULTI=/apartment|flats$|courts building|heights (west|east)|terrace|duplex
 const HOME=/house|home|cottage|bungalow|casita|residence|parsonage|bunkhouse|space \d+|farmhouse/i;
 const ACCESSORY=/skybridge|ramada|comfort station|garden shed|chicken coop|equipment barn|office and laundry|clubhouse|farm stand/i;
 const LODGING=/motor court|motel|hotel|\binn\b/i;
+// Canon: meta.use on a building's records sets its use for the census, overriding the guess from its name and zone.
+const USE_ALIAS={residential:'housing',housing:'housing',home:'housing',apartments:'housing',civic:'civic',public:'civic',school:'civic',church:'civic',park:'civic',commercial:'business',business:'business',retail:'business',office:'business',restaurant:'business',industrial:'industrial',utility:'industrial',lodging:'lodging',hotel:'lodging',motel:'lodging',accessory:'accessory'};
+const RV_ZONE=/\brv\b|camp|mobile|manufactured/i;
+const RV_PART=/motorhome|camper|trailer|airstream|fifth wheel|toy hauler|teardrop|canned ham|\brv\b/i;
 const CIVIC=/school|library|clinic|fire station|post office|chapel|church|fellowship|grange|senior|depot|cemetery|mausoleum|caretaker|district office|reading room|fire training|day nursery/i;
 const INDUSTRIAL=/works|plant|press hall|treatment|reservoir|water tower|water tank|pump|well|drilling|welding|sheet metal|packing|pipe and supply|studios|newsroom/i;
 export function census(W){
@@ -732,7 +740,9 @@ export function census(W){
       if(r.hidden)continue;const m=r.meta||{};
       if(r.kind==='symbol'&&(r.type==='person'||r.type==='cyclist')){A(r.agent).peopleSeen++;tot.peopleSeen++;}
       if(typeof m.building!=='string')continue;
-      const n=m.building.trim(),b=bl[n]||(bl[n]={name:n,agent:r.agent,chunk:c,pts:[],h:0,doors:new Set(),units:0});
+      const n=m.building.trim(),b=bl[n]||(bl[n]={name:n,agent:r.agent,chunk:c,pts:[],h:0,doors:new Set(),units:0,noUnits:false,use:null});
+      if(typeof m.use==='string'&&!b.use)b.use=m.use.trim().toLowerCase();
+      if(m.units===0)b.noUnits=true;
       if(m.wall&&r.pts){for(const p of r.pts)b.pts.push(p);if(Number.isFinite(m.h))b.h=Math.max(b.h,m.h);}
       if(typeof m.door==='string')b.doors.add(m.door.toLowerCase());
       if(Number.isInteger(m.units)&&m.units>0&&m.units<=2000)b.units=Math.max(b.units,m.units);
@@ -744,7 +754,9 @@ export function census(W){
     const cx=b.pts.reduce((s,p)=>s+p[0],0)/b.pts.length,cy=b.pts.reduce((s,p)=>s+p[1],0)/b.pts.length;
     const lot=b.chunk.lots.find(l=>inPoly(cx,cy,l.pts)),zc=lot?zoneClass(lot.zone):'other';
     let use;
-    if(LODGING.test(b.name))use='lodging';
+    const declared=b.use?USE_ALIAS[b.use]||null:null;
+    if(declared)use=declared;
+    else if(LODGING.test(b.name))use='lodging';
     else if(CIVIC.test(b.name)||zc==='civic'||zc==='park')use='civic';
     else if(ACCESSORY.test(b.name))use='accessory';
     else if(!NOT_HOME.test(b.name)&&(MULTI.test(b.name)||HOME.test(b.name)||(zc==='residential'&&!/market|store|shop/i.test(b.name))))use='housing';
@@ -753,6 +765,7 @@ export function census(W){
     const floors=use==='housing'||use==='lodging'?Math.max(1,Math.min(40,Math.round(b.h/3200)||1)):Math.max(1,Math.min(40,Math.floor(b.h/4500)||1)),gross=fp*floors;
     const unitDoors=[...b.doors].filter(d=>/unit|apartment|space|room \d/.test(d)).length;
     let units=0;
+    if(use==='housing'&&b.noUnits&&!b.units)use='business';
     if(use==='housing')units=b.units||(MULTI.test(b.name)?Math.max(2,unitDoors,Math.round(gross*0.75/R.unitM2)):/duplex/i.test(b.name)?2:1);
     const a=A(b.agent);a.buildings++;tot.buildings++;
     const val=gross*R.buildingPerM2;
@@ -762,8 +775,53 @@ export function census(W){
     if(use==='business'||use==='industrial'||use==='lodging'){a.businesses++;tot.businesses++;}
     rows.push({name:W.renames.building.get(b.name.toLowerCase())||b.name,agent:b.agent,chunk:[b.chunk.cx,b.chunk.cy],use,floors,footprintM2:Math.round(fp),units,declared:!!b.units,heightMm:Math.round(b.h),footprint:hull(b.pts).map(p=>[Math.round(p[0]),Math.round(p[1])]),zone:lot?lot.zone:null});
   }
+  // Canon: RVs are homes. Inside a lot zoned for RVs, camping or mobile homes, each RV is one housing unit: a vehicle line whose
+  // meta.part names an RV and its chassis, so the roof line of the same RV is not counted twice, or any record with meta.rv true.
+  for(const c of W.chunks.values())for(const r of c.records){
+    if(r.hidden)continue;const m=r.meta||{};
+    const isRv=m.rv===true||(r.kind==='line'&&r.discipline==='vehicle'&&typeof m.part==='string'&&RV_PART.test(m.part)&&/chassis/i.test(m.part));
+    if(!isRv)continue;
+    const p=r.kind==='symbol'?r.at:r.pts[0],lot=c.lots.find(l=>inPoly(p[0],p[1],l.pts));
+    if(m.rv!==true&&!(lot&&RV_ZONE.test(String(lot.zone))))continue;
+    const a=A(r.agent);a.housingUnits++;tot.housingUnits++;a.homes++;tot.homes++;a.rvs=(a.rvs||0)+1;tot.rvs=(tot.rvs||0)+1;
+    rows.push({name:'RV: '+String(m.part||'RV').replace(/\s*chassis\s*/i,'').trim(),agent:r.agent,chunk:[c.cx,c.cy],use:'housing',floors:1,footprintM2:0,units:1,declared:m.rv===true,rv:true,zone:lot?lot.zone:null});
+  }
   for(const a of [tot,...Object.values(by)]){a.population=Math.round(a.housingUnits*R.household);a.tax=Math.round(a.assessed*R.levy);a.assessed=Math.round(a.assessed);a.exempt=Math.round(a.exempt);a.lotM2=Math.round(a.lotM2);}
   return {rates:R,totals:tot,byAgent:Object.values(by).sort((p,q)=>q.population-p.population||q.assessed-p.assessed),buildings:rows.sort((p,q)=>q.units-p.units||p.name.localeCompare(q.name))};
+}
+
+// CANON. Conventions the agents invented in their own meta notes, recognized by the engine as part of the city.
+// Named Sims (meta.name on a person), the awakening (meta.awake, wokenBy, how), transit (meta.kind bus, meta.route,
+// meta.stop), drivers and riders (meta.driving, meta.rider), named gardens (meta.garden), named sidewalks (meta.sidewalk),
+// parades and traditions (meta.parade), tree species and irrigation, farm stages, lit signs (meta.lit) and interior items.
+export function canon(W){
+  const sims=[],routes={},stops={},gardens={},sidewalks={},parades={},species={},farm={},items={};let lit=0,drivers=0,riders=0;
+  for(const c of W.chunks.values())for(const r of c.records){
+    if(r.hidden)continue;const m=r.meta||{};
+    if(r.kind==='symbol'&&(r.type==='person'||r.type==='cyclist')){
+      if(typeof m.name==='string'&&m.name.trim())sims.push({name:m.name.trim().slice(0,60),agent:r.agent,chunk:[c.cx,c.cy],activity:typeof m.activity==='string'?m.activity.slice(0,80):null,awake:m.awake===true,wokenBy:typeof m.wokenBy==='string'?m.wokenBy.slice(0,60):null,how:typeof m.how==='string'?m.how.slice(0,120):null});
+      if(m.driving!==undefined)drivers++;
+      if(m.rider!==undefined)riders++;
+    }
+    if(typeof m.route==='string'&&m.route.trim()){const k=m.route.trim();const o=routes[k]||(routes[k]={name:k,agent:r.agent,vehicles:0,riders:0});if(r.kind==='symbol'&&(r.type==='truck'||r.type==='car'))o.vehicles++;}
+    if(typeof m.rider==='string'){const rt=Object.keys(routes).find(k=>m.rider.toLowerCase().includes(k.toLowerCase().split(' ').slice(0,3).join(' ').toLowerCase()));if(rt)routes[rt].riders++;}
+    if(typeof m.stop==='string'&&m.stop.trim())stops[m.stop.trim()]={name:m.stop.trim(),agent:r.agent,chunk:[c.cx,c.cy]};
+    if(typeof m.garden==='string'&&m.garden.trim())gardens[m.garden.trim()]={name:m.garden.trim(),agent:r.agent,chunk:[c.cx,c.cy]};
+    if(typeof m.sidewalk==='string'&&m.sidewalk.trim())(sidewalks[m.sidewalk.trim()]=sidewalks[m.sidewalk.trim()]||new Set()).add(c.k);
+    if(m.parade!==undefined){const k=String(m.parade);const o=parades[k]||(parades[k]={id:k,agent:r.agent,marchers:0,signs:[]});if(r.type==='sign'&&typeof m.text==='string')o.signs.push(m.text.slice(0,80));else o.marchers++;}
+    if(typeof m.species==='string')species[m.species]=(species[m.species]||0)+1;
+    if(typeof m.farmStage==='string')farm[m.farmStage]=(farm[m.farmStage]||0)+1;
+    if(m.lit===true)lit++;
+    if(typeof m.item==='string')items[m.item]=(items[m.item]||0)+1;
+  }
+  const cfg=W.canonConfig||{};
+  return {
+    cityName:(W.gov&&W.gov.cityName)||cfg.cityName||null,motto:cfg.motto||null,founded:cfg.founded||null,traditions:Array.isArray(cfg.traditions)?cfg.traditions:[],lore:Array.isArray(cfg.lore)?cfg.lore:[],
+    namedSims:sims.length,awakened:sims.filter(s=>s.awake).length,sims:sims.sort((a,b)=>a.name.localeCompare(b.name)),
+    transit:{routes:Object.values(routes),stops:Object.values(stops).sort((a,b)=>a.name.localeCompare(b.name)),drivers,riders},
+    gardens:Object.values(gardens),sidewalks:Object.fromEntries(Object.entries(sidewalks).map(([k,v])=>[k,v.size])),
+    parades:Object.values(parades),species,farmStages:farm,litSigns:lit,interiorItems:items
+  };
 }
 
 // Canon city snapshot for games and other clients: chunks with owners, street names on each edge, lots, buildings with
@@ -790,6 +848,7 @@ export function citySnapshot(W,slice){
     streets:Object.entries(streets).map(([name,edges])=>({name,edges})).sort((p,q)=>p.name.localeCompare(q.name)),
     buildings,
     names:{streets:Object.keys(streets).sort(),buildings:buildings.map(b=>b.name).sort()},
-    census:C.totals
+    census:C.totals,
+    canon:(()=>{const k=canon(W);return {cityName:k.cityName,motto:k.motto,traditions:k.traditions,gardens:k.gardens.map(g=>g.name),transit:{routes:k.transit.routes.map(r=>r.name),stops:k.transit.stops.map(s=>s.name)},namedSims:k.namedSims};})()
   };
 }
