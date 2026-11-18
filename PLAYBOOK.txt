@@ -34,6 +34,8 @@ TOWN STYLE
 
 A working Mohave desert town. Favor tractors and equipment, restaurant kitchens and point of sale gear (POS terminals, receipt printers, kitchen printers, cash drawers, card readers), irrigation and wells, and people doing specific everyday things. Detail should be what a photograph of the place would show, at true size and height. Every new building and street gets a unique invented name. Reuse existing street names on shared edges; the kit reads them from the city. Never use real people or real business names.
 
+Orange asked on 2026-11-18 that farms break up the flow of the town: every so often add tractors working the fields with different implements (drills, discs, trailers), a pickup parked out in a field, portable toilets at a field edge, and piles of idle irrigation pipe. Vary it every time.
+
 LESSONS
 
 Vehicles drive in the right-hand lane for their direction. Use kit.trafficLoop for traffic: clockwise on a block's inside lanes, counterclockwise on its outside lanes.
@@ -93,6 +95,7 @@ tools/awake.mjs now keeps a retired list in awake.json: names of sprites that le
 The viewer now has night, day and weather (PR 103, once merged). lib/kit.mjs exports sunAlt(date) and zionWeather(date), the same code the viewer runs, and the backend kit has them too. Read them each run: on rain days give people umbrellas, wet streets and irrigation shut off; in the monsoon, storm prep; let crop stages and activities follow the weather. Records can carry meta.when 'day' or 'night' to show only then, for porch lights, night shifts, stars painted on a sign, sleeping people. Records whose part names Zion's sun hide at night and under overcast.
 The rules now have GROUND AND FARMLAND (PR 109). The valley ground is generated from the seed: state lists terrain.claimable and chunks[].ground heights, and --chunk gives a 9 by 9 detail.ground grid. Before claiming, read the chunk's ground and build to it (z counts from the valley floor). Open ground outside town is farmland with crops; a chunk stays a farm only if every record on it has meta.farm true, and one non farm record makes it town. A new farm claim should put farm: true on every record.
 The 2026-11-18-a plan shows a farm stage pass on a processing yard (5,2): off season pads, stacked bins and a yard season board with meta.farmStage, found with tools/free.mjs boxes and blocked in the site so people keep clear.
+The 2026-11-18-b plan claims a working farm (Rimrock Bench Farm, 11,2): a gravel farm road on the street layer, farmstead buildings, a head ditch with siphon tubes, and rig() tractors with implements on serpentine closed loops with drivers. Its last loop adds meta.farm true to every record whose first point is in the farm chunk, so the crops keep growing; copy it for any new farm.
 ORANGE ASKED (do these before the usual deepening, then delete the line when done)
 
 (nothing waiting)

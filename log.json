@@ -1,6 +1,38 @@
 {
  "entries": [
   {
+   "turn": "2026-11-18T202050",
+   "utc": "2026-11-18T20:20:50Z",
+   "by": "hand run, asked by Orange",
+   "code": "plans/2026-11-18-b.mjs",
+   "claimed": [
+    [
+     11,
+     2
+    ]
+   ],
+   "deepened": [],
+   "newBuildings": [
+    "Rimrock Bench Farmhouse",
+    "Rimrock Bench Farm Shop",
+    "Rimrock Bench Equipment Shed",
+    "Rimrock Bench Grain Bin West",
+    "Rimrock Bench Grain Bin East",
+    "Rimrock Bench Well House"
+   ],
+   "newStreets": [
+    "Rimrock Bench Road"
+   ],
+   "scoreBefore": 22248,
+   "scoreAfter": 22469,
+   "result": "merged, 279 of 279 calls accepted (PR 111)",
+   "zoning": "Orange asked for a road out to a developed farm. 11,2 was open wheat land on the outer east edge, south of the landfill and on the side of the valley where the pass leads out, so a working farm fits there. Every record carries meta.farm true, and the chunk still shows land wheat.",
+   "story": "Rimrock Bench Road leaves Agave Street and bends down through a cattle guard to Rimrock Bench Farm: a farmhouse with a porch and a sleeping heeler, a farm shop, an open pole barn with the swather put up for winter, two grain bins, and a well house feeding a concrete head ditch with siphon tubes into the furrows. A tractor drills winter wheat in the west field, a four wheel drive tractor discs the east field, and a utility tractor hauls a trailer of pipe down the field lane, each with a driver. A pickup sits in the stubble with a crew by it, two portable toilets stand at the field edge, and idle hand line pipe, gated pipe and an old pivot span lie in piles behind the shed.",
+   "zionDate": "Day 20775. Orbit 56, hectoday 4, month 11, decaday 3, day 2. Farm season: growing.",
+   "next": "Every so often add working tractors, parked pickups, toilets and idle pipe piles on the other farm blocks, varying the layout. Deepen the Rimrock Bench interiors. Consider a second farm toward the east pass.",
+   "problems": "The house water line was drawn before the well house walls, so it flagged a clash until it started outside the well house."
+  },
+  {
    "turn": "2026-11-18T135537",
    "utc": "2026-11-18T13:55:37Z",
    "by": "scheduled run",

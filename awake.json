@@ -31807,11 +31807,203 @@
    "activity": "checking life vest straps before a rental",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 36926,
+   "name": "Eamon Merriweather",
+   "chunk": [
+    -2,
+    -1
+   ],
+   "builder": "grok",
+   "activity": "returning home from the market along the driveway",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36987,
+   "name": "Jubal Trujillo",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "packing lunches for the field crew",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36988,
+   "name": "Octavia Duquesne",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the seed bag tag by the stove",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36990,
+   "name": "Serafina Underhill",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "drinking coffee on the porch at first light",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37020,
+   "name": "Josefina Coldwater",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "grinding a worn drill opener on the bench",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37021,
+   "name": "Calla Thistlewood",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "reading a filter number off a parts book",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37039,
+   "name": "Hazel Whitlock",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "checking the oil on the spare drill gearbox",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37077,
+   "name": "Gideon Benavides",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "climbing down from checking the seed bin",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37092,
+   "name": "Eamon Garnett",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the well flow meter through the door",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37169,
+   "name": "Beatriz Fenwick",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "counting hand line pipe joints in the pile",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37170,
+   "name": "Tadeo Madrigal",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "sorting good sprinkler heads from bad",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37180,
+   "name": "Remy Holcomb",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "pulling a soil core with a probe",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37181,
+   "name": "Clementine Elkhart",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "eating a burrito on the tailgate",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37183,
+   "name": "Quentin Gallardo",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "drilling winter wheat in the west field",
+   "layer": 1,
+   "wokenBy": "the first tractor on Rimrock Bench"
+  },
+  {
+   "id": 37185,
+   "name": "Wilhelmina Holcomb",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "discing stubble in the east field",
+   "layer": 1,
+   "wokenBy": "the first tractor on Rimrock Bench"
+  },
+  {
+   "id": 37187,
+   "name": "Quentin Fenwick",
+   "chunk": [
+    11,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "hauling a trailer of pipe out to the field",
+   "layer": 1,
+   "wokenBy": "the first tractor on Rimrock Bench"
   }
  ],
  "counts": {
-  "awake": 2638,
-  "newlyNamed": 2,
+  "awake": 2654,
+  "newlyNamed": 1,
   "duplicateNames": 0
  },
  "retired": [
