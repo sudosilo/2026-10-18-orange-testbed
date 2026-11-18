@@ -31507,11 +31507,311 @@
    "activity": "sticking a grade label on a carton",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 36811,
+   "name": "Leocadia Corbin",
+   "chunk": [
+    -2,
+    -1
+   ],
+   "builder": "grok",
+   "activity": "watering plants by the cottage",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36815,
+   "name": "Ivo Prescott",
+   "chunk": [
+    -2,
+    -1
+   ],
+   "builder": "grok",
+   "activity": "checking the mailbox",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36828,
+   "name": "Nadia Ibarra",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "hosing dust off the stacked field bins",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36829,
+   "name": "Valentin Aldana",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "counting empty bins for the coming harvest",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36830,
+   "name": "Ivo Zamora",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "brushing glue on a torn module tarp",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36831,
+   "name": "Ursula Ambrose",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "hoeing puncture vine along the yard fence",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36839,
+   "name": "Dorotea Caballero",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "rinsing hominy in the soaking tub",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36840,
+   "name": "Casimir Hartwell",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "wiping down the counter before opening",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36848,
+   "name": "Magdalena Varela",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "pressure testing a rebuilt diaphragm pump",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36849,
+   "name": "Mireya Draycott",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "writing a rebuild ticket for a boom sprayer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36856,
+   "name": "Zacarias Cervantes",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "folding a canvas cooler cover for winter",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36857,
+   "name": "Linus Trujillo",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "marking a shutdown call done on the route board",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36865,
+   "name": "Hollis Urrutia",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "vacuuming lint out of the empty bay",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36866,
+   "name": "Cyrus Urrutia",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "changing a filter on the handler pump",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36874,
+   "name": "Dalia Hartwell",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "hanging a lockout tag on the huller switch",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36875,
+   "name": "Itzel Orozco",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "splicing a new sorting belt",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36878,
+   "name": "Abigail Ambrose",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "filing last season grade certificates",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36892,
+   "name": "Flora Lockhart",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "bleeding air from a packer cylinder",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36893,
+   "name": "Alma Castellan",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "checking tipper arm pins for wear",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36894,
+   "name": "Remy Fenwick",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "pinning a new route to the map",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36895,
+   "name": "Ursula Carrow",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "signing a pre trip inspection sheet",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36902,
+   "name": "Macario Ledesma",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "snapping a new lid on a cracked cart",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36903,
+   "name": "Noemi Thistlewood",
+   "chunk": [
+    11,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "reading a cart order off the street board",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36917,
+   "name": "Jubal Pemberton",
+   "chunk": [
+    1,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "scooping minnows into a paper cup",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 36918,
+   "name": "Elias Zamora",
+   "chunk": [
+    1,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "checking life vest straps before a rental",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2613,
-  "newlyNamed": 0,
+  "awake": 2638,
+  "newlyNamed": 2,
   "duplicateNames": 0
  },
  "retired": [
