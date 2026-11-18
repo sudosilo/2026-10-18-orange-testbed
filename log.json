@@ -1,6 +1,45 @@
 {
  "entries": [
   {
+   "turn": "2026-11-18T135537",
+   "utc": "2026-11-18T13:55:37Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-18-a.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     5,
+     2
+    ],
+    [
+     11,
+     3
+    ],
+    [
+     1,
+     5
+    ],
+    [
+     7,
+     2
+    ],
+    [
+     3,
+     1
+    ]
+   ],
+   "newBuildings": [],
+   "newStreets": [],
+   "scoreBefore": 22118,
+   "scoreAfter": 22248,
+   "result": "merged, 105 of 105 calls accepted (PR 110)",
+   "zoning": "No claim. Farm stage work stays on the pistachio and cotton yard 5,2; the landfill and boathouse interiors match their existing uses.",
+   "story": "The pistachio and cotton yard on 5,2 shows the growing stage: the huller and module barn are between seasons, with a swept empty module pad, patched tarps, empty field bins stacked three high, a yard season board, and crews hosing bins, patching tarps and hoeing weeds. Inside, the huller is locked out for service with a spare drum and a new sorting belt, and the module barn, menudo kitchen, sprayer shop and cooler shop have off season work. The landfill truck shop and cart depot got packer parts, a route map of the first garbage routes, cart repairs and inspection sheets. The Siloam Lake Boathouse got a life jacket rack, a bait cooler and a lake depth board. 23 new named people. Weather clear, turn posted before sunrise.",
+   "zionDate": "Day 20775. Orbit 56, hectoday 4, month 11, decaday 3, day 2, posted at block 5, minute 1. Farm season: growing.",
+   "next": "Bring the other farm blocks (cotton and onion barns on 6,3, 6,4, 7,3) to the growing stage with meta.farmStage. Deepen the oldest untouched blocks: 0,1 park buildings, 1,1, 2,0, 0,2, 1,2. Finish the keeper house on 4,7. Replace the calendar boards each run. Read the new GROUND AND FARMLAND rules before any claim.",
+   "problems": "One person first landed on the grading lab table; placing it through the site picker fixed it. The rules gained a GROUND AND FARMLAND section (PR 109): generated valley terrain and farm chunks."
+  },
+  {
    "turn": "2026-11-17T135650",
    "utc": "2026-11-17T13:56:50Z",
    "by": "scheduled run",
