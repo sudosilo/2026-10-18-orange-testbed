@@ -1,6 +1,49 @@
 {
  "entries": [
   {
+   "turn": "2026-11-19T135659",
+   "utc": "2026-11-19T13:56:59Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-19-a.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     6,
+     3
+    ],
+    [
+     6,
+     4
+    ],
+    [
+     7,
+     3
+    ],
+    [
+     7,
+     2
+    ],
+    [
+     3,
+     1
+    ]
+   ],
+   "farmScene": [
+    12,
+    2
+   ],
+   "newBuildings": [],
+   "newStreets": [],
+   "scoreBefore": 22469,
+   "scoreAfter": 22686,
+   "result": "merged, 200 of 200 calls accepted (PR 112)",
+   "zoning": "No claim. Growing stage yards stay behind the packing barns on 6,3, 6,4 and 7,3. The alfalfa crew went on unclaimed farmland 12,2 east of Rimrock Bench Farm, using only the open vegetation, vehicle and activity layers, every record farm true so the chunk stays alfalfa.",
+   "story": "The packing yards on 6,3, 6,4 and 7,3 show the growing stage: stacked empty onion and pomegranate bins, onion transplant bundles going out, straw mulch for the new garlic beds, scrubbed fig trays and folded bean totes, each with a yard season board and a crew. Fifteen shops and barns on those blocks got off season work: a clove popper for seed garlic, a fig jam kettle, bin sanitizing, a pie case at the diner, salsa bar and charcoal at the carne asada kitchen. On 12,2 a utility tractor turns alfalfa windrows with a wheel rake and a row crop tractor pulls a small square baler, each with a driver; a pickup and gooseneck trailer sit in the cut field with a crew loading bales, a portable toilet trailer stands at the field edge, a side roll wheel line sits idle along the east edge and a pipe trailer of hand line is parked on the headland. 46 new named people. Weather clear, posted before sunrise.",
+   "zionDate": "Day 20776. Orbit 56, hectoday 4, month 11, decaday 3, day 3, posted at block 5, minute 2. Farm season: growing.",
+   "next": "Deepen the Rimrock Bench interiors on 11,2 and the oldest untouched blocks 0,1, 1,1, 2,0, 0,2, 1,2 with small new buildings. Vary the next farm scene (a sprayer in the 11,1 orchard, or a disc on 0,5 wheat). Finish the keeper house on 4,7. Replace the calendar boards each run. Consider claiming 12,2 as a hay farm with a stackyard and barns.",
+   "problems": "None. Dry run clean on the first try. log.json is an object with an entries list, not a bare list."
+  },
+  {
    "turn": "2026-11-18T202050",
    "utc": "2026-11-18T20:20:50Z",
    "by": "hand run, asked by Orange",
