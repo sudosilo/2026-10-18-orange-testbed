@@ -31999,11 +31999,563 @@
    "activity": "hauling a trailer of pipe out to the field",
    "layer": 1,
    "wokenBy": "the first tractor on Rimrock Bench"
+  },
+  {
+   "id": 37196,
+   "name": "Alma Aldana",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "counting onion transplant bundles onto a truck",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37197,
+   "name": "Octavia Aldana",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "folding curing shade cloth for storage",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37198,
+   "name": "Zelda Ortega",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "hosing onion skins out of an empty bin",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37205,
+   "name": "Osric Northcott",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "loading straw bales for the garlic beds",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37206,
+   "name": "Casimir Inglewood",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "scrubbing a pomegranate field bin",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37207,
+   "name": "Pascual Hollister",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "tying folded drying racks with wire",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37213,
+   "name": "Itzel Hollister",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "stacking scrubbed fig trays",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37214,
+   "name": "Agustin Quarry",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "patching a torn bean cleaner screen",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37215,
+   "name": "Quentin Larkspur",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "counting folded bean totes",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37222,
+   "name": "Elias Wainwright",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "slicing a cherry pie at the case",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37223,
+   "name": "Perpetua Aldana",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "stacking clean mugs on the shelf",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37230,
+   "name": "Nadia Valdivia",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "showing a grower how the injector meters fertilizer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37231,
+   "name": "Gideon Inglewood",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "ringing up a box of filter screens",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37237,
+   "name": "Zelda Oakhurst",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "heating tint film to shrink it on a door pane",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37238,
+   "name": "Hazel Birchfield",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "sweeping glass chips into a dustpan",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37246,
+   "name": "Magdalena Mondragon",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "sanitizing an empty bin with the sprayer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37247,
+   "name": "Hazel Delacroix",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "replacing a worn belt on the onion sizer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37254,
+   "name": "Esperanza Galindo",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "sealing a bag of dried jujubes",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37255,
+   "name": "Mercy Fenwick",
+   "chunk": [
+    6,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "labeling cartons for the farmers market",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37262,
+   "name": "Hazel Cordero",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "writing the soup of the day on the board",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37263,
+   "name": "Jasper Greenhalgh",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "wringing out the mop by the back door",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37270,
+   "name": "Perpetua Orozco",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "sorting traded in sprinkler heads",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37271,
+   "name": "Wendell Inglewood",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "booking a wheel line service call",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37277,
+   "name": "Tadeo Bellweather",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "draining a cylinder over the oil pan",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37278,
+   "name": "Eamon Lafferty",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "pinning a parts order to the board",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37286,
+   "name": "Lorena Lockhart",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "popping seed garlic heads into cloves",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37287,
+   "name": "Zacarias Caballero",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "marking a planted bed on the map",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37294,
+   "name": "Casimir Oakhurst",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "strapping the last pallet of the season",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37295,
+   "name": "Isidro Olivares",
+   "chunk": [
+    6,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "writing the final pick weight on the board",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37302,
+   "name": "Adan Caballero",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "refilling the salsa verde bowl",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37303,
+   "name": "Lucian Galindo",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "dragging a sack of charcoal to the grill",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37310,
+   "name": "Oralia Escamilla",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "explaining a flush valve to a gardener",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37311,
+   "name": "Dorian Merriweather",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "stocking filter cartridges by mesh size",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37317,
+   "name": "Estevan Merriweather",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "scrubbing a yoke in the parts washer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37318,
+   "name": "Soledad Birchfield",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "calling a farmer to pick up his shaft",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37326,
+   "name": "Basil Elkhart",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "checking the last bean lot for moisture",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37327,
+   "name": "Isidro Ambrose",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "sweeping split beans off the barn floor",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37334,
+   "name": "Octavia Wainwright",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "stirring split figs in the jam kettle",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37335,
+   "name": "Estevan Barrientos",
+   "chunk": [
+    7,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "screwing lids onto warm jam jars",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37353,
+   "name": "Anselmo Halloran",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "raking alfalfa into windrows in the north field",
+   "layer": 1,
+   "wokenBy": "the first cutting of the winter alfalfa"
+  },
+  {
+   "id": 37355,
+   "name": "Adan Ravenhill",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "baling the drying alfalfa in the south field",
+   "layer": 1,
+   "wokenBy": "the first cutting of the winter alfalfa"
+  },
+  {
+   "id": 37361,
+   "name": "Eulalia Northcott",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "tossing a bale up onto the trailer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37362,
+   "name": "Aurelia Corbin",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "grabbing a bale hook from the cab",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37363,
+   "name": "Esperanza Merriweather",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "checking a bale for moisture with a probe",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37370,
+   "name": "Adan Garnett",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "washing hands at the trailer tank",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37385,
+   "name": "Evangeline Cervantes",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "counting idle pipe joints on the trailer",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2654,
-  "newlyNamed": 1,
+  "awake": 2700,
+  "newlyNamed": 0,
   "duplicateNames": 0
  },
  "retired": [
