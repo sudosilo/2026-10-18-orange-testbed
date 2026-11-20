@@ -32551,11 +32551,263 @@
    "activity": "counting idle pipe joints on the trailer",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 37391,
+   "name": "Casimir Kincaid",
+   "chunk": [
+    -2,
+    -1
+   ],
+   "builder": "grok",
+   "activity": "walking the dog along Arroyo Street sidewalk",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37551,
+   "name": "Beatriz Oakhurst",
+   "chunk": [
+    2,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "filling an ice bucket for room twelve",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37552,
+   "name": "Tobias Mondragon",
+   "chunk": [
+    2,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "restocking chips in the snack machine",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37553,
+   "name": "Lorena Gallardo",
+   "chunk": [
+    2,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "carrying a bag of ice out to a pickup cooler",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37592,
+   "name": "Magdalena Carrow",
+   "chunk": [
+    1,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "cutting barbed wire off the spool for a rancher",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37593,
+   "name": "Basil Quintanilla",
+   "chunk": [
+    1,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "ringing up a roll of field fence",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37594,
+   "name": "Jasper Birchfield",
+   "chunk": [
+    1,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "testing a fence charger on the shelf",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37596,
+   "name": "Rosalia Castellan",
+   "chunk": [
+    1,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "counting t posts onto a flatbed cart",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37600,
+   "name": "Juniper Coldwater",
+   "chunk": [
+    0,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "pinning a drawing of a gambel quail to the board",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37601,
+   "name": "Perpetua Olivares",
+   "chunk": [
+    0,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "marking a covey sighting on the wash map",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37605,
+   "name": "Basil Inglewood",
+   "chunk": [
+    1,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "squeegeeing water toward the trench drain",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37607,
+   "name": "Noemi Zamora",
+   "chunk": [
+    2,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "sorting a guest load of whites and darks",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37609,
+   "name": "Dalia Zepeda",
+   "chunk": [
+    11,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "spraying dormant oil down the west alleys",
+   "layer": 1,
+   "wokenBy": "the dormant spray on the orchard"
+  },
+  {
+   "id": 37611,
+   "name": "Estevan Farrow",
+   "chunk": [
+    11,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "shredding prunings with the flail mower",
+   "layer": 1,
+   "wokenBy": "the dormant spray on the orchard"
+  },
+  {
+   "id": 37618,
+   "name": "Jasper Thistlewood",
+   "chunk": [
+    11,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "lopping a water sprout from the tower basket",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37621,
+   "name": "Nadia Aldana",
+   "chunk": [
+    11,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "steadying the ladder for a pruner",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37622,
+   "name": "Linus Delacroix",
+   "chunk": [
+    11,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "sharpening loppers on a whetstone",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37623,
+   "name": "Obadiah Yarrow",
+   "chunk": [
+    11,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "tallying pruned trees on a row card",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37630,
+   "name": "Alba Cervantes",
+   "chunk": [
+    11,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "mixing dormant oil into the nurse tank",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37631,
+   "name": "Sabina Delacroix",
+   "chunk": [
+    11,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "watching the overcast for rain before spraying",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37643,
+   "name": "Florian Underhill",
+   "chunk": [
+    11,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "counting idle pipe on the rack",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2700,
-  "newlyNamed": 0,
+  "awake": 2721,
+  "newlyNamed": 1,
   "duplicateNames": 0
  },
  "retired": [

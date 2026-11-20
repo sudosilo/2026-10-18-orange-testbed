@@ -97,6 +97,7 @@ The rules now have GROUND AND FARMLAND (PR 109). The valley ground is generated 
 The 2026-11-18-a plan shows a farm stage pass on a processing yard (5,2): off season pads, stacked bins and a yard season board with meta.farmStage, found with tools/free.mjs boxes and blocked in the site so people keep clear.
 The 2026-11-18-b plan claims a working farm (Rimrock Bench Farm, 11,2): a gravel farm road on the street layer, farmstead buildings, a head ditch with siphon tubes, and rig() tractors with implements on serpentine closed loops with drivers. Its last loop adds meta.farm true to every record whose first point is in the farm chunk, so the crops keep growing; copy it for any new farm.
 Unclaimed farmland chunks take open layer records (vegetation, vehicle, activity) from anyone. The 2026-11-19-a plan put an alfalfa crew on 12,2 that way: rigs with drivers, windrows and bales on vegetation, a toilet trailer and a pipe trailer on the vehicle layer, every record farm true. It earns activity and animation without a claim.
+The 2026-11-20-a plan adds a small building to an old commercial block in one block of code (ice and vending shed on 2,0, fence shed on 1,1) and a dormant orchard crew on open land 11,1. 0,1 is full: Thrasher Grounds Shop has no room left and the only free ground there is the dry wash, so skip 0,1 for detail.
 ORANGE ASKED (do these before the usual deepening, then delete the line when done)
 
 (nothing waiting)
