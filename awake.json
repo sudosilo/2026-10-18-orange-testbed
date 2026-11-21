@@ -32469,90 +32469,6 @@
    "wokenBy": "the children's game"
   },
   {
-   "id": 37353,
-   "name": "Anselmo Halloran",
-   "chunk": [
-    12,
-    2
-   ],
-   "builder": "agent-orange",
-   "activity": "raking alfalfa into windrows in the north field",
-   "layer": 1,
-   "wokenBy": "the first cutting of the winter alfalfa"
-  },
-  {
-   "id": 37355,
-   "name": "Adan Ravenhill",
-   "chunk": [
-    12,
-    2
-   ],
-   "builder": "agent-orange",
-   "activity": "baling the drying alfalfa in the south field",
-   "layer": 1,
-   "wokenBy": "the first cutting of the winter alfalfa"
-  },
-  {
-   "id": 37361,
-   "name": "Eulalia Northcott",
-   "chunk": [
-    12,
-    2
-   ],
-   "builder": "agent-orange",
-   "activity": "tossing a bale up onto the trailer",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 37362,
-   "name": "Aurelia Corbin",
-   "chunk": [
-    12,
-    2
-   ],
-   "builder": "agent-orange",
-   "activity": "grabbing a bale hook from the cab",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 37363,
-   "name": "Esperanza Merriweather",
-   "chunk": [
-    12,
-    2
-   ],
-   "builder": "agent-orange",
-   "activity": "checking a bale for moisture with a probe",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 37370,
-   "name": "Adan Garnett",
-   "chunk": [
-    12,
-    2
-   ],
-   "builder": "agent-orange",
-   "activity": "washing hands at the trailer tank",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 37385,
-   "name": "Evangeline Cervantes",
-   "chunk": [
-    12,
-    2
-   ],
-   "builder": "agent-orange",
-   "activity": "counting idle pipe joints on the trailer",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
    "id": 37391,
    "name": "Casimir Kincaid",
    "chunk": [
@@ -33007,11 +32923,323 @@
    "activity": "eyeing the low clouds for a winter storm",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 38006,
+   "name": "Jasper Solano",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "tasting a spoon of ketchup off the kettle paddle",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38007,
+   "name": "Quentin Greenhalgh",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "loading a new roll of packet film on line two",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38008,
+   "name": "Dorian Lockhart",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "pulling mustard packets for a seal burst test",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38009,
+   "name": "Linus Nightingale",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "folding a case blank into the packer on line five",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38010,
+   "name": "Estevan Bramwell",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "checking a bill of lading at door two",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38011,
+   "name": "Josefina Lafferty",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "labeling a mixed pallet of every kind of sauce",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38012,
+   "name": "Serafina Prescott",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "pouring liquid egg yolk into the mayonnaise mixer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38016,
+   "name": "Bernadette Merriweather",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "backing a pallet of mustard cases into the trailer at door one",
+   "layer": 1,
+   "wokenBy": "the first shift at the sauce works"
+  },
+  {
+   "id": 38018,
+   "name": "Lazaro Mondragon",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "pulling ketchup cases out to the staging lane at door four",
+   "layer": 1,
+   "wokenBy": "the first shift at the sauce works"
+  },
+  {
+   "id": 38020,
+   "name": "Mireya Sheffield",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "unloading tomato paste totes at door seven",
+   "layer": 1,
+   "wokenBy": "the first shift at the sauce works"
+  },
+  {
+   "id": 38025,
+   "name": "Yolanda Carrow",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "waiting by the cab for a dock door call",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38062,
+   "name": "Hollis Greenhalgh",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "ringing up a box of sample packets for a buyer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38063,
+   "name": "Valentin Nightingale",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "measuring ketchup flow on the consistometer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38064,
+   "name": "Isidro Pemberton",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "cooking a test batch of salsa verde",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38065,
+   "name": "Quentin Farrow",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "eating breakfast before the shift",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38089,
+   "name": "Nestor Bellweather",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "logging boiler pressure at the start of the shift",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38112,
+   "name": "Valentin Ortega",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "hooking the corn syrup hose to the tanker",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38130,
+   "name": "Magdalena Corbin",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "drawing a wastewater sample for the city",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38147,
+   "name": "Jericho Ledesma",
+   "chunk": [
+    12,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "checking a trailer seal number on the clipboard",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38271,
+   "name": "Lorena Delacroix",
+   "chunk": [
+    12,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "walking in from the employee lot for the first shift",
+   "layer": 1,
+   "wokenBy": "the first shift at the sauce works"
+  },
+  {
+   "id": 38272,
+   "name": "Clementine Hartwell",
+   "chunk": [
+    12,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "locking the car and pulling on a hairnet",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38273,
+   "name": "Ramona Solano",
+   "chunk": [
+    12,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "carpooling in with two packers from the line",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38287,
+   "name": "Elodie Aldana",
+   "chunk": [
+    12,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "waiting by the cab for a call from the gate",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38289,
+   "name": "Emeric Nightingale",
+   "chunk": [
+    12,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "shuttling a trailer to the drop row",
+   "layer": 1,
+   "wokenBy": "the first shift at the sauce works"
+  },
+  {
+   "id": 38314,
+   "name": "Nadia Draycott",
+   "chunk": [
+    12,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "signing in a load of tomatoes at the window",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38315,
+   "name": "Fausto Whitlock",
+   "chunk": [
+    12,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "assigning a dock door to the next rig",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2738,
-  "newlyNamed": 1,
+  "awake": 2757,
+  "newlyNamed": 0,
   "duplicateNames": 0
  },
  "retired": [
@@ -33253,6 +33481,62 @@
    "chunk": [
     2,
     -3
+   ]
+  },
+  {
+   "id": 37353,
+   "name": "Anselmo Halloran",
+   "chunk": [
+    12,
+    2
+   ]
+  },
+  {
+   "id": 37355,
+   "name": "Adan Ravenhill",
+   "chunk": [
+    12,
+    2
+   ]
+  },
+  {
+   "id": 37361,
+   "name": "Eulalia Northcott",
+   "chunk": [
+    12,
+    2
+   ]
+  },
+  {
+   "id": 37362,
+   "name": "Aurelia Corbin",
+   "chunk": [
+    12,
+    2
+   ]
+  },
+  {
+   "id": 37363,
+   "name": "Esperanza Merriweather",
+   "chunk": [
+    12,
+    2
+   ]
+  },
+  {
+   "id": 37370,
+   "name": "Adan Garnett",
+   "chunk": [
+    12,
+    2
+   ]
+  },
+  {
+   "id": 37385,
+   "name": "Evangeline Cervantes",
+   "chunk": [
+    12,
+    2
    ]
   }
  ]

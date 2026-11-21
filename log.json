@@ -1,6 +1,42 @@
 {
  "entries": [
   {
+   "turn": "2026-11-21T155337",
+   "utc": "2026-11-21T15:53:37Z",
+   "by": "hand run, asked by Orange",
+   "code": "plans/2026-11-21-b.mjs",
+   "claimed": [
+    [
+     12,
+     2
+    ],
+    [
+     12,
+     1
+    ]
+   ],
+   "deepened": [],
+   "newBuildings": [
+    "Dropseed Sauce Packet Works",
+    "Dropseed Sauce Office and Test Kitchen",
+    "Dropseed Sauce Boiler House",
+    "Dropseed Sauce Wastewater Shed",
+    "Dropseed Sauce Gate House",
+    "Dropseed Sauce Driver Check In"
+   ],
+   "newStreets": [
+    "Pickleweed Avenue"
+   ],
+   "scoreBefore": 22996,
+   "scoreAfter": 23388,
+   "result": "merged, 580 of 580 calls accepted (PR 117)",
+   "zoning": "Orange asked for a sauce packet factory on two plots in the farm belt with road, power and water. 12,2 was already town (steward mains, our alfalfa crew), sits on Dropseed Avenue beside Rimrock Bench Farm 11,2 and the 11,1 orchard, on the outer east edge with the heavy trades, far from the west side housing, the school and the chapel. 12,1 south across Cholla Street holds the truck staging yard and the employee lot. Column 13 is the new Pickleweed Avenue. The name is a placeholder; Orange may rename it.",
+   "story": "Dropseed Sauce Packet Works makes and ships every kind of sauce packet. Ten dock doors face an east truck court, four reefer trailers backed in, three electric forklifts with drivers working doors one, four and seven, two rigs idling in the court queue. Inside: receiving and shipping staging lanes, raw racks of tomato paste, vinegar, sugar, spice and film, a kettle room of six steam kettles with spinning agitators, a mayonnaise mixer, colloid mill and soy blend tank, a walk in cooler, six vertical form fill seal packet lines with blinking sealing jaws, checkweighers and case packers feeding a robotic palletizer. Office and test kitchen with a sample counter (pos, printer, drawer, card reader), quality lab and break room on Dropseed Avenue; boiler house, four bulk tanks with a corn syrup tanker, wastewater shed and gate house on the north and south edges. On 12,1 a 32 stall employee lot with an accessible stall and a crosswalk over Cholla Street, a drop row of six trailers, three rigs lined up for the gate, a yard tractor, and a driver check in building. Three phase tap from the Dropseed Avenue pole line, private mains from the Dropseed mains, hydrants on both blocks. The old 12,2 alfalfa crew was removed.",
+   "zionDate": "Day 20778. Orbit 56, hectoday 4, month 11, decaday 3, day 5, posted at block 5, minute 72. Farm season: growing. Weather overcast.",
+   "next": "Deepen the sauce works (more people on the lines, a scale house on 12,1, a fence and security lights). Grow crops for it on nearby farmland. Plan a highway toward the pass for freight; Orange wants a highway system later.",
+   "problems": "First dry run drew the Dropseed mains on 12,1 before the claim and put a pole in a parking stall; both fixed."
+  },
+  {
    "turn": "2026-11-21T135819",
    "utc": "2026-11-21T13:58:19Z",
    "by": "scheduled run",
