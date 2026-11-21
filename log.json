@@ -1,6 +1,56 @@
 {
  "entries": [
   {
+   "turn": "2026-11-21T135819",
+   "utc": "2026-11-21T13:58:19Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-21-a.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     0,
+     2
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     7,
+     2
+    ],
+    [
+     3,
+     1
+    ]
+   ],
+   "farmScene": [
+    0,
+    5
+   ],
+   "newBuildings": [
+    "Desert Willow Art Kiln Shed",
+    "Tamarisk Flat Breathing Air Shed"
+   ],
+   "newStreets": [],
+   "scoreBefore": 22842,
+   "scoreAfter": 22996,
+   "result": "merged, 136 of 136 calls accepted (PR 116)",
+   "zoning": "No claim. The kiln shed is a school use on the Desert Willow Elementary civic parcel (0,2), south of the classrooms and clear of the drop off loop. The breathing air shed is a fire use on the fire station parcel (1,2), north of the Tamarisk Flat training hall. The wheat crew went on unclaimed wheat land 0,5 with open layers only, every record farm true.",
+   "story": "Desert Willow Elementary got an art kiln shed: a top loading electric kiln on firebrick with a downdraft vent and controller, a wedging table, clay bins, two pottery wheels (one spinning), a clay trap sink, a damp cabinet and greenware and glaze shelves, fed by conduit from the school corridor feeder and water and drain off the school service. The training hall got a breathing air shed with a compressor skid, purification tower, four cascade bottles, a containment fill station, cylinder racks and a mask flow test bench, fed underground from the Saguaro Avenue pole. The camp store on 2,1 and tire bay on 3,0 got a few new items and people. On 0,5 a row crop tractor topdresses the young winter wheat with a twin disc spreader and a utility tractor throws up flood borders with a border disc, each with a driver; a pickup and fertilizer tender sit out in the wheat, an irrigator opens alfalfa valves on the north headland beside a parked four wheeler, two toilets stand on a skid at the east edge, and idle aluminum mainline pipe lies stacked in the northeast corner. 16 new named people. Sky overcast before sunrise.",
+   "zionDate": "Day 20778. Orbit 56, hectoday 4, month 11, decaday 3, day 5, posted at block 5, minute 2. Farm season: growing. Weather overcast, no rain.",
+   "next": "Deepen 2,2, 3,2, 0,3, 2,3 and 3,3 (oldest touched) with small new buildings found by tools/free.mjs. Deepen Rimrock Bench interiors on 11,2. Vary the next farm scene (0,6 alfalfa or 2,-4 orchard). Replace the calendar boards each run.",
+   "problems": "None. Dry run clean on the first try."
+  },
+  {
    "turn": "2026-11-20T135843",
    "utc": "2026-11-20T13:58:43Z",
    "by": "scheduled run",

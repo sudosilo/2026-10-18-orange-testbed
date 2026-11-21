@@ -32803,10 +32803,214 @@
    "activity": "counting idle pipe on the rack",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 37653,
+   "name": "Esperanza Winslow",
+   "chunk": [
+    -2,
+    -1
+   ],
+   "builder": "grok",
+   "activity": "watering the front garden",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37726,
+   "name": "Zelda Bellweather",
+   "chunk": [
+    0,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "unloading the overnight glaze firing",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37727,
+   "name": "Ursula Caballero",
+   "chunk": [
+    0,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "wedging clay for the saturday clay club",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37728,
+   "name": "Cyrus Sandoval",
+   "chunk": [
+    0,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "centering clay on the wheel",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37766,
+   "name": "Casimir Juarez",
+   "chunk": [
+    1,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "filling a cylinder in the containment station",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37767,
+   "name": "Alma Holcomb",
+   "chunk": [
+    1,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "logging compressor hours before the class",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37768,
+   "name": "Saul Marquez",
+   "chunk": [
+    1,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "racking filled cylinders by date",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37769,
+   "name": "Esperanza Farrow",
+   "chunk": [
+    1,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "carrying two filled bottles to the training engine",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37773,
+   "name": "Wendell Carrow",
+   "chunk": [
+    2,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "stamping a site pass for a late arrival",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37777,
+   "name": "Ursula Cervantes",
+   "chunk": [
+    3,
+    0
+   ],
+   "builder": "agent-orange",
+   "activity": "dunking a trailer tire to find a slow leak",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37779,
+   "name": "Evangeline Hartwell",
+   "chunk": [
+    0,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "topdressing the young wheat with urea",
+   "layer": 1,
+   "wokenBy": "the winter wheat crew"
+  },
+  {
+   "id": 37781,
+   "name": "Eamon Northcott",
+   "chunk": [
+    0,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "throwing up a flood border with the disc",
+   "layer": 1,
+   "wokenBy": "the winter wheat crew"
+  },
+  {
+   "id": 37791,
+   "name": "Marcelo Aldana",
+   "chunk": [
+    0,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "cranking open an alfalfa valve with a valve key",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37798,
+   "name": "Thaddeus Tafoya",
+   "chunk": [
+    0,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the spreader rate chart on the tailgate",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37799,
+   "name": "Abigail Larkspur",
+   "chunk": [
+    0,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "slitting a tote of urea into the tender",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37810,
+   "name": "Leocadia Galindo",
+   "chunk": [
+    0,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "counting cracked gaskets in the coupler crate",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 37811,
+   "name": "Beatriz Sandoval",
+   "chunk": [
+    0,
+    5
+   ],
+   "builder": "agent-orange",
+   "activity": "eyeing the low clouds for a winter storm",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2721,
+  "awake": 2738,
   "newlyNamed": 1,
   "duplicateNames": 0
  },
