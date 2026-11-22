@@ -1,6 +1,45 @@
 {
  "entries": [
   {
+   "turn": "2026-11-22T135837",
+   "utc": "2026-11-22T13:58:37Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-22-a.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     2,
+     2
+    ],
+    [
+     3,
+     2
+    ],
+    [
+     0,
+     3
+    ]
+   ],
+   "farmScene": [
+    0,
+    6
+   ],
+   "newBuildings": [
+    "Cinch Ring Boot and Shoe Repair",
+    "Bitterwater Ditch Rider Shed",
+    "Sagebrush Hill Food Pantry"
+   ],
+   "newStreets": [],
+   "scoreBefore": 23388,
+   "scoreAfter": 23560,
+   "result": "merged, 186 of 186 calls accepted (PR 119)",
+   "zoning": "No claim. The shoe repair is a small retail use on the 2,2 main street commercial parcel, on the north plaza behind the shop row. The ditch rider shed is an irrigation district use between the post office dock and the district office on 3,2. The food pantry is a chapel use north of the fellowship hall on 0,3. The alfalfa crew went on unclaimed alfalfa land 0,6 with open layers only, every record farm true.",
+   "story": "Cinch Ring Boot and Shoe Repair opened on the 2,2 plaza with a finishing machine (sanding wheel spinning), a patcher, a skiver, a cobbler bench with a last stand, hides and a claim ticket rack, and a front counter with POS terminal, receipt printer, cash drawer and card reader, fed underground from the alley pole. The Bitterwater ditch rider got a shed with a radio desk, water order book and board, headgate keys, shovels, waders and a current meter, fed from the Agave Street pole, his pickup out front. Sagebrush Hill Chapel got a food pantry with canned goods shelves, a freezer and cooler, a donation scale, a pallet of Pecan Hollow pecans and a bread rack of day old donuts from the Sun Dog Donut Counter, water and drain off the Ocotillo Avenue mains. On 0,6 the alfalfa is going dormant: a tractor floats the north checks with a land plane and a bale wagon picks up the last bales, each with a driver; a band of ewes grazes the stubble inside an electric net fence with a herding dog on a loop, a sheep camp wagon and pickup out in the field, one toilet with a hand wash stand at the east edge, and idle PVC gated pipe chained on a pipe wagon at the north headland. 16 new named people. Before sunrise under overcast.",
+   "zionDate": "Day 20779. Orbit 56, hectoday 4, month 11, decaday 3, day 6, posted at block 5, minute 3. Farm season: growing. Weather overcast, no rain.",
+   "next": "Deepen 2,3, 3,3, 4,2, 3,4 and 2,4 (oldest touched) with small new buildings found by tools/free.mjs. Deepen the sauce works on 12,2 and 12,1 (scale house, fence, security lights). Vary the next farm scene (3,-4 alfalfa or 2,-4 orchard, or back to 0,5 wheat). Replace the calendar boards each run.",
+   "problems": "None. Dry run clean on the first try. 3,2 had only a 5 by 4 m gap left, between the post office dock and the district office."
+  },
+  {
    "turn": "2026-11-21T155337",
    "utc": "2026-11-21T15:53:37Z",
    "by": "hand run, asked by Orange",
