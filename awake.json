@@ -33811,11 +33811,179 @@
    "activity": "watching for the first light under the clouds",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 38661,
+   "name": "Saul Aldana",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "clamping the shaker boom on a pecan trunk",
+   "layer": 1,
+   "wokenBy": "the pecan harvest crew"
+  },
+  {
+   "id": 38663,
+   "name": "Fausto Ibarra",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "sweeping nuts into a windrow",
+   "layer": 1,
+   "wokenBy": "the pecan harvest crew"
+  },
+  {
+   "id": 38665,
+   "name": "Flora Yarrow",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "picking up a windrow of pecans with the harvester",
+   "layer": 1,
+   "wokenBy": "the pecan harvest crew"
+  },
+  {
+   "id": 38667,
+   "name": "Nadia Orozco",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "hauling a nut cart to the trailers",
+   "layer": 1,
+   "wokenBy": "the pecan harvest crew"
+  },
+  {
+   "id": 38672,
+   "name": "Dorian Elkhart",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "tarping the full nut trailer under the gray sky",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38673,
+   "name": "Isidro Winslow",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "flagging the next tree for the shaker",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38674,
+   "name": "Eulalia Holcomb",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "raking nuts out from around a trunk",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38675,
+   "name": "Anselmo Zepeda",
+   "chunk": [
+    3,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "cracking a nut open to check the fill",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38680,
+   "name": "Dorotea Aldana",
+   "chunk": [
+    4,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "driving the picking tower to the next palm",
+   "layer": 1,
+   "wokenBy": "the date picking crew"
+  },
+  {
+   "id": 38681,
+   "name": "Sabina Northcott",
+   "chunk": [
+    4,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "cutting a bunch of Medjools into the tower basket",
+   "layer": 1,
+   "wokenBy": "the date picking crew"
+  },
+  {
+   "id": 38683,
+   "name": "Lorena Wainwright",
+   "chunk": [
+    4,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "towing full bins to the packing shed",
+   "layer": 1,
+   "wokenBy": "the date picking crew"
+  },
+  {
+   "id": 38695,
+   "name": "Eamon Delacroix",
+   "chunk": [
+    4,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "tallying full bins on the headland",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38696,
+   "name": "Micah Kincaid",
+   "chunk": [
+    4,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "catching a dropped strand of dates",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38709,
+   "name": "Rufus Delacroix",
+   "chunk": [
+    5,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "writing the field number on a new module",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2805,
-  "newlyNamed": 31,
+  "awake": 2819,
+  "newlyNamed": 0,
   "duplicateNames": 0
  },
  "retired": [

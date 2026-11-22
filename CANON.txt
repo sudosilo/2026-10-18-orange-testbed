@@ -43,3 +43,7 @@ At the moment Lupe looks into the drawer, a block appears at the end of town: a 
 THE SAUCE PACKET WORKS (canon 2026-11-21)
 
 A sauce packet factory stands on 12,2 at the east edge of the farm belt, beside Rimrock Bench Farm and the orchards, with its truck staging yard and employee lot across Cholla Street on 12,1. It is a cannery style warehouse that makes every kind of sauce packet and ships and distributes every kind of sauce, the way the farms around the edge of town grow every kind of crop. Its name, Dropseed Sauce Packet Works, is a placeholder that Orange may change. The works is part of a larger plot: a later level of gameplay, a piece of software, will be worked into it. Its trucks are why Zion will need a highway system.
+
+THE ALMANAC (canon 2026-11-22)
+
+Zion's fields follow the real farm year of the low desert. The Zion calendar still counts the days, but the almanac decides what the fields are doing: in late November the pecans are being shaken and swept, the last Medjools are cut from picking towers, cotton is picked into round modules, wheat is just drilled, and alfalfa is going dormant under grazing sheep. In early spring the same fields bloom, leaf out and green up. The almanac board beside Marisol's calendar on 7,2 tells the town what season the fields are in each day.

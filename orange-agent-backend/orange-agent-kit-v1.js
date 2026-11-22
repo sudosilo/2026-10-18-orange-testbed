@@ -118,3 +118,91 @@ function zionWeather(d){
   const cover={clear:0,clouds:9,wind:5,overcast:24,rain:24,storm:20}[kind];
   return {key,kind,cover,rain:kind==='rain'||kind==='storm',lightning:kind==='storm',wind:kind==='wind'?9:kind==='storm'?5:2};
 }
+
+// Zion almanac (2026-11-22, asked by Orange). Field stages follow the real low desert farm year on the Pacific calendar
+// day, the same clock the viewer uses for crop colors (wheat sprout Oct to Jan, green Feb to Apr, gold May and June,
+// stubble Jul to Sep; alfalfa dormant Dec and Jan; orchards bare Dec to Feb, bloom Mar, fall color Nov).
+// almanac(date) gives, for every crop, the stage, what the field looks like, the work and implements out that day,
+// whether water runs, and what should be moving. Tag every farm stage record meta.farmStage 'crop:stage' (for example
+// 'pecan:harvest'), and each run remove any record whose tag no longer matches almanac(date).crops[crop].stage.
+// On rain days nobody works the fields: machines park, irrigation shuts off, moving is empty.
+// alfalfa also has a cutting cycle March to October: one cycle every 28 days, swath, cure, rake, bale, haul, regrow.
+const ALMANAC = {
+  wheat: [[10, 1, 'planting', 'fresh drilled beds and flood borders, first green needles', 'grain drill, border disc, preirrigation', 'on', ['grain drill', 'border disc']],
+    [12, 1, 'tillering', 'short green rows thickening', 'fertilizer spreader, flood irrigation', 'on', ['spreader']],
+    [2, 1, 'heading', 'knee high green wheat heading out', 'sprayer, last irrigation', 'on', ['sprayer']],
+    [5, 1, 'harvest', 'gold wheat falling to combines, straw windrows', 'combine, grain cart, bankout wagon, grain truck', 'off', ['combine', 'grain cart']],
+    [7, 1, 'stubble', 'pale stubble, straw bales, disced strips', 'baler, offset disc, chisel', 'off', ['disc']]],
+  alfalfa: [[12, 1, 'dormant', 'short gray green stubble, sheep grazing it down', 'sheep band, gopher traps, winter flood', 'light', ['herding dog']],
+    [2, 1, 'greenup', 'new green regrowth', 'weevil sprayer, land plane', 'on', ['sprayer']],
+    [3, 1, 'cutting', 'cutting cycle, see alfalfa cycle', 'swather, rake, baler, bale wagon', 'between cuttings', ['swather', 'rake', 'baler', 'bale wagon']],
+    [11, 1, 'last cutting', 'last bales picked up, regrowth slowing toward dormancy', 'bale wagon, land plane', 'light', ['bale wagon', 'land plane']]],
+  pecan: [[1, 16, 'dormant', 'bare gray trees, prunings in the alleys', 'pruning towers, hedger, brush shredder', 'off', ['shredder']],
+    [3, 16, 'budbreak', 'catkins and new leaves, clover up in the alleys', 'zinc sprayer, flail mower', 'on', ['sprayer']],
+    [5, 1, 'nut sizing', 'full green canopy, flooded basins', 'flood irrigation, flail mower, airblast sprayer', 'on', ['mower']],
+    [9, 1, 'shuck split', 'floor mowed short and rolled smooth, last water before harvest', 'mower, floor roller', 'cutoff', ['floor roller']],
+    [11, 1, 'harvest', 'yellowing leaves dropping, nuts shaken onto a dry floor and swept into windrows', 'trunk shaker, sweeper, harvester, nut cart, nut trailer', 'off', ['shaker', 'sweeper', 'harvester', 'nut cart']]],
+  date: [[1, 1, 'dormant', 'heavy fronds, offshoots being cut', 'offshoot crew, frond pruning', 'light', []],
+    [3, 1, 'pollination', 'crews aloft dusting the female strands', 'picking towers used as pollination lifts', 'on', ['tower']],
+    [5, 1, 'thinning', 'green bunches thinned and tied down', 'towers, rope', 'on', ['tower']],
+    [7, 1, 'bagging', 'paper bags over the ripening bunches', 'towers, bags', 'on', []],
+    [9, 1, 'harvest', 'bunches cut into field bins from the picking towers', 'picking tower, bin trailer, forklift', 'light', ['tower', 'bin tractor']],
+    [12, 16, 'postharvest', 'empty bunch stalks, sand alleys raked', 'frond pruning', 'light', []]],
+  pistachio: [[12, 1, 'dormant', 'bare trees, prunings shredded', 'pruners, shredder', 'off', ['shredder']],
+    [3, 1, 'bloom', 'catkins and leaf out', 'sprayer', 'on', ['sprayer']],
+    [5, 1, 'nut fill', 'green clusters turning rosy', 'drip, sprayer', 'on', []],
+    [9, 1, 'harvest', 'shaker and catcher pairs, bankout carts to the trucks', 'shaker catcher, bankout cart, bins', 'off', ['shaker', 'catcher', 'bankout cart']],
+    [10, 16, 'postharvest', 'leaves turning, bins washed and stacked, post harvest water', 'post harvest irrigation', 'on', []]],
+  cotton: [[1, 1, 'plowdown', 'shredded stalks plowed under before the plowdown deadline', 'stalk shredder, disc, ripper', 'off', ['shredder', 'disc']],
+    [3, 15, 'planting', 'listed beds, seedlings in rows', 'lister, planter', 'on', ['planter']],
+    [5, 16, 'growing', 'green rows squaring and blooming', 'cultivator, furrow irrigation', 'on', ['cultivator']],
+    [8, 16, 'defoliation', 'leaves dropping, bolls cracking white', 'defoliant sprayer, crop duster', 'cutoff', ['sprayer']],
+    [10, 1, 'harvest', 'white fields picked, round modules lined on the pads', 'picker with on board module builder, module truck', 'off', ['picker', 'module truck']]],
+  onion: [[10, 15, 'planting', 'beds transplanted with bundles', 'transplant crew, bed shaper', 'on', ['bed shaper']],
+    [2, 1, 'growing', 'tall green tops', 'sprayer, furrow irrigation', 'on', []],
+    [5, 1, 'harvest', 'onions pulled, topped and curing in windrows', 'undercutter, topper, bulk bins', 'off', ['undercutter']],
+    [7, 1, 'fallow', 'bare beds', 'disc', 'off', []]],
+  garlic: [[10, 1, 'planting', 'fresh beds under straw mulch', 'planter, mulcher', 'on', []],
+    [12, 1, 'growing', 'green spikes', 'furrow irrigation', 'on', []],
+    [5, 1, 'harvest', 'bulbs lifted onto drying racks', 'lifter, racks', 'off', []],
+    [7, 1, 'fallow', 'bare beds', 'disc', 'off', []]],
+  pomegranate: [[12, 1, 'dormant', 'bare shrubs, pruning', 'pruners', 'off', []],
+    [3, 1, 'bloom', 'red flowers', 'drip', 'on', []],
+    [5, 1, 'fruit set', 'fruit sizing on the bushes', 'drip, sprayer', 'on', []],
+    [9, 1, 'harvest', 'pickers with buckets, bins in the rows', 'bins, bin trailer', 'on', ['bin tractor']],
+    [11, 16, 'postharvest', 'last fruit split on the ground, bins stacked', 'none', 'light', []]],
+  fig: [[12, 1, 'dormant', 'bare branches', 'pruners', 'off', []],
+    [3, 1, 'breba', 'first crop on old wood', 'drip', 'on', []],
+    [6, 1, 'harvest', 'main crop picked onto drying trays', 'drying trays, bins', 'on', []],
+    [10, 1, 'postharvest', 'trays scrubbed and stacked, leaves yellowing', 'none', 'light', []]],
+  bean: [[7, 1, 'planting', 'tepary beans sown after the first monsoon rain', 'planter', 'on', ['planter']],
+    [8, 16, 'growing', 'low green vines', 'cultivator', 'on', []],
+    [10, 1, 'harvest', 'vines pulled and threshed', 'bean cutter, thresher', 'off', ['thresher']],
+    [11, 16, 'fallow', 'bare beds, totes stored', 'none', 'off', []]],
+};
+const ALF_CYCLE = [[0, 'swathing', 'swather laying the hay in windrows', ['swather']], [4, 'curing', 'windrows curing in the sun', []],
+  [6, 'raking', 'rake turning the windrows', ['rake']], [8, 'baling', 'baler working the windrows at dawn', ['baler']],
+  [10, 'hauling', 'bale wagon picking up bales', ['bale wagon']], [13, 'regrowth', 'flood irrigation on the cut field', []]];
+function almanac(d) {
+  const key = new Intl.DateTimeFormat('en-CA', {timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit'}).format(d);
+  const y = +key.slice(0, 4), m = +key.slice(5, 7), dd = +key.slice(8, 10), md = m * 100 + dd;
+  const doy = Math.round((Date.UTC(y, m - 1, dd) - Date.UTC(y, 0, 1)) / 86400000);
+  const wx = typeof zionWeather === 'function' ? zionWeather(d) : {rain: false};
+  const crops = {};
+  for (const [crop, rows] of Object.entries(ALMANAC)) {
+    const sorted = rows.slice().sort((a, b) => (a[0] * 100 + a[1]) - (b[0] * 100 + b[1]));
+    let row = sorted[sorted.length - 1];
+    for (const r of sorted) if (r[0] * 100 + r[1] <= md) row = r;
+    const [sm, sd, stage, look, work, irrigation, moving] = row;
+    const start = Math.round((Date.UTC(y, sm - 1, sd) - Date.UTC(y, 0, 1)) / 86400000), day = ((doy - start) % 366 + 366) % 366;
+    crops[crop] = {stage, look, work, irrigation: wx.rain ? 'off, rain' : irrigation, moving: wx.rain ? [] : moving.slice(), day};
+  }
+  if (crops.alfalfa.stage === 'cutting') {
+    const c = (doy - 59 + 366) % 28; let s = ALF_CYCLE[0];
+    for (const r of ALF_CYCLE) if (r[0] <= c) s = r;
+    Object.assign(crops.alfalfa, {cycleDay: c, cycle: s[1], look: s[2], moving: wx.rain ? [] : s[3].slice()});
+  }
+  const line = 'Almanac for ' + key + ': pecans ' + crops.pecan.stage + ', dates ' + crops.date.stage + ', cotton ' + crops.cotton.stage + ', pistachios ' + crops.pistachio.stage +
+    ', wheat ' + crops.wheat.stage + ', alfalfa ' + (crops.alfalfa.cycle || crops.alfalfa.stage) + (wx.rain ? '. Rain, the fields are idle.' : '.');
+  return {key, month: m, day: dd, doy, rain: !!wx.rain, crops, line};
+}
