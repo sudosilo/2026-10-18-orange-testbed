@@ -1,6 +1,45 @@
 {
  "entries": [
   {
+   "turn": "2026-11-23T140058",
+   "utc": "2026-11-23T14:00:58Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-23-a.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     2,
+     3
+    ],
+    [
+     3,
+     3
+    ],
+    [
+     4,
+     4
+    ]
+   ],
+   "farmScene": [
+    2,
+    -4
+   ],
+   "newBuildings": [
+    "Paperflower Branch Library",
+    "Mesquite Bloom Honey House",
+    "Chukar Flats Farm Labor Office"
+   ],
+   "newStreets": [],
+   "scoreBefore": 23612,
+   "scoreAfter": 23891,
+   "result": "merged, 250 of 250 calls accepted (PR 122)",
+   "zoning": "No claim. The library is the civic use the zoning rules ask for near the west side housing: a civic lot north of the 2,3 shop alley, one block east of the 1,3 apartments and cottages. The honey house is a small farm retail use between the welding shop and the grange hall on 3,3. The labor office is a farm service use beside the melon packing shed on 4,4. The pecan crew went on unclaimed orchard land 2,-4 with open layers only, every record farm true.",
+   "story": "Paperflower Branch Library opened north of the 2,3 alley facing the street: circulation desk with a checkout scanner, date due printer, a fines drawer never opened and a copy card reader, four book stacks, two oak reading tables, a children's corner with a story rug, three public computers and a printer, a seed packet rack from the grange, a restroom on the alley water and sewer, a book drop, bike rack and two planted beds. It keeps early hours for field crews. Mesquite Bloom Honey House on 3,3 has a shop counter with POS, printer, drawer and card reader, an uncapping tank, a radial extractor spinning, a settling tank, bottling bench and supers; one customer buys honey for the donut glaze. Chukar Flats Farm Labor Office on 4,4 has a pay window with POS, stub printer, empty drawer and pay card reader, a time clock, crew board and sign up table, with a crew bus idling and a toilet trailer outside. On 2,-4 a pecan crew works the open orchard alleys: trunk shaker, sweeper, harvester and a nut cart, each with a driver, three nut trailers on the farm track, a foreman pickup down an alley, two toilets and a wash station on the west track, idle flood pipe stacked on the north headland. 26 new named people.",
+   "zionDate": "Day 20780. Orbit 56, hectoday 4, month 11, decaday 3, day 7, posted at block 5, minute 4. Almanac for 2026-11-23: pecans harvest, dates harvest, cotton harvest, pistachios postharvest, wheat planting, alfalfa last cutting. Overcast, no rain, before sunrise.",
+   "next": "Deepen 3,4, 4,2 and the warehouse blocks 8,2, 9,3, 10,4, 9,5, 7,1, 10,3 (oldest touched). 4,2 had no free 5 by 4 m box; try smaller sheds there or skip it. On Dec 1 wheat, alfalfa and pistachio stages change: retire and redraw. Vary the next open land scene (3,-4 alfalfa, 0,-2 alfalfa, -1,-2 fallow).",
+   "problems": "None. First dry run had three people standing on fixtures; moved them."
+  },
+  {
    "turn": "2026-11-22T163935",
    "utc": "2026-11-22T16:39:35Z",
    "by": "hand run, asked by Orange",
