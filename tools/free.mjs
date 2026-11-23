@@ -17,3 +17,4 @@ for (let y = oy + 10000; y + H < oy + S - 10000; y += 1000) for (let x = ox + 10
   if (ok) out.push([x, y]);
 }
 console.log(out.length, JSON.stringify(out.slice(0, 15)));
+if (process.env.ALL) console.log(JSON.stringify(out));

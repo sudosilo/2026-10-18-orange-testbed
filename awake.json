@@ -33261,366 +33261,6 @@
    "wokenBy": "the children's game"
   },
   {
-   "id": 38400,
-   "name": "Emeric Delacroix",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "drum line marching in step",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38401,
-   "name": "Mireya Nightingale",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "drum line marching in step",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38402,
-   "name": "Emeric Aldana",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "trumpets playing the town march",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38403,
-   "name": "Fidelia Barrientos",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "trumpets playing the town march",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38404,
-   "name": "Juniper Juarez",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "tubas booming down the avenue",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38405,
-   "name": "Dorian Caballero",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "tubas booming down the avenue",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38406,
-   "name": "Evangeline Oakhurst",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "flag twirlers spinning flags",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38407,
-   "name": "Eulalia Blackwood",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "flag twirlers spinning flags",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38409,
-   "name": "Tadeo Duquesne",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "kids tossing candy to the crowd",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38410,
-   "name": "Zelda Urrutia",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "kids tossing candy to the crowd",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38412,
-   "name": "Saul Quintanilla",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "decorated bikes with streamers",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38413,
-   "name": "Benito Ledesma",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "decorated bikes with streamers",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38414,
-   "name": "Calla Cordero",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "decorated bikes with streamers",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38415,
-   "name": "Amos Blackwood",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "decorated bikes with streamers",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38417,
-   "name": "Estevan Saldana",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "waving a little flag",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38418,
-   "name": "Jasper Corbin",
-   "chunk": [
-    2,
-    -2
-   ],
-   "builder": "steward",
-   "activity": "cheering for the band",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38419,
-   "name": "Noemi Ashgrove",
-   "chunk": [
-    2,
-    0
-   ],
-   "builder": "steward",
-   "activity": "holding a toddler up to see",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38420,
-   "name": "Celestina Ledesma",
-   "chunk": [
-    2,
-    1
-   ],
-   "builder": "steward",
-   "activity": "filming the floats",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38421,
-   "name": "Ursula Zamora",
-   "chunk": [
-    2,
-    3
-   ],
-   "builder": "steward",
-   "activity": "catching candy",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38422,
-   "name": "Evangeline Fairbanks",
-   "chunk": [
-    2,
-    5
-   ],
-   "builder": "steward",
-   "activity": "clapping along to the drums",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38423,
-   "name": "Josefina Mondragon",
-   "chunk": [
-    2,
-    6
-   ],
-   "builder": "steward",
-   "activity": "sitting on a folding chair",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38424,
-   "name": "Valentin Lockhart",
-   "chunk": [
-    2,
-    8
-   ],
-   "builder": "steward",
-   "activity": "pointing at the fire engine",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38425,
-   "name": "Zacarias Jaramillo",
-   "chunk": [
-    2,
-    8
-   ],
-   "builder": "steward",
-   "activity": "waving a little flag",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38426,
-   "name": "Soledad Solano",
-   "chunk": [
-    2,
-    7
-   ],
-   "builder": "steward",
-   "activity": "cheering for the band",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38427,
-   "name": "Eamon Marquez",
-   "chunk": [
-    2,
-    5
-   ],
-   "builder": "steward",
-   "activity": "holding a toddler up to see",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38428,
-   "name": "Graciela Varela",
-   "chunk": [
-    2,
-    4
-   ],
-   "builder": "steward",
-   "activity": "filming the floats",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38429,
-   "name": "Anselmo Draycott",
-   "chunk": [
-    2,
-    2
-   ],
-   "builder": "steward",
-   "activity": "catching candy",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38430,
-   "name": "Ximena Northcott",
-   "chunk": [
-    2,
-    0
-   ],
-   "builder": "steward",
-   "activity": "clapping along to the drums",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38431,
-   "name": "Lucian Zamora",
-   "chunk": [
-    2,
-    -1
-   ],
-   "builder": "steward",
-   "activity": "sitting on a folding chair",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
-   "id": 38432,
-   "name": "Basil Ledesma",
-   "chunk": [
-    2,
-    -3
-   ],
-   "builder": "steward",
-   "activity": "pointing at the fire engine",
-   "layer": 1,
-   "wokenBy": "the children's game"
-  },
-  {
    "id": 38480,
    "name": "Hadley Fenwick",
    "chunk": [
@@ -33979,11 +33619,335 @@
    "activity": "writing the field number on a new module",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 38716,
+   "name": "Noemi Ashgrove",
+   "chunk": [
+    -1,
+    -1
+   ],
+   "builder": "grok",
+   "activity": "heading to the flats",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38812,
+   "name": "Obadiah Gallardo",
+   "chunk": [
+    2,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "emptying the overnight book drop into a cart",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38813,
+   "name": "Jubal Holcomb",
+   "chunk": [
+    2,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "scanning in a stack of returned westerns",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38814,
+   "name": "Flora Sandoval",
+   "chunk": [
+    2,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "shelving returns in the ranch history stack",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38815,
+   "name": "Evangeline Quarry",
+   "chunk": [
+    2,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "printing a crew timesheet before the bus leaves",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38816,
+   "name": "Dorotea Kestrel",
+   "chunk": [
+    2,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the farm page of the valley weekly",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38817,
+   "name": "Oralia Garnett",
+   "chunk": [
+    2,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "mopping the restroom before the doors open",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38864,
+   "name": "Ivo Barrientos",
+   "chunk": [
+    3,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "loading capped frames into the extractor",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38865,
+   "name": "Elias Corbin",
+   "chunk": [
+    3,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "slicing wax cappings off a frame with the hot knife",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38866,
+   "name": "Soledad Loera",
+   "chunk": [
+    3,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "filling quart jars from the settling tank",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38867,
+   "name": "Alma Cervantes",
+   "chunk": [
+    3,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "buying a pint of honey for the donut glaze",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38907,
+   "name": "Nestor Cervantes",
+   "chunk": [
+    4,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "handing out pay stubs at the window",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38908,
+   "name": "Dorotea Marchetti",
+   "chunk": [
+    4,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "punching in at the time clock",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38909,
+   "name": "Thaddeus Thistlewood",
+   "chunk": [
+    4,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "signing up for the onion transplant crew",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38910,
+   "name": "Octavia Olivares",
+   "chunk": [
+    4,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the bus times on the crew board",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38911,
+   "name": "Thaddeus Gallardo",
+   "chunk": [
+    4,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "waiting on the bench with a lunch cooler",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38912,
+   "name": "Cyrus Quintanilla",
+   "chunk": [
+    4,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "counting heads at the bus door",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38932,
+   "name": "Sabina Prescott",
+   "chunk": [
+    2,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "shaking pecan trunks down row six",
+   "layer": 1,
+   "wokenBy": "the open orchard pecan crew"
+  },
+  {
+   "id": 38934,
+   "name": "Valentin Escamilla",
+   "chunk": [
+    2,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "sweeping the fourth alley into a windrow",
+   "layer": 1,
+   "wokenBy": "the open orchard pecan crew"
+  },
+  {
+   "id": 38936,
+   "name": "Valentin Inglewood",
+   "chunk": [
+    2,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "running the harvester up the first windrow",
+   "layer": 1,
+   "wokenBy": "the open orchard pecan crew"
+  },
+  {
+   "id": 38938,
+   "name": "Sabina Wainwright",
+   "chunk": [
+    2,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "shuttling a nut cart to the trailers",
+   "layer": 1,
+   "wokenBy": "the open orchard pecan crew"
+  },
+  {
+   "id": 38944,
+   "name": "Desmond Halloran",
+   "chunk": [
+    2,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "tying down the tarp on the full trailer",
+   "layer": 1,
+   "wokenBy": "the open orchard pecan crew"
+  },
+  {
+   "id": 38945,
+   "name": "Thaddeus Merriweather",
+   "chunk": [
+    2,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "writing the orchard block on a trailer tag",
+   "layer": 1,
+   "wokenBy": "the open orchard pecan crew"
+  },
+  {
+   "id": 38947,
+   "name": "Eulalia Winslow",
+   "chunk": [
+    2,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "checking a sample of nuts for kernel color",
+   "layer": 1,
+   "wokenBy": "the open orchard pecan crew"
+  },
+  {
+   "id": 38948,
+   "name": "Verena Olivares",
+   "chunk": [
+    2,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "tapping the next trunk with a flag for the shaker",
+   "layer": 1,
+   "wokenBy": "the open orchard pecan crew"
+  },
+  {
+   "id": 38949,
+   "name": "Rufus Saldana",
+   "chunk": [
+    2,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "raking nuts out from a low limb",
+   "layer": 1,
+   "wokenBy": "the open orchard pecan crew"
+  },
+  {
+   "id": 38963,
+   "name": "Lazaro Fairbanks",
+   "chunk": [
+    2,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "counting the pipe stacked on the north headland",
+   "layer": 1,
+   "wokenBy": "the open orchard pecan crew"
   }
  ],
  "counts": {
-  "awake": 2819,
-  "newlyNamed": 0,
+  "awake": 2816,
+  "newlyNamed": 1,
   "duplicateNames": 0
  },
  "retired": [
@@ -34281,6 +34245,246 @@
    "chunk": [
     12,
     2
+   ]
+  },
+  {
+   "id": 38400,
+   "name": "Emeric Delacroix",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38401,
+   "name": "Mireya Nightingale",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38402,
+   "name": "Emeric Aldana",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38403,
+   "name": "Fidelia Barrientos",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38404,
+   "name": "Juniper Juarez",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38405,
+   "name": "Dorian Caballero",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38406,
+   "name": "Evangeline Oakhurst",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38407,
+   "name": "Eulalia Blackwood",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38409,
+   "name": "Tadeo Duquesne",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38410,
+   "name": "Zelda Urrutia",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38412,
+   "name": "Saul Quintanilla",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38413,
+   "name": "Benito Ledesma",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38414,
+   "name": "Calla Cordero",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38415,
+   "name": "Amos Blackwood",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38417,
+   "name": "Estevan Saldana",
+   "chunk": [
+    2,
+    -3
+   ]
+  },
+  {
+   "id": 38418,
+   "name": "Jasper Corbin",
+   "chunk": [
+    2,
+    -2
+   ]
+  },
+  {
+   "id": 38419,
+   "name": "Noemi Ashgrove",
+   "chunk": [
+    2,
+    0
+   ]
+  },
+  {
+   "id": 38420,
+   "name": "Celestina Ledesma",
+   "chunk": [
+    2,
+    1
+   ]
+  },
+  {
+   "id": 38421,
+   "name": "Ursula Zamora",
+   "chunk": [
+    2,
+    3
+   ]
+  },
+  {
+   "id": 38422,
+   "name": "Evangeline Fairbanks",
+   "chunk": [
+    2,
+    5
+   ]
+  },
+  {
+   "id": 38423,
+   "name": "Josefina Mondragon",
+   "chunk": [
+    2,
+    6
+   ]
+  },
+  {
+   "id": 38424,
+   "name": "Valentin Lockhart",
+   "chunk": [
+    2,
+    8
+   ]
+  },
+  {
+   "id": 38425,
+   "name": "Zacarias Jaramillo",
+   "chunk": [
+    2,
+    8
+   ]
+  },
+  {
+   "id": 38426,
+   "name": "Soledad Solano",
+   "chunk": [
+    2,
+    7
+   ]
+  },
+  {
+   "id": 38427,
+   "name": "Eamon Marquez",
+   "chunk": [
+    2,
+    5
+   ]
+  },
+  {
+   "id": 38428,
+   "name": "Graciela Varela",
+   "chunk": [
+    2,
+    4
+   ]
+  },
+  {
+   "id": 38429,
+   "name": "Anselmo Draycott",
+   "chunk": [
+    2,
+    2
+   ]
+  },
+  {
+   "id": 38430,
+   "name": "Ximena Northcott",
+   "chunk": [
+    2,
+    0
+   ]
+  },
+  {
+   "id": 38431,
+   "name": "Lucian Zamora",
+   "chunk": [
+    2,
+    -1
+   ]
+  },
+  {
+   "id": 38432,
+   "name": "Basil Ledesma",
+   "chunk": [
+    2,
+    -3
    ]
   }
  ]
