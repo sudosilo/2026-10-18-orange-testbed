@@ -1,6 +1,45 @@
 {
  "entries": [
   {
+   "turn": "2026-11-24T135756",
+   "utc": "2026-11-24T13:57:56Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-24-a.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     3,
+     4
+    ],
+    [
+     2,
+     4
+    ],
+    [
+     5,
+     4
+    ]
+   ],
+   "farmScene": [
+    3,
+    -4
+   ],
+   "newBuildings": [
+    "Whetstone Wash Blade Grinding Shop",
+    "Hoofprint Draw Farrier Shop",
+    "Spinystar Pecan Buying Station"
+   ],
+   "newStreets": [],
+   "scoreBefore": 23891,
+   "scoreAfter": 24109,
+   "result": "merged, 217 of 217 calls accepted (PR 123)",
+   "zoning": "No claim. All three are small farm trade uses on the free pad east of the north row building on the template blocks 3,4, 2,4 and 5,4, north of the rear alley and fed from the east alley pole and the alley mains. The farrier shop sits beside the Bajada Large Animal Clinic; the pecan buying station beside the Whiptail Pecan Hulling Shed. The alfalfa crew went on unclaimed alfalfa land 3,-4 with open layers only, every record farm true.",
+   "story": "Whetstone Wash Blade Grinding Shop on 3,4 has a counter with POS, receipt printer, empty drawer and card reader, a disc blade grinder with its wheel spinning, a sickle bench with section and saw chain grinders, a quench tank and racks of dull and sharpened blades, with a pickup backed to the loading door. Hoofprint Draw Farrier Shop on 2,4 has a glowing gas forge, anvil on a stump, keg shoe rack, hoof stand, a bay mare in the cross ties, a belt grinder bench and a counter with POS gear, with a stock trailer outside. Spinystar Pecan Buying Station on 5,4 has a buyer counter with POS, weigh ticket printer, empty drawer, card reader and moisture tester, a floor scale, a sample cracking bench and a price board with blank spaces where the price goes, with a grower nut trailer waiting. On 3,-4 a last cutting alfalfa crew: land plane and bale wagon with drivers on closed loops, border levees, stubble and regrowth hatches, light water down the last check from siphon tubes, the last 16 bales, a stackyard, a pickup with a ranch dog out in the stubble, a pipe trailer of idle gated pipe, a water tank trailer and a toilet on the south track. 24 new named people.",
+   "zionDate": "Day 20781. Orbit 56, hectoday 4, month 11, decaday 3, day 8, posted at block 5, minute 2. Almanac for 2026-11-24: pecans harvest, dates harvest, cotton harvest, pistachios postharvest, wheat planting, alfalfa last cutting. Overcast, no rain.",
+   "next": "Deepen 4,2 (no free 4 by 3.5 m box; needs a different idea or skip), 8,2, 9,3, 10,4 (no free 6 by 5 m box; try smaller), 7,1, 10,3, 9,5, 8,5, 6,1. The template pad at local 57500, 49500 is now used on 2,4, 3,4 and 5,4; 6,2 6,3 6,4 7,3 7,4 5,2 5,3 may have the same pad free. Dec 1: wheat, alfalfa and pistachio stages change, retire and redraw. Next open land scene: -1,-2 fallow or 0,5 wheat.",
+   "problems": "None. First dry run clean."
+  },
+  {
    "turn": "2026-11-23T140058",
    "utc": "2026-11-23T14:00:58Z",
    "by": "scheduled run",

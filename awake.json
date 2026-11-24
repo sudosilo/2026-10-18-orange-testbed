@@ -33943,11 +33943,323 @@
    "activity": "counting the pipe stacked on the north headland",
    "layer": 1,
    "wokenBy": "the open orchard pecan crew"
+  },
+  {
+   "id": 38971,
+   "name": "Octavia Draycott",
+   "chunk": [
+    -2,
+    -1
+   ],
+   "builder": "grok",
+   "activity": "walking the dog home along the sidewalk",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 38979,
+   "name": "Silas Marquez",
+   "chunk": [
+    -1,
+    -1
+   ],
+   "builder": "grok",
+   "activity": "going to the corner shop",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39026,
+   "name": "Alma Zamora",
+   "chunk": [
+    3,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "grinding the edge back onto a coulter disc",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39027,
+   "name": "Hazel Escamilla",
+   "chunk": [
+    3,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "filing a sickle section on the bench",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39028,
+   "name": "Ignacio Urrutia",
+   "chunk": [
+    3,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "writing a claim tag for six disc blades",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39029,
+   "name": "Bernadette Varela",
+   "chunk": [
+    3,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "dropping off a box of dull sickle sections",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39030,
+   "name": "Mireya Underhill",
+   "chunk": [
+    3,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "sliding disc blades off the pickup tailgate",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39077,
+   "name": "Ursula Castellan",
+   "chunk": [
+    2,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "rasping a front hoof level on the hoof stand",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39078,
+   "name": "Zacarias Gallardo",
+   "chunk": [
+    2,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "shaping a keg shoe on the anvil",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39079,
+   "name": "Yolanda Zamora",
+   "chunk": [
+    2,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "holding the bay mare's lead rope",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39080,
+   "name": "Wendell Nevarez",
+   "chunk": [
+    2,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "paying for a reset on two geldings",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39081,
+   "name": "Thaddeus Caballero",
+   "chunk": [
+    2,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "backing a gelding out of the stock trailer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39127,
+   "name": "Remy Whitlock",
+   "chunk": [
+    5,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "running a pecan sample through the moisture tester",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39128,
+   "name": "Hollis Solano",
+   "chunk": [
+    5,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "handing over a sample sack from the hollow",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39129,
+   "name": "Perpetua Solano",
+   "chunk": [
+    5,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "cracking a sample and grading the kernels",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39130,
+   "name": "Cyrus Oakhurst",
+   "chunk": [
+    5,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "tying off a weighed sack of pecans",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39131,
+   "name": "Itzel Duquesne",
+   "chunk": [
+    5,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "shoveling a sample from the grower trailer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39169,
+   "name": "Casimir Sandoval",
+   "chunk": [
+    3,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "planing a check flat for spring",
+   "layer": 1,
+   "wokenBy": "the last cutting alfalfa crew"
+  },
+  {
+   "id": 39171,
+   "name": "Ursula Ortega",
+   "chunk": [
+    3,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "picking up the last bales of the season",
+   "layer": 1,
+   "wokenBy": "the last cutting alfalfa crew"
+  },
+  {
+   "id": 39185,
+   "name": "Perpetua Escamilla",
+   "chunk": [
+    3,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "flagging the last bales left in the corner",
+   "layer": 1,
+   "wokenBy": "the last cutting alfalfa crew"
+  },
+  {
+   "id": 39186,
+   "name": "Zelda Corbin",
+   "chunk": [
+    3,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "checking how far the water has run down the check",
+   "layer": 1,
+   "wokenBy": "the last cutting alfalfa crew"
+  },
+  {
+   "id": 39187,
+   "name": "Obadiah Aldana",
+   "chunk": [
+    3,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "starting another siphon tube in the head ditch",
+   "layer": 1,
+   "wokenBy": "the last cutting alfalfa crew"
+  },
+  {
+   "id": 39188,
+   "name": "Dorotea Urrutia",
+   "chunk": [
+    3,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "tallying bales at the stackyard",
+   "layer": 1,
+   "wokenBy": "the last cutting alfalfa crew"
+  },
+  {
+   "id": 39189,
+   "name": "Bernadette Aldana",
+   "chunk": [
+    3,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "tying the gated pipe down on the trailer",
+   "layer": 1,
+   "wokenBy": "the last cutting alfalfa crew"
+  },
+  {
+   "id": 39190,
+   "name": "Calla Gallardo",
+   "chunk": [
+    3,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the hay scale tickets in the pickup cab",
+   "layer": 1,
+   "wokenBy": "the last cutting alfalfa crew"
+  },
+  {
+   "id": 39191,
+   "name": "Graciela Tafoya",
+   "chunk": [
+    3,
+    -4
+   ],
+   "builder": "agent-orange",
+   "activity": "filling a water jug at the tank trailer",
+   "layer": 1,
+   "wokenBy": "the last cutting alfalfa crew"
   }
  ],
  "counts": {
-  "awake": 2816,
-  "newlyNamed": 1,
+  "awake": 2842,
+  "newlyNamed": 2,
   "duplicateNames": 0
  },
  "retired": [
