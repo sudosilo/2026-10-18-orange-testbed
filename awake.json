@@ -34255,10 +34255,202 @@
    "activity": "filling a water jug at the tank trailer",
    "layer": 1,
    "wokenBy": "the last cutting alfalfa crew"
+  },
+  {
+   "id": 39193,
+   "name": "Estevan Solano",
+   "chunk": [
+    -1,
+    -1
+   ],
+   "builder": "grok",
+   "activity": "strolling the sidewalk on Arroyo Street",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39201,
+   "name": "Delfina Fairbanks",
+   "chunk": [
+    -2,
+    -2
+   ],
+   "builder": "grok",
+   "activity": "walking the new block",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39282,
+   "name": "Hollis Marquez",
+   "chunk": [
+    6,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "measuring a worn V belt against the pegboard",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39283,
+   "name": "Juniper Pemberton",
+   "chunk": [
+    6,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "breaking roller chain to length for a baler",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39284,
+   "name": "Benito Ibarra",
+   "chunk": [
+    6,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "looking up a bearing number in the binder",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39285,
+   "name": "Nadia Benavides",
+   "chunk": [
+    6,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "holding out a seized pickup bearing",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39286,
+   "name": "Obadiah Valdivia",
+   "chunk": [
+    6,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "carrying a carton of bearings off the van",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39331,
+   "name": "Graciela Orozco",
+   "chunk": [
+    5,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "ladling jamaica into a cup",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39332,
+   "name": "Tobias Benavides",
+   "chunk": [
+    5,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "cubing watermelon for the next jug",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39333,
+   "name": "Valentin Bramwell",
+   "chunk": [
+    5,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "straining soaked rice for horchata",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39334,
+   "name": "Marcelo Farrow",
+   "chunk": [
+    5,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "ordering a large horchata for a field crew",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39335,
+   "name": "Nestor Marchetti",
+   "chunk": [
+    5,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "waiting with two empty gallon jugs",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39376,
+   "name": "Thaddeus Carrow",
+   "chunk": [
+    7,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "listening to a gearbox run on the test stand",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39377,
+   "name": "Verena Winslow",
+   "chunk": [
+    7,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "filing a nick out of a fan blade",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39378,
+   "name": "Ursula Aldana",
+   "chunk": [
+    7,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "signing out a gearbox for the north grove",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39379,
+   "name": "Evangeline Wainwright",
+   "chunk": [
+    7,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "wiping soot from an orchard heater stack",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2842,
+  "awake": 2858,
   "newlyNamed": 2,
   "duplicateNames": 0
  },
