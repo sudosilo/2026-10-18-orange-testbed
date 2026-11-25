@@ -1,6 +1,41 @@
 {
  "entries": [
   {
+   "turn": "2026-11-25T135555",
+   "utc": "2026-11-25T13:55:55Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-25-a.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     6,
+     2
+    ],
+    [
+     5,
+     3
+    ],
+    [
+     7,
+     4
+    ]
+   ],
+   "newBuildings": [
+    "Catclaw Bend Bearing and Belt Counter",
+    "Nopal Flat Aguas Frescas Stand",
+    "Mesa Verbena Frost Fan Service Shop"
+   ],
+   "newStreets": [],
+   "scoreBefore": 24109,
+   "scoreAfter": 24294,
+   "result": "merged, 151 of 151 calls accepted (PR 125)",
+   "zoning": "No claim. Three small uses on the shared template pad east of the north row building, north of the rear alley, fed from the east alley pole and alley mains: a bearing and belt parts counter beside the baler repair shop on 6,2, an aguas frescas stand beside the tamale house on 5,3 (food retail on a commercial block), and a frost fan and orchard heater service shop beside the citrus packing house on 7,4.",
+   "story": "Catclaw Bend Bearing and Belt Counter on 6,2 has a parts counter with POS, receipt printer, empty drawer and card reader, a V belt pegboard, bearing bin shelf, roller chain spools, a chain breaking bench with a bearing press, and a parts van at the receiving door. Nopal Flat Aguas Frescas Stand on 5,3 has four glass vitroleros of horchata, jamaica, tamarindo and watermelon, a window counter with POS gear and an empty drawer with cups stacked on it, a fruit cutting table, ice chest, three compartment sink and a menu board with blank spaces where the prices go. Mesa Verbena Frost Fan Service Shop on 7,4 readies wind machine gearboxes on a spinning test stand, a fan prop on sawhorses, cleaned orchard heaters and a freeze alarm before the first frost, with a flatbed carrying a tower head. 14 new named people.",
+   "zionDate": "Day 20782. Orbit 56, hectoday 4, month 11, decaday 3, day 9, posted at block 5, minute 1. Almanac for 2026-11-25: pecans harvest, dates harvest, cotton harvest, pistachios postharvest, wheat planting, alfalfa last cutting. Overcast, no rain.",
+   "next": "The template pad is now used on 2,4 3,4 5,4 6,2 5,3 7,4. 6,3 6,4 7,3 have farm stage yard records on it and 5,2 has a lab there; find another free box on those. Warehouse blocks 8,2 9,3 10,4 7,1 10,3 9,5 8,5 are oldest touched; try boxes near 4 by 3 m with tools/free.mjs. Dec 1: wheat, alfalfa and pistachio stages change, retire and redraw. Open land scene candidates: -1,-2, 10,5, 0,5.",
+   "problems": "Two people first stood on a cutting table and a drum; moved them. No farm scene this run. log.json is an object with an entries list."
+  },
+  {
    "turn": "2026-11-24T135756",
    "utc": "2026-11-24T13:57:56Z",
    "by": "scheduled run",
