@@ -1,6 +1,41 @@
 {
  "entries": [
   {
+   "turn": "2026-11-27T135737",
+   "utc": "2026-11-27T13:57:37Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-27-a.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     7,
+     1
+    ],
+    [
+     10,
+     4
+    ],
+    [
+     9,
+     2
+    ]
+   ],
+   "newBuildings": [
+    "Frostline Reefer Unit Repair",
+    "Dogweed Tool Rental Counter",
+    "Sweet Acacia Lock and Key"
+   ],
+   "newStreets": [],
+   "scoreBefore": 24294,
+   "scoreAfter": 24456,
+   "result": "merged, 136 of 136 calls accepted (PR 126)",
+   "zoning": "No claim. Three small trade uses on free ground of the oldest warehouse blocks: a reefer unit repair shop north of Sweetwater Cold Storage on 7,1 serving its trailers, a tool rental counter north of the Condalia Contractor Counter on 10,4 beside the lumber yard, and a lock and key shop on the street side of the Lizard Tail Business Park on 9,2. All in the warehouse district on the east edge, far from housing.",
+   "story": "Frostline Reefer Unit Repair on 7,1 has a trailer reefer unit on a stand with its condenser fan spinning on test, a recovery machine and cylinder, a gauge manifold cart, a brazing bench with a nitrogen bottle, and a counter with POS, receipt printer, empty drawer and card reader, with a reefer trailer nose waiting in the alley. Dogweed Tool Rental Counter on 10,4 has a breaker rack, trowel pegboard, floor sander and auger returns, a rate board with blank spaces where the rates go, and a ready line outside with a plate compactor, towable mixer and scaffold frames. Sweet Acacia Lock and Key on 9,2 has two key machines on the counter, a wall of key blanks, a cylinder display, a floor safe, a rekeying bench and a service van at the curb, fed from a new pole in the street side span. 13 new named people.",
+   "zionDate": "Day 20784. Orbit 56, hectoday 4, month 12, decaday 1, day 1, posted at block 5, minute 2. Almanac for 2026-11-27: pecans harvest, dates harvest, cotton harvest, pistachios postharvest, wheat planting, alfalfa last cutting. Overcast, no rain.",
+   "next": "Free boxes of about 6 by 3 m remain on 10,4 (strip west of Dogweed at y 380992), 9,2 (strip x 726232 to 739232 at y 171496, partly used now) and 10,3 (843480, 253744 and 277744). 8,2 9,3 8,5 9,5 have no 4 by 3 m box left; skip them for detail. Dec 1: wheat, alfalfa and pistachio stages change, retire and redraw. Open land scene candidates: -1,-2, 10,5, 0,5.",
+   "problems": "None. No farm scene this run."
+  },
+  {
    "turn": "2026-11-25T135555",
    "utc": "2026-11-25T13:55:55Z",
    "by": "scheduled run",

@@ -34447,10 +34447,190 @@
    "activity": "wiping soot from an orchard heater stack",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 39388,
+   "name": "Rufus Ortega",
+   "chunk": [
+    -2,
+    -2
+   ],
+   "builder": "grok",
+   "activity": "strolling the sidewalk",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39393,
+   "name": "Tadeo Galindo",
+   "chunk": [
+    -2,
+    -2
+   ],
+   "builder": "grok",
+   "activity": "walking the dog",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39436,
+   "name": "Ignacio Nevarez",
+   "chunk": [
+    7,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "reading suction pressure off the gauge manifold",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39437,
+   "name": "Isidro Ortega",
+   "chunk": [
+    7,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "brazing a cracked condenser line at the bench",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39438,
+   "name": "Ivo Valdivia",
+   "chunk": [
+    7,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "printing a repair ticket for a reefer unit",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39439,
+   "name": "Aurelia Orozco",
+   "chunk": [
+    7,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "asking when the trailer unit will hold zero degrees",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39440,
+   "name": "Ivo Garnett",
+   "chunk": [
+    7,
+    1
+   ],
+   "builder": "agent-orange",
+   "activity": "rolling a reefer compressor in on a pallet jack",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39480,
+   "name": "Jericho Hollister",
+   "chunk": [
+    10,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "writing up a plate compactor for the day",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39481,
+   "name": "Eulalia Ibarra",
+   "chunk": [
+    10,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "renting a plate compactor for a patio base",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39482,
+   "name": "Gideon Birchfield",
+   "chunk": [
+    10,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "checking a returned breaker for chipped bits",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39483,
+   "name": "Estevan Tafoya",
+   "chunk": [
+    10,
+    4
+   ],
+   "builder": "agent-orange",
+   "activity": "hitching the towable mixer to a pickup",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39523,
+   "name": "Tobias Sandoval",
+   "chunk": [
+    9,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "cutting a house key on the duplicator",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39524,
+   "name": "Adan Corbin",
+   "chunk": [
+    9,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "pinning a rekeyed cylinder for a new tenant",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39525,
+   "name": "Celestina Loera",
+   "chunk": [
+    9,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "waiting on two copies of a gate key",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39526,
+   "name": "Verena Oakhurst",
+   "chunk": [
+    9,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "reading the deadbolt prices that are not there",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2858,
+  "awake": 2873,
   "newlyNamed": 2,
   "duplicateNames": 0
  },
