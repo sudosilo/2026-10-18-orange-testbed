@@ -34627,11 +34627,191 @@
    "activity": "reading the deadbolt prices that are not there",
    "layer": 1,
    "wokenBy": "the children's game"
+  },
+  {
+   "id": 39530,
+   "name": "Graciela Winslow",
+   "chunk": [
+    -1,
+    -1
+   ],
+   "builder": "grok",
+   "activity": "walking to the apartments",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39576,
+   "name": "Valentin Nevarez",
+   "chunk": [
+    10,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "grading a cotton sample under the north light",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39577,
+   "name": "Hazel Kestrel",
+   "chunk": [
+    10,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "pulling a staple length from a sample by hand",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39578,
+   "name": "Graciela Larkspur",
+   "chunk": [
+    10,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "loading a sample into the HVI line",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39579,
+   "name": "Bernadette Benavides",
+   "chunk": [
+    10,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "logging a gin sample bundle by module number",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39580,
+   "name": "Emeric Ortega",
+   "chunk": [
+    10,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "dropping off the night shift gin samples",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39616,
+   "name": "Silas Fairbanks",
+   "chunk": [
+    10,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "tearing a twine ticket off the printer",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39617,
+   "name": "Noemi Zepeda",
+   "chunk": [
+    10,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "buying four bales of twine for the last cutting",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39618,
+   "name": "Rosalia Juarez",
+   "chunk": [
+    10,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "counting net wrap rolls against the order sheet",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39619,
+   "name": "Dalia Sandoval",
+   "chunk": [
+    10,
+    3
+   ],
+   "builder": "agent-orange",
+   "activity": "strapping twine pallets down on a flatbed",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39657,
+   "name": "Obadiah Quintanilla",
+   "chunk": [
+    9,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "trading in a dead battery for a new one",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39658,
+   "name": "Perpetua Gallardo",
+   "chunk": [
+    9,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "writing a core credit on a ticket with no amount",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39659,
+   "name": "Macario Caballero",
+   "chunk": [
+    9,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "watching the amp meter on a rebuilt alternator",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39660,
+   "name": "Dorotea Solano",
+   "chunk": [
+    9,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "stacking a dead battery on the core pallet",
+   "layer": 1,
+   "wokenBy": "the children's game"
+  },
+  {
+   "id": 39661,
+   "name": "Gideon Greenhalgh",
+   "chunk": [
+    9,
+    2
+   ],
+   "builder": "agent-orange",
+   "activity": "carrying a battery out to a pickup at the curb",
+   "layer": 1,
+   "wokenBy": "the children's game"
   }
  ],
  "counts": {
-  "awake": 2873,
-  "newlyNamed": 2,
+  "awake": 2888,
+  "newlyNamed": 1,
   "duplicateNames": 0
  },
  "retired": [

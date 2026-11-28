@@ -1,6 +1,37 @@
 {
  "entries": [
   {
+   "turn": "2026-11-28T135745",
+   "utc": "2026-11-28T13:57:45Z",
+   "by": "scheduled run",
+   "code": "plans/2026-11-28-a.mjs",
+   "claimed": [],
+   "deepened": [
+    [
+     10,
+     3
+    ],
+    [
+     9,
+     2
+    ]
+   ],
+   "newBuildings": [
+    "Bitter Gourd Cotton Classing Office",
+    "Spineflower Baler Twine Depot",
+    "Brittle Spine Battery and Starter Exchange"
+   ],
+   "newStreets": [],
+   "scoreBefore": 24456,
+   "scoreAfter": 24617,
+   "result": "merged, 131 of 131 calls accepted (PR 128)",
+   "zoning": "No claim. Two farm trade uses on 10,3 beside the Wolfberry hay and cotton warehouses: a cotton classing office east of the bale warehouse and a baler twine depot east of the hay barn by the truck scale. A battery and starter exchange on the street side of the Lizard Tail Business Park on 9,2. All in the warehouse district on the east edge, far from housing.",
+   "story": "Bitter Gourd Cotton Classing Office on 10,3 grades gin samples on a black topped classing table under a north skylight, with a grade standard box, sample boxes, a humidity cabinet, an HVI line and an intake counter with POS, green card printer, empty drawer and card reader. Spineflower Baler Twine Depot on 10,3 sells sisal and poly twine, net wrap rolls, preservative jugs and knotter parts across a counter with POS gear and an empty drawer, with a flatbed loading pallets for the last cutting. Brittle Spine Battery and Starter Exchange on 9,2 has a battery rack, a spinning alternator on the test stand, a load tester, a blinking charger, a core pallet and a counter where a core credit is written with no amount. 14 new named people.",
+   "zionDate": "Day 20785. Orbit 56, hectoday 4, month 12, decaday 1, day 2, posted at block 5, minute 2. Almanac for 2026-11-28: pecans harvest, dates harvest, cotton harvest, pistachios postharvest, wheat planting, alfalfa last cutting. Overcast, no rain.",
+   "next": "6,1 has only the apron box in front of the apparatus barn doors; skip it for buildings. 10,3 has no 6 by 3 m box left near the yard after this run; check again with smaller boxes. Free boxes remain on 9,2 (764232 and 774232 at y 171496), 7,1 (603736, 92248, but it is in the employee lot paving; check stalls first) and 10,4 (841480, 360992). 6,7 has open ground but is on the preserve; only fire facilities, built to hgt(). Dec 1: wheat, alfalfa and pistachio stages change, retire and redraw. A new block claim is overdue (last 2026-11-21).",
+   "problems": "None. First dry run clean. No farm scene and no claim this run."
+  },
+  {
    "turn": "2026-11-27T135737",
    "utc": "2026-11-27T13:57:37Z",
    "by": "scheduled run",
